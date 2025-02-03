@@ -223,18 +223,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 0
   walkSpeed: 5
-  crouchSpeed: 3
   slideSpeed: 30
-  crouchYScale: 0.5
   sprintSpeed: 8
   sliding: 0
   SlideKey: 306
-  jumpForce: 12
+  jumpForce: 20
   jumpCooldown: 0.25
   airMultiplier: 0.6
   playerHeight: 2
   groundCheckDistance: 0.2
-  groundDrag: 3
+  groundDrag: 1
   whatIsGround:
     serializedVersion: 2
     m_Bits: 8
@@ -242,7 +240,6 @@ MonoBehaviour:
   slopeGroundCheckDistance: 0.3
   JumpKey: 32
   SprintKey: 304
-  CrouchKey: 122
   orientation: {fileID: 2273071279323782057}
   state: 0
   rb: {fileID: 6432936056326085912}
@@ -254,7 +251,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7858655692519997452}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 2
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
