@@ -10,9 +10,10 @@ public class Grappling : MonoBehaviour
     public LayerMask whatIsGrappleable;
     public LineRenderer lr;
 
+    [Header("Grappling")]
     public float maxGrappleDistance;
     public float grappleDelayTime;
-
+    public float overshootYAxis;
     private Vector3 grapplePoint;
 
     [Header("Cooldown")]
@@ -23,7 +24,6 @@ public class Grappling : MonoBehaviour
     public KeyCode GrappleKey = KeyCode.Mouse1;
 
     private bool grappling;
-    public bool grappleSuccess;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -80,14 +80,24 @@ public class Grappling : MonoBehaviour
     private void ExecuteGrapple()
     {
         pm.freeze = false;
-        grappleSuccess = true;
+
+        Vector3 lowestPoint = new Vector3(transform.position.x, transform.position.y - 1f, transform.position.z);
+
+        float grapplePointRelativeYPos = grapplePoint.y - lowestPoint.y;
+        float highestPointOnArc = grapplePointRelativeYPos + overshootYAxis;
+
+        if(grapplePointRelativeYPos < 0f) highestPointOnArc = overshootYAxis;
+
+        pm.JumpToPosition(grapplePoint, highestPointOnArc);
+
+        Invoke(nameof(StopGrapple), 2f);
     }
 
     private void StopGrapple()
     {
         pm.freeze = false;
         grappling = false;
-
+        pm.activeGrapple = false;
         grapplingCooldownTimer = grappleCooldown;
 
         lr.enabled = false;
