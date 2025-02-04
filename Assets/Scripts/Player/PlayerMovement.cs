@@ -27,6 +27,9 @@ public class PlayerMovement : MonoBehaviour
     public float airMultiplier;
     bool readyToJump;
 
+    [Header("Climb")]
+    public bool freeze;
+
     [Header("Ground Check")]
     public float playerHeight;
     public float groundCheckDistance;
@@ -53,6 +56,7 @@ public class PlayerMovement : MonoBehaviour
 
     public enum MovementState
     {
+        Freeze,
         Walking,
         Sprinting,
         Crouching,
@@ -72,6 +76,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(grounded);
         //ground check
         grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + groundCheckDistance, whatIsGround);
         MyInput();
@@ -92,7 +97,13 @@ public class PlayerMovement : MonoBehaviour
 
     private void StateHandler()
     {
-        if (grounded && Input.GetKey(SprintKey))
+        if(freeze)
+        {
+            state = MovementState.Freeze;
+            moveSpeed = 0f;
+            rb.linearVelocity = Vector3.zero;
+        }
+        else if (grounded && Input.GetKey(SprintKey))
         {
             state = MovementState.Sprinting;
             desiredMoveSpeed = sprintSpeed;
@@ -225,6 +236,7 @@ public class PlayerMovement : MonoBehaviour
 
     public Vector3 GetSlopeMoveDirection(Vector3 direction)
     {
+        Debug.Log(slopeHit.normal);
         return Vector3.ProjectOnPlane(direction, slopeHit.normal).normalized;
     }
 

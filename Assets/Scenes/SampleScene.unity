@@ -1952,6 +1952,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7310586098510288400, guid: f48709f19e31ab546a21adb61552454b, type: 3}
+      propertyPath: slopeGroundCheckDistance
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 7858655692519997452, guid: f48709f19e31ab546a21adb61552454b, type: 3}
       propertyPath: m_Name
       value: Player
