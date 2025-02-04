@@ -276,9 +276,9 @@ public class PlayerMovement : MonoBehaviour
         float displacementY = endPoint.y - startPoint.y;
         Vector3 displacementXZ = new Vector3(endPoint.x - startPoint.x, 0f, endPoint.z - startPoint.z);
 
-        Vector3 velocityY = Vector3.up * Mathf.Sqrt(-2f * gravity * trajectoryHeight);
-        Vector3 velocityXZ = displacementXZ / (Mathf.Sqrt(-2f * trajectoryHeight / gravity)
-            + Mathf.Sqrt(2 * (displacementY - trajectoryHeight) / gravity));
+        Vector3 velocityY = Vector3.up * Mathf.Sqrt(-4f * gravity * trajectoryHeight);
+        Vector3 velocityXZ = displacementXZ / (Mathf.Sqrt(-4f * trajectoryHeight / gravity)
+            + Mathf.Sqrt(4 * (displacementY - trajectoryHeight) / gravity));
 
         return velocityXZ + velocityY;
     }
