@@ -1440,8 +1440,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65c15cfbea2380746815675f70eee5fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  pm: {fileID: 0}
 --- !u!4 &800553114
 Transform:
   m_ObjectHideFlags: 0
@@ -11646,6 +11644,9 @@ MonoBehaviour:
   whatIsGrappleable:
     serializedVersion: 2
     m_Bits: 64
+  grappableGround:
+    serializedVersion: 2
+    m_Bits: 8
   lr: {fileID: 1176057252}
   maxGrappleDistance: 25
   grappleDelayTime: 0.25

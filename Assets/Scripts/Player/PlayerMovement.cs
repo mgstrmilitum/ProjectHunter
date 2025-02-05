@@ -181,15 +181,18 @@ public class PlayerMovement : MonoBehaviour
     private void MovePlayer()
     {
         if (activeGrapple) return;
-        moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
+        //review cross products so this makes sense
+        moveDirection = orientation.forward * horizontalInput + orientation.right * verticalInput;
+        moveDirection = Vector3.Cross(slopeHit.normal,-moveDirection);
 
-        if (OnSlope() && !exitingSlope)
-        {
-            rb.AddForce(GetSlopeMoveDirection(moveDirection) * moveSpeed, ForceMode.Force);
+        //if (OnSlope() && !exitingSlope)
+        //{
+        //    //cross product stuff here OR overhaul GetSlopeMoveDirection funciton
+        //    rb.AddForce(GetSlopeMoveDirection(moveDirection) * moveSpeed, ForceMode.Force);
 
-            if (rb.linearVelocity.y > 0)
-                rb.AddForce(Vector3.down, ForceMode.Force);
-        }
+        //    if (rb.linearVelocity.y > 0)
+        //        rb.AddForce(Vector3.down, ForceMode.Force);
+        //}
 
         if (grounded)
             rb.AddForce(moveDirection * moveSpeed * 10f, ForceMode.Force);
@@ -266,7 +269,6 @@ public class PlayerMovement : MonoBehaviour
 
     public Vector3 GetSlopeMoveDirection(Vector3 direction)
     {
-        Debug.Log(slopeHit.normal);
         return Vector3.ProjectOnPlane(direction, slopeHit.normal).normalized;
     }
 
