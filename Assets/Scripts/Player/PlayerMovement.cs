@@ -182,7 +182,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (activeGrapple) return;
         //review cross products so this makes sense
-        moveDirection = orientation.forward * horizontalInput + orientation.right * verticalInput;
+        moveDirection = orientation.forward * -horizontalInput + orientation.right * verticalInput;
         moveDirection = Vector3.Cross(slopeHit.normal,-moveDirection);
 
         //if (OnSlope() && !exitingSlope)
