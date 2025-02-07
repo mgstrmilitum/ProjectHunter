@@ -1,5 +1,7 @@
 using System.Linq.Expressions;  
 using UnityEngine;
+using System.Collections;
+
 
 public class Grappling : MonoBehaviour
 {
@@ -10,40 +12,77 @@ public class Grappling : MonoBehaviour
     public LayerMask whatIsGrappleable;
     public LayerMask grappableGround;
     public LineRenderer lr;
+    public Rigidbody rb;
 
     [Header("Grappling")]
     public float maxGrappleDistance;
-    public float grappleDelayTime;
+    public float grappleDelayTime = 0.5f;
     public float overshootYAxis;
+    public float grapplePullSpeed = 100f;
+    [SerializeField] private float maxGrappleSpeed = 10f; // Add this line
+    [SerializeField] private float grappleSpeed = 10f;
+
+
+    //public float grappleStopDistance = 1.5f;
     private Vector3 grapplePoint;
 
     [Header("Cooldown")]
-    public float grappleCooldown; //time between grappling intervals
+    public float grappleCooldown;
     private float grapplingCooldownTimer;
 
     [Header("Input")]
-    public KeyCode GrappleKey = KeyCode.Mouse1;
+    public KeyCode GrappleKey = KeyCode.Mouse0;
 
     private bool grappling;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        rb = GetComponent<Rigidbody>();
+        pm = GetComponent<PlayerMovement>();
         lr.enabled = false;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (grappling)
+        {
+            // Convert transform.position to Vector2 for 2D operations (player's current position)
+            Vector2 playerPosition = (Vector2)transform.position;
+
+            // Convert grapplePoint to Vector3 (needed for direction calculation)
+            Vector3 grapplePoint3D = new Vector3(grapplePoint.x, grapplePoint.y, transform.position.z);
+
+            // Calculate the direction to the grapple point
+            Vector2 direction = (grapplePoint3D - transform.position).normalized;
+            float distance = Vector2.Distance(grapplePoint, playerPosition);
+
+            // Stop pulling if the player is close enough to the grapple point
+            if (distance > 0.5f)  // Adjust this value as needed for your game
+            {
+                rb.velocity = direction * grappleSpeed;
+            }
+            else
+            {
+                // Stop pulling when close to the destination but stay at the point
+                rb.velocity = Vector3.zero; // Stop the movement
+                // The player stays at the grapple point when close enough, unless they release the button
+            }
+        }
+
+        // Start the grapple when the button is pressed
         if (Input.GetKeyDown(GrappleKey))
             StartGrapple();
 
-        if(Input.GetKeyUp(GrappleKey))
+        // Stop grapple if button is released
+        if (Input.GetKeyUp(GrappleKey))
             StopGrapple();
 
-        if(grapplingCooldownTimer > 0f)
+        // Handle cooldown timer (if needed)
+        if (grapplingCooldownTimer > 0f)
             grapplingCooldownTimer -= Time.deltaTime;
-    } 
+    }
 
     void LateUpdate()
     {
@@ -53,12 +92,13 @@ public class Grappling : MonoBehaviour
 
     private void StartGrapple()
     {
-        pm.freeze = true;
 
         if (grapplingCooldownTimer > 0f)
-            return;
-
+        {
+              return;
+        }
         grappling = true;
+        pm.freeze = true;
 
         RaycastHit hit;
         if(Physics.Raycast(cam.position, cam.forward, out hit, maxGrappleDistance, whatIsGrappleable) || Physics.Raycast(cam.position, cam.forward, out hit, maxGrappleDistance, grappableGround))
@@ -70,38 +110,35 @@ public class Grappling : MonoBehaviour
 
         else
         {
-            grapplePoint = cam.position + cam.forward * maxGrappleDistance;
-            
-            Invoke(nameof(StopGrapple), grappleDelayTime);
-        }
+        grapplePoint = cam.position + cam.forward * maxGrappleDistance;
+        Invoke(nameof(StopGrapple), grappleDelayTime);
 
+        }
         lr.enabled = true;
-        lr.SetPosition(1, grapplePoint);
+        lr.SetPosition(1,grapplePoint);
     }
 
     private void ExecuteGrapple()
     {
-        pm.freeze = false;
+        pm.freeze = false;  // Unfreeze player movement
 
-        Vector3 lowestPoint = new Vector3(transform.position.x, transform.position.y - 1f, transform.position.z);
+        // Ensure the player is pulled toward the grapple point
+        Vector3 directionToGrapple = grapplePoint - transform.position;
+        directionToGrapple.Normalize();
+        rb.velocity = directionToGrapple * grapplePullSpeed;
 
-        float grapplePointRelativeYPos = grapplePoint.y - lowestPoint.y;
-        float highestPointOnArc = grapplePointRelativeYPos + overshootYAxis;
-
-        if(grapplePointRelativeYPos < 0f) highestPointOnArc = overshootYAxis;
-
-        pm.JumpToPosition(grapplePoint, highestPointOnArc);
-
-        Invoke(nameof(StopGrapple), 2f);
+        // If the player is close enough to the grapple point, stop grappling
+        if (Vector3.Distance(transform.position, grapplePoint) < 1.5f)
+        {
+            StopGrapple();
+        }
     }
 
-    private void StopGrapple()
+    public void StopGrapple()
     {
-        pm.freeze = false;
-        grappling = false;
-        pm.activeGrapple = false;
-        grapplingCooldownTimer = grappleCooldown;
-
-        lr.enabled = false;
+        pm.freeze = false;  // Unfreeze the player
+        grappling = false;  // Disable grappling
+        grapplingCooldownTimer = grappleCooldown;  // Start cooldown timer
+        lr.enabled = false;  // Disable line renderer
     }
 }

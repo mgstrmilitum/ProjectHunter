@@ -11648,11 +11648,15 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   lr: {fileID: 1176057252}
+  rb: {fileID: 0}
   maxGrappleDistance: 25
   grappleDelayTime: 0.25
-  overshootYAxis: 5
-  grappleCooldown: 1
-  GrappleKey: 324
+  overshootYAxis: 100
+  grapplePullSpeed: 15
+  maxGrappleSpeed: 10
+  grappleSpeed: 10
+  grappleCooldown: 0.5
+  GrappleKey: 323
 --- !u!114 &1391753863 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7310586098510288400, guid: f48709f19e31ab546a21adb61552454b, type: 3}
