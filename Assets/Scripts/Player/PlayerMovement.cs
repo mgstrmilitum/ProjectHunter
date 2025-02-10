@@ -29,13 +29,14 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Climb")]
     public bool freeze;
+    public bool climbing;
 
     [Header("Ground Check")]
     public float playerHeight;
     public float groundCheckDistance;
     public float groundDrag;
     public LayerMask whatIsGround;
-    bool grounded;
+    public bool grounded;
 
     [Header("Slope Handling")]
     public float maxSlopeAngle;
@@ -46,6 +47,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Keybinds")]
     public KeyCode JumpKey = KeyCode.Space;
     public KeyCode SprintKey = KeyCode.LeftShift;
+    public KeyCode GrabKey = KeyCode.E;
     //public KeyCode CrouchKey = KeyCode.LeftControl;
 
     [Header("Camera Effects")]
@@ -60,9 +62,13 @@ public class PlayerMovement : MonoBehaviour
     Vector3 moveDirection;
     [SerializeField] Rigidbody rb;
 
+    public bool restricted;
+    public PlayerStats stats;
+
     public enum MovementState
     {
         Freeze,
+        Climbing,
         Walking,
         Sprinting,
         Crouching,
@@ -70,9 +76,20 @@ public class PlayerMovement : MonoBehaviour
         Air
     }
 
+    public struct PlayerStats
+    {
+        public int health;
+        public int maxHealth;
+        public int mana;
+        public int maxMana;
+        public int stamina;
+        public int maxStamina;
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        restricted = false;
         exitingSlope = false;
         rb.freezeRotation = true;
         readyToJump = true;
@@ -82,7 +99,6 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(grounded);
         //ground check
         grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + groundCheckDistance, whatIsGround);
         MyInput();
@@ -112,6 +128,10 @@ public class PlayerMovement : MonoBehaviour
             state = MovementState.Freeze;
             moveSpeed = 0f;
             rb.linearVelocity = Vector3.zero;
+        }
+        else if(Input.GetKey(GrabKey))
+        {
+            state = MovementState.Climbing;
         }
         else if (grounded && Input.GetKey(SprintKey))
         {
@@ -180,6 +200,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void MovePlayer()
     {
+        if (restricted) return;
         if (activeGrapple) return;
         //review cross products so this makes sense
         moveDirection = orientation.forward * -horizontalInput + orientation.right * verticalInput;

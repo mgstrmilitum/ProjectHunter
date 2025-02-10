@@ -56,7 +56,7 @@ Transform:
   m_GameObject: {fileID: 4966038553932515829}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.419, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -156,7 +156,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5866911674439846828}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: e5728a5c558b1d546880863d7d2ec9c5, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -184,6 +184,7 @@ GameObject:
   - component: {fileID: 7310586098510288400}
   - component: {fileID: 6432936056326085912}
   - component: {fileID: 5942106302019566522}
+  - component: {fileID: 3076787208495081520}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -230,18 +231,22 @@ MonoBehaviour:
   jumpForce: 20
   jumpCooldown: 0.25
   airMultiplier: 0.6
+  freeze: 0
   playerHeight: 2
   groundCheckDistance: 0.2
   groundDrag: 1
   whatIsGround:
     serializedVersion: 2
     m_Bits: 8
-  maxSlopeAngle: 40
+  maxSlopeAngle: 46
   slopeGroundCheckDistance: 0.3
   JumpKey: 32
   SprintKey: 304
+  playerCam: {fileID: 0}
+  grappleFOV: 0
   orientation: {fileID: 2273071279323782057}
   state: 0
+  activeGrapple: 0
   rb: {fileID: 6432936056326085912}
 --- !u!54 &6432936056326085912
 Rigidbody:
@@ -290,3 +295,30 @@ MonoBehaviour:
   slideForce: 200
   slideYScale: 0.5
   SlideKey: 306
+--- !u!114 &3076787208495081520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7858655692519997452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8428ea8438c980b459d6868263fb3adc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pm: {fileID: 7310586098510288400}
+  cam: {fileID: 0}
+  gunTip: {fileID: 0}
+  whatIsGrappleable:
+    serializedVersion: 2
+    m_Bits: 64
+  grappableGround:
+    serializedVersion: 2
+    m_Bits: 8
+  lr: {fileID: 0}
+  maxGrappleDistance: 25
+  grappleDelayTime: 0.25
+  overshootYAxis: 5
+  grappleCooldown: 1
+  GrappleKey: 324

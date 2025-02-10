@@ -53,7 +53,8 @@ public class Grappling : MonoBehaviour
 
     private void StartGrapple()
     {
-        pm.freeze = true;
+        if(pm.grounded)
+            pm.freeze = true;
 
         if (grapplingCooldownTimer > 0f)
             return;
