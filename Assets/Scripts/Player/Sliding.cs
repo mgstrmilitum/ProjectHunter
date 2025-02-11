@@ -12,6 +12,7 @@ public class Sliding : MonoBehaviour
     [Header("Sliding")]
     public float maxSlideTime;
     public float slideForce;
+    public float walkSlideForce;
     float slideTimer;
 
     public float slideYScale;
@@ -68,7 +69,10 @@ public class Sliding : MonoBehaviour
 
         if (!pm.OnSlope() || rb.linearVelocity.y > -.01f)
         {
-            rb.AddForce(inputDirection.normalized * slideForce, ForceMode.Force);
+            if(pm.state == PlayerMovement.MovementState.Sprinting)
+                rb.AddForce(inputDirection.normalized * slideForce, ForceMode.Force);
+            else if(pm.state == PlayerMovement.MovementState.Walking)
+                rb.AddForce(inputDirection.normalized * walkSlideForce, ForceMode.Force);
 
             slideTimer -= Time.deltaTime;
         }
