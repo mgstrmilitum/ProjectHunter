@@ -88,7 +88,7 @@ public class WallGrabbing : MonoBehaviour
 
         if (!ledgeDetected) return;
 
-        float distanceToLedge = Vector3.Distance(transform.position, ledgeHit.transform.position);
+        float distanceToLedge = Vector3.Distance(transform.position, ledgeHit.point);
 
         //if (ledgeHit.transform == lastLedge) return;
 
@@ -114,8 +114,8 @@ public class WallGrabbing : MonoBehaviour
     {
         rb.useGravity = false;
 
-        Vector3 directionToLedge = currLedge.position - transform.position;
-        float distanceToLedge = Vector3.Distance(transform.position, currLedge.position);
+        Vector3 directionToLedge = ledgeHit.point - transform.position;
+        float distanceToLedge = Vector3.Distance(transform.position, ledgeHit.point);
 
         if (distanceToLedge > 1f)
         {
