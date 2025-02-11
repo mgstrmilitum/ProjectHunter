@@ -1,7 +1,5 @@
-using System.Linq.Expressions;
+using System.Linq.Expressions;  
 using UnityEngine;
-using System.Collections;
-
 
 public class Grappling : MonoBehaviour
 {
@@ -12,39 +10,25 @@ public class Grappling : MonoBehaviour
     public LayerMask whatIsGrappleable;
     public LayerMask grappableGround;
     public LineRenderer lr;
-    public Rigidbody rb;
 
     [Header("Grappling")]
     public float maxGrappleDistance;
-    public float grappleDelayTime = 0.5f;
+    public float grappleDelayTime;
     public float overshootYAxis;
-    public float grapplePullSpeed = 100f;
-    [SerializeField] private float maxGrappleSpeed = 10f; // Add this line
-    [SerializeField] private float grappleSpeed = 10f;
-
-
-    private bool isGrappledAtTarget = false;
-    private float grappleTimer = 0f;
-    private float maxGrappleTime = 3f;  // 3 seconds to stay at the grapple point
-
-
-    //public float grappleStopDistance = 1.5f;
     private Vector3 grapplePoint;
 
     [Header("Cooldown")]
-    public float grappleCooldown;
+    public float grappleCooldown; //time between grappling intervals
     private float grapplingCooldownTimer;
 
     [Header("Input")]
-    public KeyCode GrappleKey = KeyCode.Mouse0;
+    public KeyCode GrappleKey = KeyCode.Mouse1;
 
     private bool grappling;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
-        pm = GetComponent<PlayerMovement>();
         lr.enabled = false;
     }
 
@@ -52,62 +36,42 @@ public class Grappling : MonoBehaviour
     void Update()
     {
         if (Input.GetKeyDown(GrappleKey))
-        {
             StartGrapple();
-        }
 
-        if (Input.GetKeyUp(GrappleKey))
-        {
+        if(Input.GetKeyUp(GrappleKey))
             StopGrapple();
-        }
 
-        if (grappling)
-        {
-            lr.SetPosition(0, gunTip.position);
-            lr.SetPosition(1, grapplePoint);
-
-            // The movement logic is now handled by the coroutine, so no need to call PullTowardsGrapplePoint here.
-        }
-
-        if (grapplingCooldownTimer > 0)
-        {
+        if(grapplingCooldownTimer > 0f)
             grapplingCooldownTimer -= Time.deltaTime;
-        }
-    }
+    } 
 
     void LateUpdate()
     {
-        if (grappling)
-        {
+        if(grappling)
             lr.SetPosition(0, gunTip.position);
-            lr.SetPosition(1, grapplePoint);
-        }
-
     }
 
     private void StartGrapple()
     {
-
-        if (grapplingCooldownTimer > 0f)
-        {
-            Debug.Log("Grapple on cooldown!");
-            return;
-        }
-        grappling = true;
         pm.freeze = true;
 
+        if (grapplingCooldownTimer > 0f)
+            return;
+
+        grappling = true;
+
         RaycastHit hit;
-        if (Physics.Raycast(cam.position, cam.forward, out hit, maxGrappleDistance, whatIsGrappleable) ||
-            Physics.Raycast(cam.position, cam.forward, out hit, maxGrappleDistance, grappableGround))
+        if(Physics.Raycast(cam.position, cam.forward, out hit, maxGrappleDistance, whatIsGrappleable) || Physics.Raycast(cam.position, cam.forward, out hit, maxGrappleDistance, grappableGround))
         {
             grapplePoint = hit.point;
-            Debug.Log("Grapple hit detected at: " + grapplePoint);
+
             Invoke(nameof(ExecuteGrapple), grappleDelayTime);
         }
+
         else
         {
-            Debug.Log("No grapple hit detected!");
             grapplePoint = cam.position + cam.forward * maxGrappleDistance;
+            
             Invoke(nameof(StopGrapple), grappleDelayTime);
         }
 
@@ -119,28 +83,28 @@ public class Grappling : MonoBehaviour
     {
         pm.freeze = false;
 
-        if (!grappling)
-        {
-            Debug.Log("ExecuteGrapple called but grappling is false!");
-            return;
-        }
+        Vector3 lowestPoint = new Vector3(transform.position.x, transform.position.y - 1f, transform.position.z);
 
-        Debug.Log("Grapple executed, pulling towards: " + grapplePoint);
+        float grapplePointRelativeYPos = grapplePoint.y - lowestPoint.y;
+        float highestPointOnArc = grapplePointRelativeYPos + overshootYAxis;
 
-        // Start refined movement control immediately
-        StartCoroutine(GrappleMovement());
+        if(grapplePointRelativeYPos < 0f) highestPointOnArc = overshootYAxis;
 
+        pm.JumpToPosition(grapplePoint, highestPointOnArc);
+
+        Invoke(nameof(StopGrapple), 2f);
     }
 
-    public void StopGrapple()
+    private void StopGrapple()
     {
         pm.freeze = false;
         grappling = false;
+        pm.activeGrapple = false;
         grapplingCooldownTimer = grappleCooldown;
-        lr.enabled = false;
 
-        //StartCoroutine(SlowStop()); // Gradually stop movement
+        lr.enabled = false;
     }
+<<<<<<< HEAD
 
 
     //private void PullTowardsGrapplePoint()
@@ -224,3 +188,6 @@ public class Grappling : MonoBehaviour
 
 
 }
+=======
+}
+>>>>>>> parent of ecf7c9b (Merging w dev)

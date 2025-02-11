@@ -184,7 +184,7 @@ GameObject:
   - component: {fileID: 7310586098510288400}
   - component: {fileID: 6432936056326085912}
   - component: {fileID: 5942106302019566522}
-  - component: {fileID: 3076787208495081520}
+  - component: {fileID: 6653295252274629724}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -295,7 +295,7 @@ MonoBehaviour:
   slideForce: 200
   slideYScale: 0.5
   SlideKey: 306
---- !u!114 &3076787208495081520
+--- !u!114 &6653295252274629724
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
