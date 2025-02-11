@@ -179,7 +179,7 @@ public class Grappling : MonoBehaviour
         while (Time.time - grappleStartTime < maxGrappleDuration)
         {
             Vector3 direction = (grapplePoint - transform.position).normalized;
-            rb.velocity = direction * grappleSpeed;
+            rb.linearVelocity = direction * grappleSpeed;
 
             if (Vector3.Distance(transform.position, grapplePoint) <= stopDistance)
             {
@@ -193,7 +193,7 @@ public class Grappling : MonoBehaviour
         if (hasReachedPoint)
         {
             // The player reached the point and should anchor
-            rb.velocity = Vector3.zero;
+            rb.linearVelocity = Vector3.zero;
             transform.parent = grappleAnchor.transform;
             rb.isKinematic = true;
 
