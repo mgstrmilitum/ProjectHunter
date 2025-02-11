@@ -13,7 +13,17 @@ public class WallGrabbing : MonoBehaviour
     public float moveToLedgeSpeed;
     public float maxLedgeGrabDistance;
     public float minTimeOnLedge;
-    public KeyCode GrabKey = KeyCode.E;
+    public KeyCode GrabKey = KeyCode.C;
+
+    [Header("Wall Jumping")]
+    public KeyCode JumpKey = KeyCode.Space;
+    public float ledgeJumpForwardForce;
+    public float ledgeJumpUpwardForce;
+
+    [Header("Exiting")]
+    public bool exitingLedge;
+    public float exitLedgeTime;
+    private float exitLedgeTimer;
 
     private float timeOnLedge;
     public bool holding;
@@ -50,7 +60,26 @@ public class WallGrabbing : MonoBehaviour
             //update this functionality to deal with new button functionality
             //ie, wall grab will be broken by a toggled button OR a jump
             if(timeOnLedge > minTimeOnLedge && Input.GetKeyDown(GrabKey)) ExitWallGrab();
+
+            if (Input.GetKeyDown(JumpKey)) WallJump();
         }
+        else if(exitingLedge)
+        {
+            if (exitLedgeTimer > 0f) exitLedgeTimer -= Time.deltaTime;
+            else exitingLedge = false;
+        }
+    }
+
+    private void WallJump()
+    {
+        ExitWallGrab();
+
+        float horizontalInput = Input.GetAxisRaw("Horizontal");
+        float verticalInput = Input.GetAxisRaw("Vertical");
+        //Vector3 forceToAdd = new Vector3(horizontalInput * ledgeJumpForwardForce, )
+        Vector3 forceToAdd = cam.forward * ledgeJumpForwardForce + cam.up * ledgeJumpUpwardForce;
+        rb.linearVelocity = Vector3.zero;
+        rb.AddForce(forceToAdd, ForceMode.Impulse);
     }
 
     private void LedgeDetection()
@@ -64,6 +93,8 @@ public class WallGrabbing : MonoBehaviour
         //if (ledgeHit.transform == lastLedge) return;
 
         if (distanceToLedge < maxLedgeGrabDistance && !holding && Input.GetKeyDown(GrabKey)) EnterWallGrab();
+
+        if (Input.GetKeyDown(JumpKey)) WallJump();
     }
 
     private void EnterWallGrab()
@@ -99,8 +130,11 @@ public class WallGrabbing : MonoBehaviour
 
         if(distanceToLedge > maxLedgeGrabDistance) ExitWallGrab();
     }
-    private void ExitWallGrab()
+    public void ExitWallGrab()
     {
+        exitingLedge = true;
+        exitLedgeTimer = exitLedgeTime;
+
         holding = false;
         pm.restricted = false;
         timeOnLedge = 0f;
@@ -109,7 +143,7 @@ public class WallGrabbing : MonoBehaviour
         rb.useGravity = true;
 
         StopAllCoroutines();
-        Invoke(nameof(ResetLastLedge), 1f);
+        Invoke(nameof(ResetLastLedge), 0f);
     }
 
     private void ResetLastLedge()

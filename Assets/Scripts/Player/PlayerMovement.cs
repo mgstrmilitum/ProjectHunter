@@ -219,7 +219,7 @@ public class PlayerMovement : MonoBehaviour
             rb.AddForce(moveDirection * moveSpeed * 10f, ForceMode.Force);
 
         else if (!grounded)
-            rb.AddForce(moveDirection * moveSpeed * airMultiplier * 10f, ForceMode.Force);
+            rb.AddForce(moveDirection * moveSpeed * 10f, ForceMode.Force);
 
         rb.useGravity = !OnSlope();
     }

@@ -5,6 +5,7 @@ public class Grappling : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private PlayerMovement pm;
+    [SerializeField] private WallGrabbing wallGrab;
     public Transform cam;
     public Transform gunTip;
     public LayerMask whatIsGrappleable;
@@ -82,6 +83,8 @@ public class Grappling : MonoBehaviour
 
     private void ExecuteGrapple()
     {
+        if (wallGrab.holding)
+            wallGrab.ExitWallGrab();
         pm.freeze = false;
 
         Vector3 lowestPoint = new Vector3(transform.position.x, transform.position.y - 1f, transform.position.z);
