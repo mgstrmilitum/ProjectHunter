@@ -1,4 +1,4 @@
-using System.Linq.Expressions;  
+using System.Linq.Expressions;
 using UnityEngine;
 using System.Collections;
 
@@ -139,7 +139,7 @@ public class Grappling : MonoBehaviour
         grapplingCooldownTimer = grappleCooldown;
         lr.enabled = false;
 
-        StartCoroutine(SlowStop()); // Gradually stop movement
+        //StartCoroutine(SlowStop()); // Gradually stop movement
     }
 
 
@@ -167,45 +167,58 @@ public class Grappling : MonoBehaviour
 
     private IEnumerator GrappleMovement()
     {
-        float startTime = Time.time;
-        float maxDuration = 2f; // Max time the grapple can pull
         float stopDistance = 1.0f; // Distance before stopping
+        float maxGrappleDuration = 1.5f; // Max time allowed to reach the point
+        float grappleStartTime = Time.time;
 
-        // Move towards the grapple point
-        while (Vector3.Distance(transform.position, grapplePoint) > stopDistance)
+        GameObject grappleAnchor = new GameObject("GrappleAnchor");
+        grappleAnchor.transform.position = grapplePoint;
+
+        bool hasReachedPoint = false;
+
+        while (Time.time - grappleStartTime < maxGrappleDuration)
         {
             Vector3 direction = (grapplePoint - transform.position).normalized;
-            rb.velocity = direction * grappleSpeed;  // Constant movement
+            rb.velocity = direction * grappleSpeed;
 
-            // Check if the player is close enough to the grapple point
             if (Vector3.Distance(transform.position, grapplePoint) <= stopDistance)
             {
-                // Once close, start the timer
-                if (grappleTimer == 0f)
-                {
-                    grappleTimer = Time.time; // Start the timer as soon as close enough
-                }
-            }
-
-            // Stop the timer if the player reaches the target
-            if (grappleTimer > 0f && Time.time - grappleTimer >= maxGrappleTime)
-            {
-                StopGrapple();
+                hasReachedPoint = true;
                 break;
             }
 
-            yield return null; // Wait for next frame
+            yield return null;
         }
 
-        // Once close to the grapple point, stop the movement
-        StopGrapple(); // Stop when close enough
+        if (hasReachedPoint)
+        {
+            // The player reached the point and should anchor
+            rb.velocity = Vector3.zero;
+            transform.parent = grappleAnchor.transform;
+            rb.isKinematic = true;
+
+            // Check for ceilings and adjust positioning
+            RaycastHit ceilingCheck;
+            if (Physics.Raycast(transform.position, Vector3.up, out ceilingCheck, 1.5f, whatIsGrappleable))
+            {
+                transform.position = ceilingCheck.point - Vector3.up * 0.5f;
+            }
+
+            yield return new WaitForSeconds(maxGrappleTime);
+        }
+
+        // Cleanup regardless of reaching or not
+        transform.parent = null;
+        rb.isKinematic = false;
+        Destroy(grappleAnchor);
+        StopGrapple();
     }
 
-    private IEnumerator SlowStop()
-    {
-        while (rb)
-        rb.velocity = Vector3.zero; // Fully stop at the end
-    }
+    //private IEnumerator SlowStop()
+    //{
+    //    while (rb)
+    //    rb.velocity = Vector3.zero; // Fully stop at the end
+    //}
 
 
 
