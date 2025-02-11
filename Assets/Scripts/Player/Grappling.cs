@@ -175,7 +175,7 @@ public class Grappling : MonoBehaviour
         while (Vector3.Distance(transform.position, grapplePoint) > stopDistance)
         {
             Vector3 direction = (grapplePoint - transform.position).normalized;
-            rb.velocity = direction * grappleSpeed;  // Constant movement
+            rb.linearVelocity = direction * grappleSpeed;  // Constant movement
 
             // Check if the player is close enough to the grapple point
             if (Vector3.Distance(transform.position, grapplePoint) <= stopDistance)
@@ -204,7 +204,9 @@ public class Grappling : MonoBehaviour
     private IEnumerator SlowStop()
     {
         while (rb)
-        rb.velocity = Vector3.zero; // Fully stop at the end
+        rb.linearVelocity = Vector3.zero; // Fully stop at the end
+
+        yield return null;
     }
 
 
