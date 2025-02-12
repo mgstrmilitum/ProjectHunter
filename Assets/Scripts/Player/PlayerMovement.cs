@@ -29,13 +29,14 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Climb")]
     public bool freeze;
+    public bool climbing;
 
     [Header("Ground Check")]
     public float playerHeight;
     public float groundCheckDistance;
     public float groundDrag;
     public LayerMask whatIsGround;
-    bool grounded;
+    public bool grounded;
 
     [Header("Slope Handling")]
     public float maxSlopeAngle;
@@ -60,6 +61,11 @@ public class PlayerMovement : MonoBehaviour
     Vector3 moveDirection;
     [SerializeField] Rigidbody rb;
 
+    private bool enableMovementOnNextTouch;
+    public bool restricted;
+
+    public Difficulty difficulty;
+
     public enum MovementState
     {
         Freeze,
@@ -82,7 +88,6 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(grounded);
         //ground check
         grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + groundCheckDistance, whatIsGround);
         MyInput();
@@ -99,6 +104,8 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         MovePlayer();
+
+        Debug.Log(rb.linearVelocity.y);
     }
 
     private void OnCollisionEnter(Collision collision)
