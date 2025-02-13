@@ -41,7 +41,7 @@ public class PlayerMovement : MonoBehaviour
     public bool grounded;
 
     [Header("Camera Lean")]
-    public Transform leanPivot;
+    //public Transform leanPivot;
     public float currentLean;
     public float targetLean;
     public float leanAngle;
@@ -54,6 +54,7 @@ public class PlayerMovement : MonoBehaviour
     private bool leanDown;
     private bool leanRight;
     private bool leanLeft;
+    public bool leaning;
 
     [Header("Slope Handling")]
     public float maxSlopeAngle;
@@ -69,6 +70,16 @@ public class PlayerMovement : MonoBehaviour
     [Header("Camera Effects")]
     public PlayerCamera playerCam;
     public float grappleFOV;
+
+    [Header("Audio")]
+    public AudioSource aud;
+    public AudioClip[] audSteps;
+    public float audStepsVol;
+    public AudioClip[] audHurt;
+    public float audHurtVol;
+    public AudioClip[] audJump;
+    public float audJumpVol;
+    private bool isPlayingSteps;
 
     public Transform orientation;
     public MovementState state;
@@ -96,6 +107,7 @@ public class PlayerMovement : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        isPlayingSteps = false;
         leanDown = false;
         exitingSlope = false;
         rb.freezeRotation = true;
@@ -111,7 +123,7 @@ public class PlayerMovement : MonoBehaviour
         MyInput();
         SpeedControl();
         StateHandler();
-        CalculateLean();
+
         //handle drag
         if (grounded && !activeGrapple)
             rb.linearDamping = groundDrag;
@@ -119,11 +131,13 @@ public class PlayerMovement : MonoBehaviour
             rb.angularDamping = 0f;
     }
 
+    private void LateUpdate()
+    {
+        //CalculateLean();
+    }
     private void FixedUpdate()
     {
         MovePlayer();
-
-        Debug.Log(rb.linearVelocity.y);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -221,6 +235,10 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
+        if(moveDirection.magnitude > 0.3f && !isPlayingSteps)
+        {
+            StartCoroutine(PlaySteps());
+        }
         //review cross products so this makes sense
         moveDirection = orientation.forward * -horizontalInput + orientation.right * verticalInput;
         moveDirection = Vector3.Cross(slopeHit.normal,-moveDirection);
@@ -271,6 +289,7 @@ public class PlayerMovement : MonoBehaviour
         rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
 
         rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+        aud.PlayOneShot(audJump[Random.Range(0, audJump.Length)], audJumpVol);
     }
 
     private void ResetJump()
@@ -337,9 +356,11 @@ public class PlayerMovement : MonoBehaviour
         }
         else targetLean = 0f;
 
+        leaning = leanLeft || leanRight;
+
         currentLean = Mathf.SmoothDamp(currentLean, targetLean, ref leanVelocity, leanSmoothing);
 
-        leanPivot.localRotation = Quaternion.Euler(new Vector3(0f, 0f, currentLean));
+        //leanPivot.localRotation = Quaternion.Euler(new Vector3(0f, 0f, currentLean));
     }
 
     public void JumpToPosition(Vector3 targetPosition, float trajectoryHeight)
@@ -355,7 +376,7 @@ public class PlayerMovement : MonoBehaviour
 
 
     }
-        private void SetVelocity()
+    private void SetVelocity()
     {
         enableMovementOnNextTouch = true;
         rb.linearVelocity = velocityToSet;
@@ -403,5 +424,24 @@ public class PlayerMovement : MonoBehaviour
         }
 
         moveSpeed = desiredMoveSpeed;
+    }
+
+    private IEnumerator PlaySteps()
+    {
+        isPlayingSteps = true;
+        aud.PlayOneShot(audSteps[Random.Range(0, audSteps.Length)], audStepsVol);
+        if (state != MovementState.Sprinting)
+            yield return new WaitForSeconds(0.5f);
+        else
+            yield return new WaitForSeconds(0.3f);
+
+        isPlayingSteps = false;
+    }
+
+    IEnumerator FlashDamagePanel()
+    {
+        //GameManager.Instance.damagePanel.SetActive(true);
+        yield return new WaitForSeconds(.1f);
+        //GameManager.Instance.damagePanel.SetActive(false);
     }
 }

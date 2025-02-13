@@ -178,14 +178,15 @@ public class Grappling : MonoBehaviour
 
         while (Time.time - grappleStartTime < maxGrappleDuration)
         {
-            Vector3 direction = (grapplePoint - transform.position).normalized;
-            rb.linearVelocity = direction * grappleSpeed;
-
             if (Vector3.Distance(transform.position, grapplePoint) <= stopDistance)
             {
                 hasReachedPoint = true;
                 break;
             }
+            Vector3 direction = (grapplePoint - transform.position).normalized;
+            rb.linearVelocity = direction * grappleSpeed;
+
+           
 
             yield return null;
         }
@@ -204,7 +205,7 @@ public class Grappling : MonoBehaviour
                 transform.position = ceilingCheck.point - Vector3.up * 0.5f;
             }
 
-            yield return new WaitForSeconds(maxGrappleTime);
+            //yield return new WaitForSeconds(maxGrappleTime);
         }
 
         // Cleanup regardless of reaching or not
