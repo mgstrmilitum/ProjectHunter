@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
 
     public GameObject player;
     public Player playerScript;
+    public PlayerMovement movementScript;
 
     //----Menus-----//
     public GameObject activeMenu;
@@ -28,7 +29,7 @@ public class GameManager : MonoBehaviour
 
         player = GameObject.FindWithTag("Player");
         playerScript = player.GetComponent<Player>();
-
+        movementScript = player.GetComponent<PlayerMovement>();
         Time.timeScale = 1f;
 
     }
