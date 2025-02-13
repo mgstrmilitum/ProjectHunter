@@ -11640,7 +11640,7 @@ PrefabInstance:
     - target: {fileID: 3076787208495081520, guid: f48709f19e31ab546a21adb61552454b, type: 3}
       propertyPath: rb
       value: 
-      objectReference: {fileID: 556447358}
+      objectReference: {fileID: 0}
     - target: {fileID: 3076787208495081520, guid: f48709f19e31ab546a21adb61552454b, type: 3}
       propertyPath: cam
       value: 
@@ -11652,7 +11652,7 @@ PrefabInstance:
     - target: {fileID: 3076787208495081520, guid: f48709f19e31ab546a21adb61552454b, type: 3}
       propertyPath: wallGrab
       value: 
-      objectReference: {fileID: 556447365}
+      objectReference: {fileID: 0}
     - target: {fileID: 3076787208495081520, guid: f48709f19e31ab546a21adb61552454b, type: 3}
       propertyPath: grappleCooldown
       value: 0.25
@@ -11717,6 +11717,22 @@ PrefabInstance:
       propertyPath: walkSlideForce
       value: 50
       objectReference: {fileID: 0}
+    - target: {fileID: 6653295252274629724, guid: f48709f19e31ab546a21adb61552454b, type: 3}
+      propertyPath: lr
+      value: 
+      objectReference: {fileID: 1176057252}
+    - target: {fileID: 6653295252274629724, guid: f48709f19e31ab546a21adb61552454b, type: 3}
+      propertyPath: rb
+      value: 
+      objectReference: {fileID: 1461246388}
+    - target: {fileID: 6653295252274629724, guid: f48709f19e31ab546a21adb61552454b, type: 3}
+      propertyPath: cam
+      value: 
+      objectReference: {fileID: 1440952544}
+    - target: {fileID: 6653295252274629724, guid: f48709f19e31ab546a21adb61552454b, type: 3}
+      propertyPath: gunTip
+      value: 
+      objectReference: {fileID: 1740461700}
     - target: {fileID: 7310586098510288400, guid: f48709f19e31ab546a21adb61552454b, type: 3}
       propertyPath: GrabKey
       value: 290
@@ -11735,33 +11751,13 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3154737456067588672, guid: f48709f19e31ab546a21adb61552454b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1673571606}
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 7858655692519997452, guid: f48709f19e31ab546a21adb61552454b, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 556447365}
-    - targetCorrespondingSourceObject: {fileID: 7858655692519997452, guid: f48709f19e31ab546a21adb61552454b, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1406286723}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f48709f19e31ab546a21adb61552454b, type: 3}
 --- !u!4 &1406286722 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3154737456067588672, guid: f48709f19e31ab546a21adb61552454b, type: 3}
   m_PrefabInstance: {fileID: 1406286721}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1406286723
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 556447354}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76a3e5783237a754aada4ed6ff5b3624, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shadow: {fileID: 1673571605}
-  offset: 1
 --- !u!4 &1440952544 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1840195606361900019, guid: 66d7acdc10d8c70418afb0f2de1fe45b, type: 3}
@@ -11778,6 +11774,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8f578c4ebfc1ee4c93b48241c3c2a2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!54 &1461246388 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 6432936056326085912, guid: f48709f19e31ab546a21adb61552454b, type: 3}
+  m_PrefabInstance: {fileID: 1406286721}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1510756480 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2273071279323782057, guid: f48709f19e31ab546a21adb61552454b, type: 3}

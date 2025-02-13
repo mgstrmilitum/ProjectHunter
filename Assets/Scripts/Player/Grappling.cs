@@ -10,6 +10,7 @@ public class Grappling : MonoBehaviour
     public LayerMask whatIsGrappleable;
     public LayerMask grappableGround;
     public LineRenderer lr;
+    public Rigidbody rb;
 
     [Header("Grappling")]
     public float maxGrappleDistance;
@@ -54,7 +55,7 @@ public class Grappling : MonoBehaviour
         if (Input.GetKeyDown(GrappleKey))
             StartGrapple();
 
-        if(Input.GetKeyUp(GrappleKey))
+        if (Input.GetKeyUp(GrappleKey))
             StopGrapple();
 
         if (grappling)
@@ -66,7 +67,8 @@ public class Grappling : MonoBehaviour
         if (grapplingCooldownTimer > 0)
         {
             grapplingCooldownTimer -= Time.deltaTime;
-    } 
+        }
+    }
 
     private void StartGrapple()
     {
