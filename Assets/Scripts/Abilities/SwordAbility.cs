@@ -26,7 +26,7 @@ public class SwordAbility : Ability
     {
 
 
-        attackPoint.rotation = playerRotation.rotation;
+        
         
     }
 
