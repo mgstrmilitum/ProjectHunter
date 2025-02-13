@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEngine.Rendering;
 
-public class Player : MonoBehaviour, IDamageable
+public class Player : MonoBehaviour, IDamageable, IPickable
 {
-
+    [Header("-----Player Stats-----")]
     [SerializeField] public int currentHealth,maxHealth = 100;
     [SerializeField] public int currentShield,maxShield = 100;
     bool shieldActive;
@@ -49,8 +49,9 @@ public class Player : MonoBehaviour, IDamageable
         currentHealth -= amount;
     }
 
+    public void GainHealth(int amountToGain) { currentHealth += amountToGain; if (currentHealth > maxHealth) { currentHealth = maxHealth; } }
 
-
+    public void GainShield(int amountToGain){currentShield += amountToGain;}
 
 
 

@@ -27,7 +27,6 @@ public class GameManager : MonoBehaviour
     {
         Instance = this;
 
-        player = GameObject.FindWithTag("Player");
         playerScript = player.GetComponent<Player>();
         movementScript = player.GetComponent<PlayerMovement>();
         Time.timeScale = 1f;
