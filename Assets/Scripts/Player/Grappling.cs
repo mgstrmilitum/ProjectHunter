@@ -132,6 +132,7 @@ public class Grappling : MonoBehaviour
         grappling = false;
         grapplingCooldownTimer = grappleCooldown;
         lr.enabled = false;
+        //rb.isKinematic = false;
     }
 
     private IEnumerator GrappleMovement()
@@ -177,13 +178,11 @@ public class Grappling : MonoBehaviour
         if (Input.GetKey(GrappleKey))
         {
             rb.linearVelocity = Vector3.zero;
-            transform.parent = grappleAnchor.transform;
+            //transform.parent = grappleAnchor.transform;
             rb.isKinematic = true;
 
-            yield return new WaitForSeconds(maxGrappleTime);
-
-            transform.parent = null;
-            rb.isKinematic = false;
+            //transform.parent = null;
+            //rb.isKinematic = false;
         }
 
         rb.linearVelocity = lastVelocity;
