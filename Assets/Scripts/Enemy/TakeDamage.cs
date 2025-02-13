@@ -5,5 +5,5 @@ using UnityEngine;
 
 public interface TakeDamage
 {
-    void takeDamage(int amount);
+    void takeDamage(int amount, Collider hitCollider);
 }

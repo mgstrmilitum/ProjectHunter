@@ -28,6 +28,7 @@ public class EnemyAI : MonoBehaviour, TakeDamage
     [SerializeField] int roamDistance;
     [SerializeField] float grenadeSpeed;
     [SerializeField] Transform playerTransform;
+    [SerializeField] float damageMultiplier;
 
     float angleToPlayer;
     float stoppingDistanceOrig;
@@ -67,9 +68,9 @@ public class EnemyAI : MonoBehaviour, TakeDamage
                 FaceTarget();
             }
 
-            if (CanSeePlayer() && !isShooting && enemyType != EnemyType.Melee && angleToPlayer <= shootFOV)
+            if (CanSeePlayer() )
             {
-                StartCoroutine(Shoot());
+
             }
         }
         else
@@ -95,9 +96,7 @@ public class EnemyAI : MonoBehaviour, TakeDamage
 
     bool CanSeePlayer()
     {
-       
-
-        // Fix Debug Ray Stretching and Lower Start Position
+        
         Debug.DrawRay(loweredHeadPos, playerDirection.normalized * 20f, Color.green);
 
         RaycastHit hit;
@@ -110,10 +109,13 @@ public class EnemyAI : MonoBehaviour, TakeDamage
                 {
                     FaceTarget();
                 }
+
+            
                 if (!isShooting && enemyType != EnemyType.Melee && angleToPlayer <= shootFOV)
                 {
                     StartCoroutine(Shoot());
                 }
+
                 agent.stoppingDistance = stoppingDistanceOrig;
                 return true;
             }
@@ -164,19 +166,40 @@ public class EnemyAI : MonoBehaviour, TakeDamage
         transform.rotation = Quaternion.Lerp(transform.rotation, rot, faceTargetSpeed * Time.deltaTime);
     }
 
-    public void takeDamage(int amount)
+    public void takeDamage(int amount, Collider hitCollider)
     {
-        hp -= amount;
-        agent.SetDestination(playerTransform.position);
-        if (co != null)
-        {
-            StopCoroutine(co);
-            isRoaming = false;
-        }
-        StartCoroutine(FlashRed());
-        if (hp <= 0)
-        {
-            Destroy(gameObject);
+
+        
+
+            
+
+
+            if (hitCollider.CompareTag("Head"))
+            {
+                hp -= Mathf.RoundToInt(amount * damageMultiplier);
+            }
+            else if (hitCollider.CompareTag("Enemy") || hitCollider.CompareTag("Body"))
+            {
+                hp -= Mathf.RoundToInt(amount * damageMultiplier);
+            }
+
+
+
+       
+            agent.SetDestination(playerTransform.position);
+
+            if (co != null)
+            {
+                StopCoroutine(co);
+                isRoaming = false;
+            }
+
+            StartCoroutine(FlashRed());
+
+            if (hp <= 0)
+            {
+                Destroy(gameObject);
+            }
         }
     }
-}
+
