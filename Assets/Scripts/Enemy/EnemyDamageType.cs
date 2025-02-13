@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class EnemyDamageType : MonoBehaviour  // Inherit from MonoBehaviour
+public class EnemyDamageType : MonoBehaviour// Inherit from MonoBehaviour
 {
     public enum DamageType { Bullet, Stationary }
 
@@ -36,7 +36,7 @@ public class EnemyDamageType : MonoBehaviour  // Inherit from MonoBehaviour
             TakeDamage dmg = other.GetComponent<TakeDamage>();
             if (dmg != null)
             {
-                dmg.takeDamage(damageAmount);
+                dmg.takeDamage(damageAmount, other);
                 Destroy(gameObject);
             }
         }

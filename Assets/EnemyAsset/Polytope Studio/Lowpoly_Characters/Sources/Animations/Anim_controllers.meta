@@ -1,9 +1,15 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/EnemyAsset/Polytope Studio/Lowpoly_Characters/Sources/Animations/Anim_controllers.meta
 guid: 4b56d4fa0ed597a4ca3ec42d8d4e451a
 folderAsset: yes
 timeCreated: 1527749233
 licenseType: Store
+========
+guid: 72eb3aa3ef45c9843beb1addbb6b4f34
+folderAsset: yes
+>>>>>>>> Dev:Assets/Free UI build package.meta
 DefaultImporter:
+  externalObjects: {}
   userData: 
   assetBundleName: 
   assetBundleVariant: 

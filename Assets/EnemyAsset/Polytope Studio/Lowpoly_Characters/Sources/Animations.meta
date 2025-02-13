@@ -1,9 +1,15 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/EnemyAsset/Polytope Studio/Lowpoly_Characters/Sources/Animations.meta
 guid: 733e960621c8f3a40874e28203579d9b
 folderAsset: yes
 timeCreated: 1523590852
 licenseType: Store
+========
+guid: 6cd47242bd398ec4f82c7ee948e1abd2
+folderAsset: yes
+>>>>>>>> Dev:Assets/Models.meta
 DefaultImporter:
+  externalObjects: {}
   userData: 
   assetBundleName: 
   assetBundleVariant: 

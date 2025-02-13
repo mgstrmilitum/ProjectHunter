@@ -173,7 +173,6 @@ public class EnemyAI : MonoBehaviour, TakeDamage
 
             
 
-
             if (hitCollider.CompareTag("Head"))
             {
                 hp -= Mathf.RoundToInt(amount * damageMultiplier);
