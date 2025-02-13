@@ -1,6 +1,8 @@
 using System.Collections;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -37,6 +39,21 @@ public class PlayerMovement : MonoBehaviour
     public float groundDrag;
     public LayerMask whatIsGround;
     public bool grounded;
+
+    [Header("Camera Lean")]
+    public Transform leanPivot;
+    public float currentLean;
+    public float targetLean;
+    public float leanAngle;
+    public float leanDownAngle;
+    public float leanSmoothing;
+    public float leanVelocity;
+    public KeyCode LeanLeftKey = KeyCode.Z;
+    public KeyCode LeanRightKey = KeyCode.X;
+    public KeyCode LeanDownKey = KeyCode.V;
+    private bool leanDown;
+    private bool leanRight;
+    private bool leanLeft;
 
     [Header("Slope Handling")]
     public float maxSlopeAngle;
@@ -79,6 +96,7 @@ public class PlayerMovement : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        leanDown = false;
         exitingSlope = false;
         rb.freezeRotation = true;
         readyToJump = true;
@@ -93,7 +111,7 @@ public class PlayerMovement : MonoBehaviour
         MyInput();
         SpeedControl();
         StateHandler();
-
+        CalculateLean();
         //handle drag
         if (grounded && !activeGrapple)
             rb.linearDamping = groundDrag;
@@ -265,6 +283,63 @@ public class PlayerMovement : MonoBehaviour
     {
         activeGrapple=false;
 
+    }
+
+    private void LeanLeft()
+    {
+        if(Input.GetKeyDown(LeanLeftKey))
+        {
+            leanLeft = true;
+            leanRight = false;
+        }
+        if (Input.GetKeyUp(LeanLeftKey))
+        {
+            leanLeft = false;
+            leanRight = false;
+        }
+    }
+
+    private void LeanRight()
+    {
+        if (Input.GetKeyDown(LeanRightKey))
+        {
+            leanLeft = false;
+            leanRight = true;
+        }
+        if (Input.GetKeyUp(LeanRightKey))
+        {
+            leanLeft = false;
+            leanRight = false;
+        }
+    }
+    
+    private void LeanDown()
+    {
+        //if (Input.GetKey(LeanDownKey))
+        //{
+        //    targetLean = leanDownAngle;
+        //    leanDown = true;
+        //}
+    }
+
+    private void CalculateLean()
+    {
+        LeanLeft();
+        LeanRight();
+
+        if(leanLeft)
+        {
+            targetLean = leanAngle;
+        }
+        else if(leanRight)
+        {
+            targetLean = -leanAngle;
+        }
+        else targetLean = 0f;
+
+        currentLean = Mathf.SmoothDamp(currentLean, targetLean, ref leanVelocity, leanSmoothing);
+
+        leanPivot.localRotation = Quaternion.Euler(new Vector3(0f, 0f, currentLean));
     }
 
     public void JumpToPosition(Vector3 targetPosition, float trajectoryHeight)
