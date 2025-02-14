@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 39a70a9f84898314f8a05a946ed3e627
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 19340
+  packageName: Necromancer
+  packageVersion: 1.01
+  assetPath: Assets/Necromancer/Materials/necromancer_necromant_color.mat
+  uploadId: 8407
