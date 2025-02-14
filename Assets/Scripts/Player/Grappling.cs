@@ -24,8 +24,8 @@ public class Grappling : MonoBehaviour
     public AudioSource audioSource; // Reference to the AudioSource component
     public AudioClip grappleSound;  // Sound to play when grapple is initiated
 
-    private bool isGrappledAtTarget = false;
-    private float grappleTimer = 0f;
+    //private bool isGrappledAtTarget = false;
+    //private float grappleTimer = 0f;
     private float maxGrappleTime = 3f;  // 3 seconds to stay at the grapple point
 
     private Vector3 grapplePoint;

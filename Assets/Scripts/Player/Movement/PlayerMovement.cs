@@ -105,7 +105,7 @@ public class PlayerMovement : MonoBehaviour
     {
         MovePlayer();
 
-        Debug.Log(rb.linearVelocity.y);
+        //Debug.Log(rb.linearVelocity.y);
     }
 
     private void OnCollisionEnter(Collision collision)
