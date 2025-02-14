@@ -15,6 +15,7 @@ public class Teleporter : MonoBehaviour
         
     }
 
+    // teleports the player to the teleportation location when they enter the collider
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag.Equals("Player"))

@@ -19,6 +19,7 @@ public class DisappearingObject : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // if the object is disappeared and waiting to be reappeared, starts a timer. When the timer ends, the object reappears.
         if (toBeReappeared)
         {
             if (localReappearDelay <= 0)
@@ -34,6 +35,7 @@ public class DisappearingObject : MonoBehaviour
         }
     }
 
+    // when the player enters the trigger, starts a timer. When the timer is up, disappears the object.
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag.Equals("Player"))

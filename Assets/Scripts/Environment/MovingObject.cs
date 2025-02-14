@@ -24,9 +24,13 @@ public class MovingObject : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        //moves the object back and forth
         float time = Mathf.PingPong(Time.time * speed, lengthTesting);
         transform.position = Vector3.Lerp(pointA, pointB, time);
-        if (isRotating )
+
+        //if Rotating is true, rotates the object constantly by the angle of rotation
+        if (isRotating)
         {
             transform.Rotate(0, 0, angleOfRotation * Time.deltaTime);
         }

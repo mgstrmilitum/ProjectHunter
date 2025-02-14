@@ -21,6 +21,7 @@ public class Checkpoint : MonoBehaviour
         
     }
 
+    // records player stats
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag.Equals("Player"))
