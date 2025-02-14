@@ -21,8 +21,6 @@ public abstract class Weapon : MonoBehaviour
         currentAmmo = weaponData.magazineSize;
 
         player = cameraTransform.root.GetComponent<Player>();
-       
-
     }
 
     public void TryReload()
@@ -64,7 +62,7 @@ public abstract class Weapon : MonoBehaviour
 
         if(Time.deltaTime >= nextTimeToFire) 
         {
-        nextTimeToFire = Time.deltaTime +(1/ weaponData.fireRate);//Time to fire is equal to the current time plus 1 divided by the fire rate so the weapon will fire bullets per second equal to the fire rate 
+        nextTimeToFire = Time.deltaTime +( 1/ weaponData.fireRate );//Time to fire is equal to the current time plus 1 divided by the fire rate so the weapon will fire bullets per second equal to the fire rate 
             HandleShoot();
         }
 
