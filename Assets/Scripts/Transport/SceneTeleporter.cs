@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Teleporter : MonoBehaviour
+public class SceneTeleporter : MonoBehaviour
 {
     public string destinationSceneName; // Changed from Object to string
     public string destSpawnName;
