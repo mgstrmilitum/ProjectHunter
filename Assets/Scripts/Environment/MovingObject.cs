@@ -5,10 +5,13 @@ public class MovingObject : MonoBehaviour
 {
 
     [SerializeField] float speed;
-    [SerializeField] Transform targetPos;
+    [SerializeField] Vector3 targetPos;
+    [SerializeField] Vector3 targetRot;
+    [SerializeField] Vector3 targetSca;
     [SerializeField] float lengthTesting;
-    [SerializeField] int angleOfRotation;
+    [SerializeField] bool isMoving;
     [SerializeField] bool isRotating;
+    [SerializeField] bool isGrowing;
     Vector3 pointA;
     Vector3 pointB;
 
@@ -18,7 +21,7 @@ public class MovingObject : MonoBehaviour
     void Start()
     {
         pointA = transform.position;
-        pointB = targetPos.position;
+        pointB = targetPos;
     }
 
     // Update is called once per frame
@@ -26,13 +29,21 @@ public class MovingObject : MonoBehaviour
     {
 
         //moves the object back and forth
-        float time = Mathf.PingPong(Time.time * speed, lengthTesting);
-        transform.position = Vector3.Lerp(pointA, pointB, time);
+        if (isMoving)
+        {
+            float time = Mathf.PingPong(Time.time * speed, lengthTesting);
+            transform.position = Vector3.Lerp(pointA, pointB, time);
+        }
 
         //if Rotating is true, rotates the object constantly by the angle of rotation
         if (isRotating)
         {
-            transform.Rotate(0, 0, angleOfRotation * Time.deltaTime);
+            transform.Rotate(targetRot.x * Time.deltaTime, targetRot.y * Time.deltaTime, targetRot.z * Time.deltaTime);
+        }
+
+        if (isGrowing)
+        {
+            transform.localScale += targetSca * Time.deltaTime;
         }
     }
 }
