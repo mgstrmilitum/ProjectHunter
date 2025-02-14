@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 6cd4a681135ebf94b87e174fd29ecc08
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 19340
+  packageName: Necromancer
+  packageVersion: 1.01
+  assetPath: Assets/Necromancer/Prefab/Pedestal.prefab
+  uploadId: 8407

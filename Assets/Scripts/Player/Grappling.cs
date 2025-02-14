@@ -132,6 +132,7 @@ public class Grappling : MonoBehaviour
         grappling = false;
         grapplingCooldownTimer = grappleCooldown;
         lr.enabled = false;
+        //rb.isKinematic = false;
     }
 
     private IEnumerator GrappleMovement()
@@ -147,10 +148,7 @@ public class Grappling : MonoBehaviour
         {
             if (!Input.GetKey(GrappleKey))
             {
-                rb.linearVelocity = lastVelocity;
-                StopGrapple();
-                Destroy(grappleAnchor);
-                yield break;
+                break; // Exit if the player releases the grapple key early
             }
 
             Vector3 direction = (grapplePoint - transform.position).normalized;
@@ -174,21 +172,11 @@ public class Grappling : MonoBehaviour
             yield return null;
         }
 
-        if (Input.GetKey(GrappleKey))
-        {
-            rb.linearVelocity = Vector3.zero;
-            transform.parent = grappleAnchor.transform;
-            rb.isKinematic = true;
+        // Ensure the player keeps moving after the grapple ends
+        rb.isKinematic = false;
+        rb.linearVelocity = lastVelocity; // Let momentum carry the player
 
-            yield return new WaitForSeconds(maxGrappleTime);
-
-            transform.parent = null;
-            rb.isKinematic = false;
-        }
-
-        rb.linearVelocity = lastVelocity;
         Destroy(grappleAnchor);
-
         StopGrapple();
     }
 }
