@@ -17,6 +17,7 @@ public class TrapDamage : MonoBehaviour
         localDamageDelay = damageDelay;
     }
 
+    //when the player enters the collider, they take damage.
     private void OnTriggerEnter(Collider other)
     {
         if ((other.isTrigger))
@@ -32,6 +33,7 @@ public class TrapDamage : MonoBehaviour
         }
     }
 
+    //if IsLava is true, begins to deal damage to the player over time. Damage is dealt based on damageAmount and is spaced out according to damageDelay
     private void OnTriggerStay(Collider other)
     {
         if (other.isTrigger)
