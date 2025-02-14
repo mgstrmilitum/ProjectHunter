@@ -48,8 +48,8 @@ public class PlayerMovement : MonoBehaviour
     public float leanDownAngle;
     public float leanSmoothing;
     public float leanVelocity;
-    public KeyCode LeanLeftKey = KeyCode.Z;
-    public KeyCode LeanRightKey = KeyCode.X;
+    public KeyCode LeanLeftKey = KeyCode.B;
+    public KeyCode LeanRightKey = KeyCode.N;
     public KeyCode LeanDownKey = KeyCode.V;
     private bool leanDown;
     private bool leanRight;
@@ -129,6 +129,8 @@ public class PlayerMovement : MonoBehaviour
             rb.linearDamping = groundDrag;
         else
             rb.angularDamping = 0f;
+
+        Debug.Log(transform.localRotation);
     }
 
     private void LateUpdate()

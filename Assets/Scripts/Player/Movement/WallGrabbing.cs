@@ -40,6 +40,7 @@ public class WallGrabbing : MonoBehaviour
 
     private void Update()
     {
+        
         LedgeDetection();
         SubStateMachine();
     }
@@ -77,7 +78,8 @@ public class WallGrabbing : MonoBehaviour
         float horizontalInput = Input.GetAxisRaw("Horizontal");
         float verticalInput = Input.GetAxisRaw("Vertical");
         //Vector3 forceToAdd = new Vector3(horizontalInput * ledgeJumpForwardForce, )
-        Vector3 forceToAdd = cam.forward * ledgeJumpForwardForce + cam.up * ledgeJumpUpwardForce;
+        //Fix this!!!
+        Vector3 forceToAdd = orientation.forward * ledgeJumpForwardForce * verticalInput + transform.up * ledgeJumpUpwardForce + orientation.right * ledgeJumpForwardForce * horizontalInput;
         rb.linearVelocity = Vector3.zero;
         rb.AddForce(forceToAdd, ForceMode.Impulse);
     }
@@ -99,7 +101,6 @@ public class WallGrabbing : MonoBehaviour
 
     private void EnterWallGrab()
     {
-        Debug.Log("In EnterWallGrab()");
         holding = true;
         pm.restricted = true;
 
@@ -108,6 +109,7 @@ public class WallGrabbing : MonoBehaviour
 
         rb.useGravity = false;
         rb.linearVelocity = Vector3.zero;
+        FreezeRigidbodyOnLedge();
     }
 
     private void FreezeRigidbodyOnLedge()
