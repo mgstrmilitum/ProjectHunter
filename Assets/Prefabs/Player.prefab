@@ -232,12 +232,14 @@ MonoBehaviour:
   jumpCooldown: 0.25
   airMultiplier: 0.6
   freeze: 0
+  climbing: 0
   playerHeight: 2
   groundCheckDistance: 0.2
   groundDrag: 1
   whatIsGround:
     serializedVersion: 2
     m_Bits: 8
+  grounded: 0
   maxSlopeAngle: 46
   slopeGroundCheckDistance: 0.3
   JumpKey: 32
@@ -248,6 +250,8 @@ MonoBehaviour:
   state: 0
   activeGrapple: 0
   rb: {fileID: 6432936056326085912}
+  restricted: 0
+  difficulty: 0
 --- !u!54 &6432936056326085912
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -317,8 +321,14 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   lr: {fileID: 0}
+  rb: {fileID: 0}
   maxGrappleDistance: 25
   grappleDelayTime: 0.25
   overshootYAxis: 5
+  grapplePullSpeed: 100
+  maxGrappleSpeed: 10
+  grappleSpeed: 10
+  audioSource: {fileID: 0}
+  grappleSound: {fileID: 0}
   grappleCooldown: 1
   GrappleKey: 324

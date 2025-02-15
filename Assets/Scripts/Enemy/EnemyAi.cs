@@ -42,9 +42,16 @@ public class EnemyAI : MonoBehaviour, TakeDamage
     Vector3 loweredHeadPos;
 
     Coroutine co;
+    
+    private Rigidbody rb;
 
     [SerializeField]
     EnemyType enemyType;
+
+    private void Awake()
+    {
+        rb=GetComponent<Rigidbody>();
+    }
 
     void Start()
     {
@@ -200,5 +207,17 @@ public class EnemyAI : MonoBehaviour, TakeDamage
                 Destroy(gameObject);
             }
         }
+
+    public void Knockback(Transform pushingsorce)
+    {
+        PushingEntity(pushingsorce);
+    }
+
+    public void PushingEntity(Transform push)
+    {
+        Vector3 Direction= (transform.position - push.position).normalized;
+        rb.AddForce(Direction, ForceMode.Impulse);
+    }
+
     }
 
