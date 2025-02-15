@@ -80,6 +80,11 @@ public class PlayerMovement : MonoBehaviour
     public AudioClip[] audJump;
     public float audJumpVol;
     private bool isPlayingSteps;
+    public AudioClip[] slideSounds;
+    public float slideSoundsVol;
+    public AudioClip[] wallGrabSounds;
+    public float wallGrabSoundsVol;
+
 
     public MovementState state;
     public bool activeGrapple;
