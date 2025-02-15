@@ -68,7 +68,7 @@ public class PlayerMovement : MonoBehaviour
     //public KeyCode CrouchKey = KeyCode.LeftControl;
 
     [Header("Camera Effects")]
-    public PlayerCamera playerCam;
+    public cameraController playerCam;
     public float grappleFOV;
 
     [Header("Audio")]
@@ -81,7 +81,6 @@ public class PlayerMovement : MonoBehaviour
     public float audJumpVol;
     private bool isPlayingSteps;
 
-    public Transform orientation;
     public MovementState state;
     public bool activeGrapple;
 
@@ -242,7 +241,7 @@ public class PlayerMovement : MonoBehaviour
             StartCoroutine(PlaySteps());
         }
         //review cross products so this makes sense
-        moveDirection = orientation.forward * -horizontalInput + orientation.right * verticalInput;
+        moveDirection = transform.forward * -horizontalInput + transform.right * verticalInput;
         moveDirection = Vector3.Cross(slopeHit.normal,-moveDirection);
 
         //if (OnSlope() && !exitingSlope)
