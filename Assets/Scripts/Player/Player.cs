@@ -35,7 +35,7 @@ public class Player : MonoBehaviour, IDamageable, IPickable
 
     public void TakeDamage(int amount)
     {
-
+        ShieldBehavior();
         if (shieldActive)
         {
             currentShield -= amount;

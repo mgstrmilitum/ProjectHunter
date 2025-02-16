@@ -26,7 +26,7 @@ public class Grappling : MonoBehaviour
 
     //private bool isGrappledAtTarget = false;
     //private float grappleTimer = 0f;
-    private float maxGrappleTime = 3f;  // 3 seconds to stay at the grapple point
+   /* private float maxGrappleTime = 3f;*/  // 3 seconds to stay at the grapple point
 
     private Vector3 grapplePoint;
 
