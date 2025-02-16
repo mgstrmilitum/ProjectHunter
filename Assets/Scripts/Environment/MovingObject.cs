@@ -9,9 +9,9 @@ public class MovingObject : MonoBehaviour
     [SerializeField] Vector3 targetRot;
     [SerializeField] Vector3 targetSca;
     [SerializeField] float lengthTesting;
-    [SerializeField] bool isMoving;
-    [SerializeField] bool isRotating;
-    [SerializeField] bool isGrowing;
+    [SerializeField] public bool isMoving;
+    [SerializeField] public bool isRotating;
+    [SerializeField] public bool isGrowing;
     Vector3 pointA;
     Vector3 pointB;
 
