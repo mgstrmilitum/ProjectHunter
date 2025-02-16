@@ -5,9 +5,9 @@ public class WallGrabbing : MonoBehaviour
 {
     [Header("References")]
     public PlayerMovement pm;
-    public Transform orientation;
     public Transform cam;
     public Rigidbody rb;
+    public AudioSource aud;
 
     [Header("Ledge Grabbing")]
     public float moveToLedgeSpeed;
@@ -33,10 +33,17 @@ public class WallGrabbing : MonoBehaviour
     public float ledgeSphereCastRadius;
     public LayerMask whatisWall;
 
+    [Header("Audio")]
+    public AudioClip[] wallGrabSounds;
+    public AudioClip[] wallJumpSounds;
+    public float wallGrabSoundsVol;
+    public float wallJumpSoundsVol;
+
     private Transform lastLedge;
     private Transform currLedge;
 
     private RaycastHit ledgeHit;
+    private GameObject grabPoint;
 
     private void Update()
     {
@@ -77,11 +84,11 @@ public class WallGrabbing : MonoBehaviour
 
         float horizontalInput = Input.GetAxisRaw("Horizontal");
         float verticalInput = Input.GetAxisRaw("Vertical");
-        //Vector3 forceToAdd = new Vector3(horizontalInput * ledgeJumpForwardForce, )
-        //Fix this!!!
-        Vector3 forceToAdd = orientation.forward * ledgeJumpForwardForce * verticalInput + transform.up * ledgeJumpUpwardForce + orientation.right * ledgeJumpForwardForce * horizontalInput;
+   
+        Vector3 forceToAdd = transform.forward * ledgeJumpForwardForce * verticalInput + transform.up * ledgeJumpUpwardForce + transform.right * ledgeJumpForwardForce * horizontalInput;
         rb.linearVelocity = Vector3.zero;
         rb.AddForce(forceToAdd, ForceMode.Impulse);
+        aud.PlayOneShot(wallJumpSounds[Random.Range(0, wallJumpSounds.Length)], wallJumpSoundsVol);
     }
 
     private void LedgeDetection()
@@ -107,8 +114,12 @@ public class WallGrabbing : MonoBehaviour
         currLedge = ledgeHit.transform;
         lastLedge = ledgeHit.transform;
 
+        
         rb.useGravity = false;
         rb.linearVelocity = Vector3.zero;
+        grabPoint = new GameObject("GrabAnchor");
+        grabPoint.transform.position = ledgeHit.point;
+        transform.parent = grabPoint.transform;
         FreezeRigidbodyOnLedge();
     }
 
@@ -119,6 +130,7 @@ public class WallGrabbing : MonoBehaviour
         Vector3 directionToLedge = ledgeHit.point - transform.position;
         float distanceToLedge = Vector3.Distance(transform.position, ledgeHit.point);
 
+        aud.PlayOneShot(wallGrabSounds[Random.Range(0, wallGrabSounds.Length)], wallGrabSoundsVol);
         if (distanceToLedge > 1f)
         {
             if (rb.linearVelocity.magnitude < moveToLedgeSpeed)
@@ -134,6 +146,7 @@ public class WallGrabbing : MonoBehaviour
     }
     public void ExitWallGrab()
     {
+        transform.parent = null;
         exitingLedge = true;
         exitLedgeTimer = exitLedgeTime;
 

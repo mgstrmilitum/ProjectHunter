@@ -413,6 +413,10 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 9c4e6a638796ff54997e3d2b5f91416d, type: 3}
   - {fileID: 8300000, guid: 573ae3d84e5910c4cbf5cb73955a2236, type: 3}
   audJumpVol: 0.5
+  slideSounds: []
+  slideSoundsVol: 0
+  wallGrabSounds: []
+  wallGrabSoundsVol: 0
   state: 0
   activeGrapple: 0
   rb: {fileID: 2140442679659648506}
@@ -720,7 +724,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d37e23f9741ee0429f6ff75897def71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  amount: 40
+  amount: 30
   slerpAmount: 20
   pm: {fileID: 1337218531082241551}
   LeanLeftKey: 122
