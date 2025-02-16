@@ -12,6 +12,7 @@ public class EnemyAI : MonoBehaviour, TakeDamage
     }
 
     [SerializeField] int hp;
+    [SerializeField] int maxHp;
     [SerializeField] Renderer model;
     [SerializeField] Transform shootPos;
     [SerializeField] GameObject bullet;
@@ -29,6 +30,8 @@ public class EnemyAI : MonoBehaviour, TakeDamage
     [SerializeField] float grenadeSpeed;
     [SerializeField] Transform playerTransform;
     [SerializeField] float damageMultiplier;
+    [SerializeField] GameObject enemySpawnerPrefab;
+    [SerializeField] Transform[] spawnerPositions;
 
     float angleToPlayer;
     float stoppingDistanceOrig;
@@ -42,6 +45,8 @@ public class EnemyAI : MonoBehaviour, TakeDamage
     Vector3 loweredHeadPos;
 
     Coroutine co;
+    private int spawnThreshold1;
+    private int spawnThreshold2;
 
     [SerializeField]
     EnemyType enemyType;
@@ -51,6 +56,10 @@ public class EnemyAI : MonoBehaviour, TakeDamage
         originalColor = model.material.color;
         stoppingDistanceOrig = agent.stoppingDistance;
         startingPos = transform.position;
+
+        maxHp = hp;
+        spawnThreshold1 = Mathf.RoundToInt(maxHp * 2 / 3); // When HP drops below 2/3
+        spawnThreshold2 = Mathf.RoundToInt(maxHp * 1 / 3); // When HP drops below 1/3
     }
 
     void Update()
@@ -195,10 +204,30 @@ public class EnemyAI : MonoBehaviour, TakeDamage
 
             StartCoroutine(FlashRed());
 
-            if (hp <= 0)
+        if (hp <= spawnThreshold1)
+        {
+            SpawnEnemySpawner();
+            spawnThreshold1 = int.MinValue; // Prevent multiple spawns at this threshold
+        }
+
+        if (hp <= spawnThreshold2)
+        {
+            SpawnEnemySpawner();
+            spawnThreshold2 = int.MinValue;
+        }
+        if (hp <= 0)
             {
                 Destroy(gameObject);
             }
         }
+
+    void SpawnEnemySpawner()
+    {
+        if (enemySpawnerPrefab != null && spawnerPositions.Length > 0)
+        {
+            int randomIndex = Random.Range(0, spawnerPositions.Length);
+            Instantiate(enemySpawnerPrefab, spawnerPositions[randomIndex].position, Quaternion.identity);
+        }
     }
+}
 

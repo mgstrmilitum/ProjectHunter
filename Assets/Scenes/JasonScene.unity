@@ -812,6 +812,7 @@ MonoBehaviour:
   roamDistance: 5
   grenadeSpeed: 0
   playerTransform: {fileID: 349858347}
+  damageMultiplier: 0
   enemyType: 0
 --- !u!95 &587256511 stripped
 Animator:
@@ -1035,6 +1036,10 @@ PrefabInstance:
     - target: {fileID: 8210207690257594047, guid: 4921fcd859a7b0c45848c5f54d6077ad, type: 3}
       propertyPath: m_Name
       value: PT_Male_Armors_Skeleton_Modular
+      objectReference: {fileID: 0}
+    - target: {fileID: 8210207690257594047, guid: 4921fcd859a7b0c45848c5f54d6077ad, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
       objectReference: {fileID: 0}
     - target: {fileID: 8843755518075579397, guid: 4921fcd859a7b0c45848c5f54d6077ad, type: 3}
       propertyPath: m_LocalPosition.x
