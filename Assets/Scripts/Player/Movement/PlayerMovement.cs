@@ -15,6 +15,10 @@ public class PlayerMovement : MonoBehaviour
     float verticalInput;
     float startYScale;
 
+    [Header("Coyote Time")]
+    public float coyoteTime = 0.2f; // Allow jumping for 0.2 seconds after leaving the ground
+    private float coyoteTimeCounter;
+
     [Header("Slide")]
     float desiredMoveSpeed;
     float lastDesiredMoveSpeed;
@@ -96,9 +100,17 @@ public class PlayerMovement : MonoBehaviour
 
         //handle drag
         if (grounded && !activeGrapple)
+        {
+
             rb.linearDamping = groundDrag;
+            coyoteTimeCounter = coyoteTime;
+        }
         else
+        {
             rb.angularDamping = 0f;
+            coyoteTimeCounter -= Time.deltaTime;
+        }
+
     }
 
     private void FixedUpdate()
@@ -188,27 +200,36 @@ public class PlayerMovement : MonoBehaviour
     private void MovePlayer()
     {
         if (activeGrapple) return;
-        //review cross products so this makes sense
-        moveDirection = orientation.forward * -horizontalInput + orientation.right * verticalInput;
-        moveDirection = Vector3.Cross(slopeHit.normal,-moveDirection);
 
-        //if (OnSlope() && !exitingSlope)
-        //{
-        //    //cross product stuff here OR overhaul GetSlopeMoveDirection funciton
-        //    rb.AddForce(GetSlopeMoveDirection(moveDirection) * moveSpeed, ForceMode.Force);
+        // Calculate move direction relative to where the player is facing
+        moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
 
-        //    if (rb.linearVelocity.y > 0)
-        //        rb.AddForce(Vector3.down, ForceMode.Force);
-        //}
+        // Normalize the movement direction
+        if (moveDirection != Vector3.zero)
+            moveDirection = moveDirection.normalized;
 
-        if (grounded)
+        // Handle slope movement
+        if (OnSlope() && !exitingSlope)
+        {
+            rb.AddForce(GetSlopeMoveDirection(moveDirection) * moveSpeed * 10f, ForceMode.Force);
+
+            if (rb.velocity.y > 0)
+                rb.AddForce(Vector3.down * 80f, ForceMode.Force);
+        }
+        // Regular ground movement
+        else if (grounded)
+        {
             rb.AddForce(moveDirection * moveSpeed * 10f, ForceMode.Force);
-
+        }
+        // Air movement
         else if (!grounded)
+        {
             rb.AddForce(moveDirection * moveSpeed * airMultiplier * 10f, ForceMode.Force);
+        }
 
         rb.useGravity = !OnSlope();
     }
+
 
     private void SpeedControl()
     {
@@ -235,9 +256,22 @@ public class PlayerMovement : MonoBehaviour
     private void Jump()
     {
         exitingSlope = true;
-        rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
 
-        rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+        // Reset y velocity
+        rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+
+        // Calculate jump direction based on input and orientation
+        Vector3 jumpDirection = moveDirection;
+
+        // Apply vertical jump force
+        rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+
+        // Apply horizontal force based on movement direction
+        if (jumpDirection != Vector3.zero)
+        {
+            rb.AddForce(jumpDirection * jumpForce * 0.5f, ForceMode.Impulse);
+        }
+
     }
 
     private void ResetJump()
