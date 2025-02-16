@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Linq.Expressions;
 using UnityEngine;
 
@@ -66,6 +67,7 @@ public class Sliding : MonoBehaviour
         rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
 
         slideTimer = maxSlideTime;
+        aud.PlayOneShot(slideClips[Random.Range(0, slideClips.Length)], slideClipsVol);
     }
 
     void SlidingMovement()
@@ -79,7 +81,7 @@ public class Sliding : MonoBehaviour
             else if(pm.state == PlayerMovement.MovementState.Walking)
                 rb.AddForce(inputDirection.normalized * walkSlideForce, ForceMode.Force);
 
-            aud.PlayOneShot(slideClips[Random.Range(0, slideClips.Length)], slideClipsVol);
+            
             slideTimer -= Time.deltaTime;
         }
         else
@@ -92,5 +94,10 @@ public class Sliding : MonoBehaviour
     {
         pm.sliding = false;
         playerObj.localScale = new Vector3(playerObj.localScale.x, startYScale, playerObj.localScale.z);
+    }
+
+    private IEnumerator PlaySlideSound()
+    {
+        yield return null;
     }
 }

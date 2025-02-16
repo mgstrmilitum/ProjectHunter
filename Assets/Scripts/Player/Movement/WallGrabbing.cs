@@ -114,7 +114,8 @@ public class WallGrabbing : MonoBehaviour
         currLedge = ledgeHit.transform;
         lastLedge = ledgeHit.transform;
 
-        
+
+        aud.PlayOneShot(wallGrabSounds[Random.Range(0, wallGrabSounds.Length)], wallGrabSoundsVol);
         rb.useGravity = false;
         rb.linearVelocity = Vector3.zero;
         grabPoint = new GameObject("GrabAnchor");
@@ -130,7 +131,7 @@ public class WallGrabbing : MonoBehaviour
         Vector3 directionToLedge = ledgeHit.point - transform.position;
         float distanceToLedge = Vector3.Distance(transform.position, ledgeHit.point);
 
-        aud.PlayOneShot(wallGrabSounds[Random.Range(0, wallGrabSounds.Length)], wallGrabSoundsVol);
+        
         if (distanceToLedge > 1f)
         {
             if (rb.linearVelocity.magnitude < moveToLedgeSpeed)
