@@ -27,7 +27,7 @@ public class DamagableProjectiles : MonoBehaviour
             meshrenderr.enabled=false;
             MeshFilter meshfilterrr = this.GetComponent<MeshFilter>();
             Destroy(meshfilterrr);
-
+            enemy.takeDamage(blastDamage);
         }
 
     }
@@ -54,9 +54,10 @@ public class DamagableProjectiles : MonoBehaviour
         {
             return;
         }
-        if (other.GetComponent<EnemyAI>() != null)
+        TakeDamage dmg= other.GetComponent<TakeDamage>();
+        if (dmg != null)
         {
-            enemy.takeDamage(blastDamage);
+            dmg.takeDamage(blastDamage);
             //Destroy(other.gameObject);
         }
 

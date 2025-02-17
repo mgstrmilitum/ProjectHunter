@@ -1,54 +1,114 @@
+using UnityEditor;
 using UnityEngine;
 
-public class FlintlockPistol : Weapon 
+public class FlintlockPistol : MonoBehaviour
 {
-    public string gunName;
-
-    public LayerMask targetLayerMask;
-
-    [Header("-----Shoot Info-----")]
-    public float shootingRange;
-    public float fireRate;
-
-    [Header("-----Reload Info-----")]
-    public int magazineSize;
-    public float timeToReload;
-
-    //private Player player;
-   private int currentAmmo_;
+    public GameObject projctilePrehaber;
+    private Transform projectileTransform;
+    public float projectileMovingForce;
+    public float adjustmentAngle;
+    [SerializeField] Transform shootPos;
     public int Damage;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public int projctileLoad;
+
+    EnemyAI enemy;
+
+    GameObject projectile;
     void Start()
     {
-
-        currentAmmo_ = weaponData.magazineSize;
-
-        player = cameraTransform.root.GetComponent<Player>();
+        Setinitalreference();
     }
 
-    public override void Shoot()
+    // Update is called once per frame
+    void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetButtonDown("Fire1"))
         {
-
-            RaycastHit fired;
-            if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out fired, shootingRange))
-            {
-                magazineSize--;
-
-                Knockbackable knock = fired.collider.GetComponent<Knockbackable>();
-                if (knock != null)
-                {
-                    knock.ConfirmKnock(transform);
-                }
-
-                IDamageable dmg = fired.collider.GetComponent<IDamageable>();
-                if (dmg!=null)
-                {
-                    dmg.TakeDamage((int)Damage);
-                }
-
-            }
+            LaunchProjectile();
         }
     }
+
+    void LaunchProjectile()
+    {
+        if (projctileLoad >0)
+        {
+            projectile =  Instantiate(projctilePrehaber, shootPos.position, shootPos.rotation);
+            Rigidbody body = projectile.GetComponent<Rigidbody>();
+            body.isKinematic=false;
+
+            projectile.GetComponent<Rigidbody>().AddForce(projectileTransform.forward * adjustmentAngle, ForceMode.Impulse);
+            if (projectile.GetComponent<Rigidbody>() != null)
+            {
+                Destroy(projectile, 0.3f);
+                if (projectile.GetComponent<EnemyAI>())
+                {
+                    enemy.takeDamage(Damage);
+                }
+            }
+
+            Destroy(projectile, 22);
+
+        }
+        projctileLoad--;
+
+    }
+    void Setinitalreference()
+    {
+        projectileTransform= transform;
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        Destroy(projectile);
+    }
+
+
+    // public string gunName;
+
+    // public LayerMask targetLayerMask;
+
+    // [Header("-----Shoot Info-----")]
+    // public float shootingRange;
+    // public float fireRate;
+
+    // [Header("-----Reload Info-----")]
+    // public int magazineSize;
+    // public float timeToReload;
+
+    // //private Player player;
+    //private int currentAmmo_;
+    // public int Damage;
+    // // Start is called once before the first execution of Update after the MonoBehaviour is created
+    // void Start()
+    // {
+
+    //     currentAmmo_ = weaponData.magazineSize;
+
+    //     //player = cameraTransform.root.GetComponent<Player>();
+    // }
+
+    // public override void Shoot()
+    // {
+    //     if (Input.GetMouseButtonDown(0))
+    //     {
+
+    //         RaycastHit fired;
+    //         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out fired, shootingRange))
+    //         {
+    //             magazineSize--;
+
+    //             Knockbackable knock = fired.collider.GetComponent<Knockbackable>();
+    //             if (knock != null)
+    //             {
+    //                 knock.ConfirmKnock(player.transform);
+    //             }
+
+    //             TakeDamage dmg = fired.collider.GetComponent<TakeDamage>();
+    //             if (dmg!=null)
+    //             {
+    //                 dmg.takeDamage(Damage);
+    //             }
+
+    //         }
+    //     }
+    // }
 }
