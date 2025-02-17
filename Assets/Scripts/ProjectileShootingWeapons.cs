@@ -6,7 +6,7 @@ public class ProjectileShootingWeapons : MonoBehaviour
     private Transform projectileTransform;
     public float projectileMovingForce;
     [SerializeField] Transform shootPos;
-    public int boomDamage;
+    public int Damage;
     public int projctileLoad;
 
     EnemyAI enemy;

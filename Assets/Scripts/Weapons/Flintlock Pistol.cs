@@ -14,13 +14,14 @@ public class FlintlockPistol : Weapon
     public int magazineSize;
     public float timeToReload;
 
-    private Player player;
-    private int currentAmmo;
+    //private Player player;
+   private int currentAmmo_;
     public int Damage;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        currentAmmo = weaponData.magazineSize;
+
+        currentAmmo_ = weaponData.magazineSize;
 
         player = cameraTransform.root.GetComponent<Player>();
     }

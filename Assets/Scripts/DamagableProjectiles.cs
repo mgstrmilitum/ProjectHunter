@@ -3,23 +3,24 @@ using UnityEngine;
 public class DamagableProjectiles : MonoBehaviour
 {
     private Collider[] hitColliders;
+    private Collider hit;
     public float blastRadius;
     public float explosiveForce;
     public LayerMask explosionLayers;
-    public ParticleSystem Boom;
+    //public ParticleSystem Boom;
     public int blastDamage;
     [SerializeField] SphereCollider KboomCollider;
     [SerializeField] LayerMask whatISEnemy;
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log(collision.contacts[0].point.ToString());
-        Boom= Instantiate(Boom, collision.contacts[0].point, Quaternion.identity);//Boom at this exact spot!
-        Destroy(Boom, 2f);
+        //Debug.Log(collision.contacts[0].point.ToString());
+        //Boom= Instantiate(Boom, collision.contacts[0].point, Quaternion.identity);//Boom at this exact spot!
+        //Destroy(Boom, 2f);
 
         if (collision.gameObject.GetComponent<EnemyAI>() != null)
         {
-            collision.gameObject.GetComponent<EnemyAI>().TakeDamage(blastDamage);
+            collision.gameObject.GetComponent<EnemyAI>().takeDamage(blastDamage, hit);
             Destroy(collision.gameObject);
             KboomCollider.enabled=true;
             MeshRenderer meshrenderr = this.GetComponent<MeshRenderer>();
@@ -55,7 +56,7 @@ public class DamagableProjectiles : MonoBehaviour
         }
         if (other.GetComponent<EnemyAI>() != null)
         {
-            other.GetComponent<EnemyAI>().takeDamage(blastDamage);
+            other.GetComponent<EnemyAI>().takeDamage(blastDamage, hit);
             Destroy(other.gameObject);
         }
 
