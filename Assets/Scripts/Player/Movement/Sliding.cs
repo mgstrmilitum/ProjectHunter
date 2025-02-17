@@ -1,18 +1,24 @@
+using System.Collections;
 using System.Linq.Expressions;
 using UnityEngine;
 
 public class Sliding : MonoBehaviour
 {
     [Header("References")]
-    public Transform orientation;
     public Transform playerObj;
     [SerializeField] Rigidbody rb;
     [SerializeField] PlayerMovement pm;
+    [SerializeField] AudioSource aud;
+    
 
     [Header("Sliding")]
     public float maxSlideTime;
     public float slideForce;
     float slideTimer;
+
+    [Header("Audio")]
+    public AudioClip[] slideClips;
+    public float slideClipsVol;
 
     public float slideYScale;
     float startYScale;
@@ -60,16 +66,18 @@ public class Sliding : MonoBehaviour
         rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
 
         slideTimer = maxSlideTime;
+        aud.PlayOneShot(slideClips[Random.Range(0, slideClips.Length)], slideClipsVol);
     }
 
     void SlidingMovement()
     {
-        Vector3 inputDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
+        Vector3 inputDirection = transform.forward * verticalInput + transform.right * horizontalInput;
 
         if (!pm.OnSlope() || rb.linearVelocity.y > -.01f)
         {
             rb.AddForce(inputDirection.normalized * slideForce, ForceMode.Force);
 
+            
             slideTimer -= Time.deltaTime;
         }
         else
@@ -82,5 +90,10 @@ public class Sliding : MonoBehaviour
     {
         pm.sliding = false;
         playerObj.localScale = new Vector3(playerObj.localScale.x, startYScale, playerObj.localScale.z);
+    }
+
+    private IEnumerator PlaySlideSound()
+    {
+        yield return null;
     }
 }

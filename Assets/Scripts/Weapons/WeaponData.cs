@@ -1,7 +1,9 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO.Enumeration;
 
+[CreateAssetMenu(fileName ="NewGunData",menuName ="Gun/GunData")]
 public class WeaponData : ScriptableObject
 {
     public string gunName;

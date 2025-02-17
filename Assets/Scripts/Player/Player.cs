@@ -6,6 +6,8 @@ public class Player : MonoBehaviour, IDamageable, IPickable
     [Header("-----Player Stats-----")]
     [SerializeField] public int currentHealth,maxHealth = 100;
     [SerializeField] public int currentShield,maxShield = 100;
+    [SerializeField] public int currentAp, maxAp = 100;
+    public bool abilityReady;
     bool shieldActive;
 
 
@@ -14,16 +16,14 @@ public class Player : MonoBehaviour, IDamageable, IPickable
     {
         currentHealth = maxHealth;
         currentShield = maxShield;
+        currentAp = 0;
         shieldActive = true;
     }
 
    
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0))
-        {
-            TakeDamage(10);
-        }
+       
     }
     void ShieldBehavior()
     {
@@ -35,7 +35,7 @@ public class Player : MonoBehaviour, IDamageable, IPickable
 
     public void TakeDamage(int amount)
     {
-
+        ShieldBehavior();
         if (shieldActive)
         {
             currentShield -= amount;
@@ -53,6 +53,6 @@ public class Player : MonoBehaviour, IDamageable, IPickable
 
     public void GainShield(int amountToGain){currentShield += amountToGain;}
 
-
+    public void GainAp(int amountToGain) { currentAp += amountToGain;}
 
 }

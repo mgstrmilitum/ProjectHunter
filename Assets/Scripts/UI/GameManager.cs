@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using UnityEditor.ProBuilder;
+//using UnityEditor.ProBuilder;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
@@ -18,11 +18,16 @@ public class GameManager : MonoBehaviour
 
     //----Player Health-----//
     [Header("-----Player Info-----")]
+    public PlayerCamera mainCamera;
     public Image playerHealthBar;
     public Image playerHealthBarBack;
     public Image playerShieldBar;
     public Image playerShieldBarBack;
     public float barLerpSpeed;
+
+    [Header("-----Player Info-----")]
+    public Image abilityMeterFront;
+    public Image abilityMeterBack;
     void Awake()
     {
         Instance = this;
@@ -81,7 +86,7 @@ public class GameManager : MonoBehaviour
 
         float hFraction = (float)playerScript.currentHealth / playerScript.maxHealth;
         float sFraction = (float)playerScript.currentShield / playerScript.maxShield;
-
+        float aFraction = (float)playerScript.currentAp / playerScript.maxAp;
 
         if (playerHealthBarBack != null)
         {
@@ -114,6 +119,22 @@ public class GameManager : MonoBehaviour
                 playerShieldBarBack.fillAmount = sFraction;
 
                 playerShieldBar.fillAmount = Mathf.Lerp(playerShieldBar.fillAmount, sFraction, Time.deltaTime * barLerpSpeed);
+            }
+        }
+        if (abilityMeterBack != null)
+        {
+            if (abilityMeterBack.fillAmount > aFraction)
+            {
+                abilityMeterBack.color = Color.red;
+                abilityMeterFront.fillAmount = aFraction;
+                abilityMeterBack.fillAmount = Mathf.Lerp(abilityMeterBack.fillAmount, aFraction, Time.deltaTime * barLerpSpeed);
+            }
+            if (abilityMeterFront.fillAmount < aFraction)
+            {
+                abilityMeterBack.color = Color.green;
+                abilityMeterBack.fillAmount = aFraction;
+
+               abilityMeterFront.fillAmount = Mathf.Lerp(abilityMeterFront.fillAmount, aFraction, Time.deltaTime * barLerpSpeed);
             }
         }
     }

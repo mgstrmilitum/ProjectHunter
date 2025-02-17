@@ -23,6 +23,11 @@ public abstract class Weapon : MonoBehaviour
         player = cameraTransform.root.GetComponent<Player>();
     }
 
+    public virtual void Update()
+    {
+      
+    }
+
     public void TryReload()
     {
     //if the player is not reloading and does not have a full magazine then we can reload, else do nothing//
@@ -56,13 +61,13 @@ public abstract class Weapon : MonoBehaviour
 
     public void TryShoot()
     {
-        if (!isReloading){ return; }
+        if (isReloading){ return; }
 
         if (currentAmmo <= 0f) { return; }
 
-        if(Time.deltaTime >= nextTimeToFire) 
+        if(Time.time >= nextTimeToFire) 
         {
-        nextTimeToFire = Time.deltaTime +( 1/ weaponData.fireRate );//Time to fire is equal to the current time plus 1 divided by the fire rate so the weapon will fire bullets per second equal to the fire rate 
+        nextTimeToFire = Time.time + ( 1/ weaponData.fireRate );//Time to fire is equal to the current time plus 1 divided by the fire rate so the weapon will fire bullets per second equal to the fire rate 
             HandleShoot();
         }
 
