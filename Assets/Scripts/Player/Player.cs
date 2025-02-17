@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Rendering;
 
-public class Player : MonoBehaviour, IDamageable, IPickable
+public class Player : MonoBehaviour, IDamageable, IPickable, TakeDamage
 {
     [Header("-----Player Stats-----")]
     [SerializeField] public int currentHealth,maxHealth = 100;
@@ -36,6 +36,21 @@ public class Player : MonoBehaviour, IDamageable, IPickable
     public void TakeDamage(int amount)
     {
         ShieldBehavior();
+        if (shieldActive)
+        {
+            currentShield -= amount;
+            ShieldBehavior();
+            if (currentShield <= 0)
+            {
+                shieldActive = false;
+            }
+            return;
+        }
+        currentHealth -= amount;
+    }
+
+    public void takeDamage(int amount)
+    {
         if (shieldActive)
         {
             currentShield -= amount;
