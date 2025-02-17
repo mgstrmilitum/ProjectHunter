@@ -250,6 +250,7 @@ public class PlayerMovement : MonoBehaviour
 
         // Calculate move direction relative to where the player is facing
         moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
+        moveDirection = transform.forward * verticalInput + transform.right * horizontalInput;
 
         // Normalize the movement direction
         if (moveDirection != Vector3.zero)
@@ -282,6 +283,7 @@ public class PlayerMovement : MonoBehaviour
         //}
 
         if (grounded)
+        { 
             rb.AddForce(moveDirection * moveSpeed * 10f, ForceMode.Force);
         }
         // Air movement
