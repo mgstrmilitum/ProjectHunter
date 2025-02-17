@@ -1303,7 +1303,7 @@ GameObject:
   - component: {fileID: 2008810357707041164}
   - component: {fileID: 8342853118384371129}
   - component: {fileID: 5226274869228829665}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: Melee test
   m_TagString: Enemy
   m_Icon: {fileID: 0}
