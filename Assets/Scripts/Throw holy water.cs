@@ -25,10 +25,12 @@ public class Throwholywater : MonoBehaviour
         
         GameObject holywaterInstance= Instantiate(HolyWaterBottle,startPoint.position,startPoint.rotation);
         holywaterInstance.GetComponent<Rigidbody>().isKinematic = false;
-        holywaterInstance.GetComponent<Rigidbody>().AddForce(startPoint.forward * range, ForceMode.Impulse);
-        if(holywaterInstance.GetComponent<Rigidbody>()!=null )
-        {Destroy(gameObject);
-
+        holywaterInstance.GetComponent<Rigidbody>().AddForce(startPoint.forward * range, ForceMode.Force);
+        holywaterInstance.GetComponent<Rigidbody>().useGravity=true;
+        if (holywaterInstance.GetComponent<Rigidbody>()!=null )
+        {
+           
+            Destroy(gameObject, 1f);
         }
         
     }

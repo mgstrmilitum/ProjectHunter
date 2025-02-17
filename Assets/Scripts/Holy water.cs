@@ -12,6 +12,8 @@ public class Holywater : MonoBehaviour
     public LayerMask explosionLayers;
     public ParticleSystem Boom;
     public int blastDamage;
+    public int throwforce;
+    public Transform transformer;
     [SerializeField] SphereCollider KboomCollider;
     [SerializeField] LayerMask whatISEnemy;
 
@@ -45,6 +47,8 @@ public class Holywater : MonoBehaviour
             {
                 hotcol.GetComponent<Rigidbody>().isKinematic = false;
                 hotcol.GetComponent<Rigidbody>().AddExplosionForce(explosiveForce, explosionPoint, blastRadius, 1, ForceMode.Impulse);
+                hotcol.GetComponent<Rigidbody>().AddForce(transformer.position * throwforce, ForceMode.Force);
+                hotcol.GetComponent<Rigidbody>().useGravity=true;
                 OnTriggerEnter(hotcol);
 
             }
@@ -57,9 +61,9 @@ public class Holywater : MonoBehaviour
         {
             return;
         }
-        if (other.GetComponent<EnemyAI>() != null)
+        if (other.GetComponent<TakeDamage>() != null)
         {
-            other.GetComponent<EnemyAI>().takeDamage(blastDamage);
+            other.GetComponent<TakeDamage>().takeDamage(blastDamage);
             Destroy(other.gameObject);
         }
 
