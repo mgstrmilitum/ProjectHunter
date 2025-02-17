@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
 
     //----Player Health-----//
     [Header("-----Player Info-----")]
-    public PlayerCamera mainCamera;
+    public cameraController mainCamera;
     public Image playerHealthBar;
     public Image playerHealthBarBack;
     public Image playerShieldBar;
