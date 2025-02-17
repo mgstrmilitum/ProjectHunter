@@ -11,6 +11,7 @@ public class EnemyAI : MonoBehaviour, TakeDamage
         Melee
     }
 
+    [SerializeField] int meleeDamage;
     [SerializeField] int hp;
     [SerializeField] int maxHp;
     [SerializeField] Renderer model;
@@ -32,6 +33,7 @@ public class EnemyAI : MonoBehaviour, TakeDamage
     [SerializeField] float damageMultiplier;
     [SerializeField] GameObject enemySpawnerPrefab;
     [SerializeField] Transform[] spawnerPositions;
+    [SerializeField] EnemyType enemyType;
 
     float angleToPlayer;
     float stoppingDistanceOrig;
@@ -42,14 +44,10 @@ public class EnemyAI : MonoBehaviour, TakeDamage
     Color originalColor;
     Vector3 playerDirection;
     Vector3 startingPos;
-    Vector3 loweredHeadPos;
 
     Coroutine co;
-    private int spawnThreshold1;
-    private int spawnThreshold2;
-
-    [SerializeField]
-    EnemyType enemyType;
+    int spawnThreshold1;
+    int spawnThreshold2;
 
     void Start()
     {
@@ -58,28 +56,51 @@ public class EnemyAI : MonoBehaviour, TakeDamage
         startingPos = transform.position;
 
         maxHp = hp;
-        spawnThreshold1 = Mathf.RoundToInt(maxHp * 2 / 3); // When HP drops below 2/3
-        spawnThreshold2 = Mathf.RoundToInt(maxHp * 1 / 3); // When HP drops below 1/3
+        spawnThreshold1 = Mathf.RoundToInt(maxHp * 2 / 3f); // When HP drops below 2/3
+        spawnThreshold2 = Mathf.RoundToInt(maxHp * 1 / 3f); // When HP drops below 1/3
     }
 
     void Update()
     {
+        // Calculate a lowered head position and update player direction and angle.
         Vector3 loweredHeadPos = headPos.position - new Vector3(0, 0.2f, 0);
         playerDirection = playerTransform.position - loweredHeadPos;
         angleToPlayer = Vector3.Angle(playerDirection, transform.forward);
 
         if (playerInRange)
         {
+            // Always set destination toward the player.
             agent.SetDestination(playerTransform.position);
 
+            // If we have reached the stopping distance, face the target.
             if (agent.remainingDistance <= agent.stoppingDistance)
             {
                 FaceTarget();
+
+                //if (enemyType == EnemyType.Melee && !isMelee)
+                //{
+                //    StartCoroutine(MeleeAttack());
+                //}
             }
 
-            if (CanSeePlayer() )
+            // Check if the enemy can see the player.
+            if (CanSeePlayer())
             {
+               // animatorController.SetBool("Walk", false);
 
+                // For non-melee enemies, trigger shooting if within shooting FOV.
+                if (enemyType != EnemyType.Melee && !isShooting && angleToPlayer <= shootFOV)
+                {
+                    StartCoroutine(Shoot());
+                }
+            }
+            else
+            {
+                //animatorController.SetBool("Walk", true);
+                if (!isRoaming && agent.remainingDistance < 0.01f)
+                {
+                    co = StartCoroutine(Roam());
+                }
             }
         }
         else
@@ -97,41 +118,41 @@ public class EnemyAI : MonoBehaviour, TakeDamage
         yield return new WaitForSeconds(roamPauseTime);
         agent.stoppingDistance = 0;
         Vector3 randomPos = Random.insideUnitSphere * roamDistance + startingPos;
-        
         NavMesh.SamplePosition(randomPos, out NavMeshHit hit, roamDistance, 1);
         agent.SetDestination(hit.position);
         isRoaming = false;
     }
 
+    // Only checks if the enemy can see the player.
     bool CanSeePlayer()
     {
-        
-        Debug.DrawRay(loweredHeadPos, playerDirection.normalized * 20f, Color.green);
+        Vector3 localLoweredHeadPos = headPos.position - new Vector3(0, 0.05f, 0);
+        //Debug.DrawRay(localLoweredHeadPos, playerDirection.normalized * 20f, Color.green);
 
         RaycastHit hit;
-        if (Physics.Raycast(loweredHeadPos, playerDirection.normalized, out hit))
+        if (Physics.Raycast(localLoweredHeadPos, playerDirection.normalized, out hit))
         {
+            Debug.Log("Ray hit: " + hit.collider.name); // Log what the ray is hitting
+
             if (hit.collider.CompareTag("Player") && angleToPlayer <= fov)
             {
-                agent.SetDestination(playerTransform.position);
-                if (agent.remainingDistance <= agent.stoppingDistance)
-                {
-                    FaceTarget();
-                }
+                //Debug.DrawRay(localLoweredHeadPos, playerDirection.normalized * hit.distance, Color.red); // Show hit in red
+                //Debug.Log("Player detected! Angle: " + angleToPlayer + "°");
 
-            
-                if (!isShooting && enemyType != EnemyType.Melee && angleToPlayer <= shootFOV)
-                {
-                    StartCoroutine(Shoot());
-                }
-
-                agent.stoppingDistance = stoppingDistanceOrig;
                 return true;
             }
+            else
+            {
+                Debug.Log("Ray did not hit player. Hit: " + hit.collider.tag);
+            }
         }
+        else
+        {
+            Debug.Log("Raycast did not hit anything.");
+        }
+
         return false;
     }
-
 
     private void OnTriggerEnter(Collider other)
     {
@@ -160,49 +181,75 @@ public class EnemyAI : MonoBehaviour, TakeDamage
     IEnumerator Shoot()
     {
         isShooting = true;
+        // Stop the agent from moving while shooting
+        agent.isStopped = true;
+
         GameObject obj = Instantiate(bullet, shootPos.position, transform.rotation);
         if (enemyType == EnemyType.Grenade)
         {
             obj.GetComponent<Rigidbody>().AddForce(Vector3.forward * grenadeSpeed, ForceMode.Impulse);
         }
         yield return new WaitForSeconds(shootRate);
+
+        // Resume agent movement after shooting
+        agent.isStopped = false;
         isShooting = false;
     }
 
+    //IEnumerator MeleeAttack()
+    //{
+    //    isMelee = true;
+
+    //    // Trigger the swing animation
+    //    animatorController.SetTrigger("Swing");
+    //    Debug.Log("Swing animation triggered");
+
+    //    // Wait for the duration of the melee animation before applying damage
+    //    yield return new WaitForSeconds(meleeRate * 0.5f); // Adjust timing if necessary
+
+    //    // Apply damage after the animation has started
+    //    TakeDamage damageable = playerTransform.GetComponent<TakeDamage>();
+    //    if (damageable != null)
+    //    {
+    //        Collider playerCollider = playerTransform.GetComponent<Collider>();
+    //        damageable.takeDamage(meleeDamage, playerCollider);
+    //    }
+
+    //    // Wait for the full melee cooldown before allowing another attack
+    //    yield return new WaitForSeconds(meleeRate * 0.5f);
+
+    //    isMelee = false;
+    //}
+
+
     void FaceTarget()
     {
-        Quaternion rot = Quaternion.LookRotation(new Vector3(playerDirection.x, 0, playerDirection.z));
-        transform.rotation = Quaternion.Lerp(transform.rotation, rot, faceTargetSpeed * Time.deltaTime);
+        Vector3 lookDirection = new Vector3(playerDirection.x, 0, playerDirection.z);
+        Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
+        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, faceTargetSpeed * Time.deltaTime);
     }
 
-    public void takeDamage(int amount, Collider hitCollider)
+    public void takeDamage(int amount)
     {
+        // if (hitCollider.CompareTag("Head"))
+        //{
+        //     hp -= Mathf.RoundToInt(amount * damageMultiplier);
+        // }
+        // else if (hitCollider.CompareTag("Enemy") || hitCollider.CompareTag("Body"))
+        // {
+        //     hp -= Mathf.RoundToInt(amount);
+        // }
+        hp -= amount;
 
-        
+        agent.SetDestination(playerTransform.position);
 
-            
+        if (co != null)
+        {
+            StopCoroutine(co);
+            isRoaming = false;
+        }
 
-            if (hitCollider.CompareTag("Head"))
-            {
-                hp -= Mathf.RoundToInt(amount * damageMultiplier);
-            }
-            else if (hitCollider.CompareTag("Enemy") || hitCollider.CompareTag("Body"))
-            {
-                hp -= Mathf.RoundToInt(amount * damageMultiplier);
-            }
-
-
-
-       
-            agent.SetDestination(playerTransform.position);
-
-            if (co != null)
-            {
-                StopCoroutine(co);
-                isRoaming = false;
-            }
-
-            StartCoroutine(FlashRed());
+        StartCoroutine(FlashRed());
 
         if (hp <= spawnThreshold1)
         {
@@ -215,11 +262,12 @@ public class EnemyAI : MonoBehaviour, TakeDamage
             SpawnEnemySpawner();
             spawnThreshold2 = int.MinValue;
         }
+
         if (hp <= 0)
-            {
-                Destroy(gameObject);
-            }
+        {
+            Destroy(gameObject);
         }
+    }
 
     void SpawnEnemySpawner()
     {
@@ -230,4 +278,3 @@ public class EnemyAI : MonoBehaviour, TakeDamage
         }
     }
 }
-
