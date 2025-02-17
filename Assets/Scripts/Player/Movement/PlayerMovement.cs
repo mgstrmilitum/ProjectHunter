@@ -1,6 +1,8 @@
 using System.Collections;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -42,6 +44,22 @@ public class PlayerMovement : MonoBehaviour
     public LayerMask whatIsGround;
     public bool grounded;
 
+    [Header("Camera Lean")]
+    //public Transform leanPivot;
+    public float currentLean;
+    public float targetLean;
+    public float leanAngle;
+    public float leanDownAngle;
+    public float leanSmoothing;
+    public float leanVelocity;
+    public KeyCode LeanLeftKey = KeyCode.B;
+    public KeyCode LeanRightKey = KeyCode.N;
+    public KeyCode LeanDownKey = KeyCode.V;
+    private bool leanDown;
+    private bool leanRight;
+    private bool leanLeft;
+    public bool leaning;
+
     [Header("Slope Handling")]
     public float maxSlopeAngle;
     public float slopeGroundCheckDistance;
@@ -54,10 +72,24 @@ public class PlayerMovement : MonoBehaviour
     //public KeyCode CrouchKey = KeyCode.LeftControl;
 
     [Header("Camera Effects")]
-    public PlayerCamera playerCam;
+    public cameraController playerCam;
     public float grappleFOV;
 
-    public Transform orientation;
+    [Header("Audio")]
+    public AudioSource aud;
+    public AudioClip[] audSteps;
+    public float audStepsVol;
+    public AudioClip[] audHurt;
+    public float audHurtVol;
+    public AudioClip[] audJump;
+    public float audJumpVol;
+    private bool isPlayingSteps;
+    public AudioClip[] slideSounds;
+    public float slideSoundsVol;
+    public AudioClip[] wallGrabSounds;
+    public float wallGrabSoundsVol;
+
+
     public MovementState state;
     public bool activeGrapple;
 
@@ -83,6 +115,8 @@ public class PlayerMovement : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        isPlayingSteps = false;
+        leanDown = false;
         exitingSlope = false;
         rb.freezeRotation = true;
         readyToJump = true;
@@ -113,11 +147,13 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
+    private void LateUpdate()
+    {
+        //CalculateLean();
+    }
     private void FixedUpdate()
     {
         MovePlayer();
-
-        Debug.Log(rb.linearVelocity.y);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -228,8 +264,24 @@ public class PlayerMovement : MonoBehaviour
                 rb.AddForce(Vector3.down * 80f, ForceMode.Force);
         }
         // Regular ground movement
-        else if (grounded)
+        if(moveDirection.magnitude > 0.3f && !isPlayingSteps)
         {
+            StartCoroutine(PlaySteps());
+        }
+        //review cross products so this makes sense
+        moveDirection = transform.forward * -horizontalInput + transform.right * verticalInput;
+        moveDirection = Vector3.Cross(slopeHit.normal,-moveDirection);
+
+        //if (OnSlope() && !exitingSlope)
+        //{
+        //    //cross product stuff here OR overhaul GetSlopeMoveDirection funciton
+        //    rb.AddForce(GetSlopeMoveDirection(moveDirection) * moveSpeed, ForceMode.Force);
+
+        //    if (rb.linearVelocity.y > 0)
+        //        rb.AddForce(Vector3.down, ForceMode.Force);
+        //}
+
+        if (grounded)
             rb.AddForce(moveDirection * moveSpeed * 10f, ForceMode.Force);
         }
         // Air movement
@@ -283,6 +335,8 @@ public class PlayerMovement : MonoBehaviour
             rb.AddForce(jumpDirection * jumpForce * 0.5f, ForceMode.Impulse);
         }
 
+        rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+        aud.PlayOneShot(audJump[Random.Range(0, audJump.Length)], audJumpVol);
     }
 
     private void ResetJump()
@@ -295,6 +349,65 @@ public class PlayerMovement : MonoBehaviour
     {
         activeGrapple=false;
 
+    }
+
+    private void LeanLeft()
+    {
+        if(Input.GetKeyDown(LeanLeftKey))
+        {
+            leanLeft = true;
+            leanRight = false;
+        }
+        if (Input.GetKeyUp(LeanLeftKey))
+        {
+            leanLeft = false;
+            leanRight = false;
+        }
+    }
+
+    private void LeanRight()
+    {
+        if (Input.GetKeyDown(LeanRightKey))
+        {
+            leanLeft = false;
+            leanRight = true;
+        }
+        if (Input.GetKeyUp(LeanRightKey))
+        {
+            leanLeft = false;
+            leanRight = false;
+        }
+    }
+    
+    private void LeanDown()
+    {
+        //if (Input.GetKey(LeanDownKey))
+        //{
+        //    targetLean = leanDownAngle;
+        //    leanDown = true;
+        //}
+    }
+
+    private void CalculateLean()
+    {
+        LeanLeft();
+        LeanRight();
+
+        if(leanLeft)
+        {
+            targetLean = leanAngle;
+        }
+        else if(leanRight)
+        {
+            targetLean = -leanAngle;
+        }
+        else targetLean = 0f;
+
+        leaning = leanLeft || leanRight;
+
+        currentLean = Mathf.SmoothDamp(currentLean, targetLean, ref leanVelocity, leanSmoothing);
+
+        //leanPivot.localRotation = Quaternion.Euler(new Vector3(0f, 0f, currentLean));
     }
 
     public void JumpToPosition(Vector3 targetPosition, float trajectoryHeight)
@@ -310,7 +423,7 @@ public class PlayerMovement : MonoBehaviour
 
 
     }
-        private void SetVelocity()
+    private void SetVelocity()
     {
         enableMovementOnNextTouch = true;
         rb.linearVelocity = velocityToSet;
@@ -358,5 +471,24 @@ public class PlayerMovement : MonoBehaviour
         }
 
         moveSpeed = desiredMoveSpeed;
+    }
+
+    private IEnumerator PlaySteps()
+    {
+        isPlayingSteps = true;
+        aud.PlayOneShot(audSteps[Random.Range(0, audSteps.Length)], audStepsVol);
+        if (state != MovementState.Sprinting)
+            yield return new WaitForSeconds(0.5f);
+        else
+            yield return new WaitForSeconds(0.3f);
+
+        isPlayingSteps = false;
+    }
+
+    IEnumerator FlashDamagePanel()
+    {
+        //GameManager.Instance.damagePanel.SetActive(true);
+        yield return new WaitForSeconds(.1f);
+        //GameManager.Instance.damagePanel.SetActive(false);
     }
 }

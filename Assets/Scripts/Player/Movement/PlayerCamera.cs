@@ -5,7 +5,9 @@ public class PlayerCamera : MonoBehaviour
     public float sensX;
     public float sensY;
 
+    public PlayerMovement pm;
     public Transform orientation;
+    //public Transform leanPivot;
 
     float xRotation;
     float yRotation;
