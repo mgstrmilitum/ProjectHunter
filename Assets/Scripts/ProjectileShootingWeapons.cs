@@ -22,11 +22,11 @@ public class ProjectileShootingWeapons : MonoBehaviour
     {
         if (Input.GetButtonDown("Fire1"))
         {
-            LaunchRocket();
+            LaunchProjectile();
         }
     }
 
-    void LaunchRocket()
+    void LaunchProjectile()
     {
         if (projctileLoad >0)
         {
@@ -37,7 +37,7 @@ public class ProjectileShootingWeapons : MonoBehaviour
             projectile.GetComponent<Rigidbody>().AddForce(projectileTransform.right *projectileMovingForce, ForceMode.Impulse);
             if (projectile.GetComponent<Rigidbody>() != null)
             {
-                Destroy(projectile, 1);
+                Destroy(projectile, 0.1f);
             }
             
             Destroy(projectile, 22);

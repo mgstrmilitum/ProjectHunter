@@ -14902,6 +14902,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 569022360}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &350127286
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 350127287}
+  m_Layer: 0
+  m_Name: crossbow shooting pos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &350127287
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 350127286}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.4939234, y: 0.50607395, z: 0.5011046, w: -0.49882156}
+  m_LocalPosition: {x: 0.5223, y: 0.2313, z: 0.0054}
+  m_LocalScale: {x: 0.50000024, y: 0.5000002, z: 0.5000002}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1845904183}
+  m_LocalEulerAnglesHint: {x: -89.435, y: 182.655, z: -0.001}
 --- !u!1 &352260518
 GameObject:
   m_ObjectHideFlags: 0
@@ -18063,7 +18094,7 @@ Transform:
   m_GameObject: {fileID: 447161486}
   serializedVersion: 2
   m_LocalRotation: {x: 2.2233952e-14, y: -0.0000005086237, z: 0.000000043713953, w: 1}
-  m_LocalPosition: {x: 0.000000007514781, y: 0.0077691856, z: -0.0028170985}
+  m_LocalPosition: {x: -0, y: 0.00614, z: -0.00276}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -41162,13 +41193,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1007846508}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.00000011935808, y: 0.99973196, z: 2.450886e-10, w: -0.0231513}
-  m_LocalPosition: {x: 0.0055, y: 0.135, z: 0.3514}
+  m_LocalRotation: {x: 0.016289389, y: 0.7103965, z: 0.7034208, w: -0.016451098}
+  m_LocalPosition: {x: 0.0055000056, y: 0.13499999, z: 0.35139993}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1648407676}
-  m_LocalEulerAnglesHint: {x: 0, y: 269.173, z: 0}
+  m_LocalEulerAnglesHint: {x: -89.435, y: 182.655, z: -0.001}
 --- !u!1 &1008050877
 GameObject:
   m_ObjectHideFlags: 0
@@ -46827,7 +46858,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20cedffd98b155747bfd69722720136b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 1
+  health: 2
 --- !u!65 &1114787210
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -46911,7 +46942,7 @@ Transform:
   m_GameObject: {fileID: 1114787208}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 26.59, y: 0.98, z: -174.03}
+  m_LocalPosition: {x: 26.59, y: 0.53, z: -174.03}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -46925,7 +46956,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1114787208}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 3
   m_Drag: 0
   m_AngularDrag: 0
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -55816,8 +55847,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projctilePrehaber: {fileID: 1959729250425484, guid: 5187dfa4d8f19524e8bbf7c6894b7de7, type: 3}
   projectileMovingForce: 45
-  shootPos: {fileID: 1007846509}
-  Damage: 0
+  shootPos: {fileID: 350127287}
+  Damage: 1
   projctileLoad: 100
 --- !u!1 &1305979712
 GameObject:
@@ -84664,6 +84695,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1302764889}
+  - {fileID: 350127287}
   - {fileID: 387992002}
   - {fileID: 1126064113}
   - {fileID: 1000415477}
@@ -96202,7 +96234,7 @@ MonoBehaviour:
   projctilePrehaber: {fileID: 100000, guid: a473de80f8e6fc74d943abda9e7113b6, type: 3}
   projectileMovingForce: 12
   shootPos: {fileID: 1768185676}
-  Damage: 0
+  Damage: 1
   projctileLoad: 10
 --- !u!43 &2088067359
 Mesh:
