@@ -158,25 +158,16 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     { 
-        if (enableMovementOnNextTouch)
-        {
-            enableMovementOnNextTouch=false;
-            ResetRestrictions();
-
-            GetComponent<Grappling>().StopGrapple();
-        }
     }
 
     private void StateHandler()
     {
-        //freeze
         if (freeze)
         {
             state = MovementState.Freeze;
             moveSpeed = 0f;
             rb.linearVelocity = Vector3.zero;
         }
-        //sprint
         else if (grounded && Input.GetKey(SprintKey))
         {
             state = MovementState.Sprinting;
@@ -187,8 +178,6 @@ public class PlayerMovement : MonoBehaviour
         //    state = MovementState.Crouching;
         //    desiredMoveSpeed = crouchSpeed;
         //}
-
-        //sliding
         else if (grounded && Input.GetKey(SlideKey))
         {
             state = MovementState.Sliding;
@@ -347,7 +336,6 @@ public class PlayerMovement : MonoBehaviour
 
     public void ResetRestrictions()
     {
-        activeGrapple=false;
 
     }
 
@@ -413,19 +401,11 @@ public class PlayerMovement : MonoBehaviour
     public void JumpToPosition(Vector3 targetPosition, float trajectoryHeight)
     {
         activeGrapple = true;
-        Vector3 startPosition = transform.position; // Correctly define it here
-        velocityToSet = CalculateJumpVelocity(startPosition, targetPosition, trajectoryHeight); // Use it here
-        SetVelocity();
-
-        float travelTime = Vector3.Distance(startPosition, targetPosition) / moveSpeed;
-        Invoke(nameof(ResetRestrictions), travelTime);
-
-
-
+        velocityToSet = CalculateJumpVelocity(transform.position, targetPosition, trajectoryHeight);
+        Invoke(nameof(SetVelocity), 0.1f);
     }
     private void SetVelocity()
     {
-        enableMovementOnNextTouch = true;
         rb.linearVelocity = velocityToSet;
     }
 
@@ -447,12 +427,13 @@ public class PlayerMovement : MonoBehaviour
 
     public Vector3 CalculateJumpVelocity(Vector3 startPoint, Vector3 endPoint, float trajectoryHeight)
     {
-        Vector3 displacement = endPoint - startPoint;
-        float timeToTarget = Mathf.Sqrt(-2 * trajectoryHeight / Physics.gravity.y) +
-                             Mathf.Sqrt(2 * (displacement.y - trajectoryHeight) / -Physics.gravity.y);
+        float gravity = Physics.gravity.y;
+        float displacementY = endPoint.y - startPoint.y;
+        Vector3 displacementXZ = new Vector3(endPoint.x - startPoint.x, 0f, endPoint.z - startPoint.z);
 
-        Vector3 velocityXZ = new Vector3(displacement.x, 0, displacement.z) / timeToTarget;
-        Vector3 velocityY = Vector3.up * Mathf.Sqrt(-2 * Physics.gravity.y * trajectoryHeight);
+        Vector3 velocityY = Vector3.up * Mathf.Sqrt(-4f * gravity * trajectoryHeight);
+        Vector3 velocityXZ = displacementXZ / (Mathf.Sqrt(-4f * trajectoryHeight / gravity)
+            + Mathf.Sqrt(4 * (displacementY - trajectoryHeight) / gravity));
 
         return velocityXZ + velocityY;
     }
