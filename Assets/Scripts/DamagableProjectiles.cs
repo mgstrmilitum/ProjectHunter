@@ -20,8 +20,8 @@ public class DamagableProjectiles : MonoBehaviour
 
         if (collision.gameObject.GetComponent<EnemyAI>() != null)
         {
-            collision.gameObject.GetComponent<EnemyAI>().takeDamage(blastDamage);
-            Destroy(collision.gameObject);
+            //collision.gameObject.GetComponent<EnemyAI>().takeDamage(blastDamage);
+            //Destroy(collision.gameObject);
             KboomCollider.enabled=true;
             MeshRenderer meshrenderr = this.GetComponent<MeshRenderer>();
             meshrenderr.enabled=false;
@@ -54,9 +54,11 @@ public class DamagableProjectiles : MonoBehaviour
         {
             return;
         }
-        if (other.GetComponent<EnemyAI>() != null)
+
+        TakeDamage dmg = other.GetComponent<TakeDamage>();
+        if (dmg != null)
         {
-            enemy.takeDamage(blastDamage);
+            dmg.takeDamage(blastDamage);
             //Destroy(other.gameObject);
         }
 

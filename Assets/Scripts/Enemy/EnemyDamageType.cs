@@ -35,7 +35,7 @@ public class EnemyDamageType : MonoBehaviour// Inherit from MonoBehaviour
         Debug.Log("Bullet hit: " + other.gameObject.name + " | isTrigger: " + other.isTrigger);
 
 
-        TakeDamage dmg = other.GetComponent<TakeDamage>();
+        TakeDamage dmg = other.transform.parent.gameObject.GetComponent<TakeDamage>();
             if (dmg != null)
             {
                 dmg.takeDamage(damageAmount);

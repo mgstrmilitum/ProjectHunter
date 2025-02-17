@@ -439,7 +439,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1328261358184943318}
   - {fileID: 2647844993966635457}
   m_Father: {fileID: 2097881160909088115}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1147,37 +1146,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4485992191126433812}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1818120111231941531
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1328261358184943318}
-  m_Layer: 7
-  m_Name: CameraPos
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1328261358184943318
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1818120111231941531}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.704, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2643325349236759978}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1827786423771182568
 GameObject:
@@ -3947,7 +3915,7 @@ Transform:
   m_GameObject: {fileID: 6632468852547430192}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.438, y: 0.168, z: 0.01}
+  m_LocalPosition: {x: 0.437, y: 0.168, z: -0.007}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4381,7 +4349,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7718757105804280250}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 2.2, y: -1.5781186, z: -3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -4533,12 +4501,12 @@ MonoBehaviour:
   playerObj: {fileID: 8497639423565144835}
   rb: {fileID: 1485251203550730846}
   pm: {fileID: 2970272383659191639}
-  aud: {fileID: 0}
+  aud: {fileID: 745451322909917647}
   maxSlideTime: 0.75
   slideForce: 200
-  walkSlideForce: 50
-  slideClips: []
-  slideClipsVol: 0
+  slideClips:
+  - {fileID: 8300000, guid: bb5a1598e1e836046a76aae0ee3f303c, type: 3}
+  slideClipsVol: 0.3
   slideYScale: 0.5
   SlideKey: 306
 --- !u!114 &458927013022096144
@@ -4570,8 +4538,8 @@ MonoBehaviour:
   grapplePullSpeed: 100
   maxGrappleSpeed: 10
   grappleSpeed: 10
-  audioSource: {fileID: 0}
-  grappleSound: {fileID: 0}
+  audioSource: {fileID: 745451322909917647}
+  grappleSound: {fileID: 8300000, guid: 1c3de36b5e61b7e488cd5db93525079b, type: 3}
   grappleCooldown: 0.25
   GrappleKey: 324
 --- !u!114 &8663528204063552902
@@ -4589,7 +4557,7 @@ MonoBehaviour:
   pm: {fileID: 2970272383659191639}
   cam: {fileID: 2647844993966635457}
   rb: {fileID: 1485251203550730846}
-  aud: {fileID: 0}
+  aud: {fileID: 745451322909917647}
   moveToLedgeSpeed: 12
   maxLedgeGrabDistance: 2
   minTimeOnLedge: 0.5

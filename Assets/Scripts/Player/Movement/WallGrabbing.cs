@@ -115,7 +115,7 @@ public class WallGrabbing : MonoBehaviour
         lastLedge = ledgeHit.transform;
 
 
-        aud.PlayOneShot(wallGrabSounds[Random.Range(0, wallGrabSounds.Length)], wallGrabSoundsVol);
+        //aud.PlayOneShot(wallGrabSounds[Random.Range(0, wallGrabSounds.Length)], wallGrabSoundsVol);
         rb.useGravity = false;
         rb.linearVelocity = Vector3.zero;
         grabPoint = new GameObject("GrabAnchor");
