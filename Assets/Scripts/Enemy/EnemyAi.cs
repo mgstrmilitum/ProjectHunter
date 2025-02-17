@@ -34,6 +34,7 @@ public class EnemyAI : MonoBehaviour, TakeDamage
     [SerializeField] GameObject enemySpawnerPrefab;
     [SerializeField] Transform[] spawnerPositions;
     [SerializeField] EnemyType enemyType;
+    [SerializeField] Rigidbody rb;
 
     float angleToPlayer;
     float stoppingDistanceOrig;
@@ -44,6 +45,7 @@ public class EnemyAI : MonoBehaviour, TakeDamage
     Color originalColor;
     Vector3 playerDirection;
     Vector3 startingPos;
+
 
     Coroutine co;
     int spawnThreshold1;
@@ -273,16 +275,16 @@ public class EnemyAI : MonoBehaviour, TakeDamage
             Destroy(gameObject);
         }
 
-    public void Knockback(Transform pushingsorce)
-    {
-        PushingEntity(pushingsorce);
-    }
+        void Knockback(Transform pushingsorce)
+        {
+            PushingEntity(pushingsorce);
+        }
 
-    public void PushingEntity(Transform push)
-    {
-        Vector3 Direction= (transform.position - push.position).normalized;
-        rb.AddForce(Direction, ForceMode.Impulse);
-    }
+        void PushingEntity(Transform push)
+        {
+            Vector3 Direction = (transform.position - push.position).normalized;
+            rb.AddForce(Direction, ForceMode.Impulse);
+        }
 
     }
 

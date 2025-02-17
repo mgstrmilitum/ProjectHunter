@@ -23,7 +23,7 @@ public class Holywater : MonoBehaviour
 
         if (collision.gameObject.GetComponent<EnemyAI>() != null)
         {
-            collision.gameObject.GetComponent<EnemyAI>().takeDamage(blastDamage, hit);
+            collision.gameObject.GetComponent<EnemyAI>().takeDamage(blastDamage);
             Destroy(collision.gameObject);
             KboomCollider.enabled=true;
             MeshRenderer meshrenderr = this.GetComponent<MeshRenderer>();
@@ -59,7 +59,7 @@ public class Holywater : MonoBehaviour
         }
         if (other.GetComponent<EnemyAI>() != null)
         {
-            other.GetComponent<EnemyAI>().takeDamage(blastDamage, hit);
+            other.GetComponent<EnemyAI>().takeDamage(blastDamage);
             Destroy(other.gameObject);
         }
 

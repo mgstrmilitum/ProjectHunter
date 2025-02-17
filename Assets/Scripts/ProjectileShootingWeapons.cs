@@ -38,6 +38,10 @@ public class ProjectileShootingWeapons : MonoBehaviour
             if (projectile.GetComponent<Rigidbody>() != null)
             {
                 Destroy(projectile, 0.3f);
+                if (projectile.GetComponent<EnemyAI>())
+                {
+                    enemy.takeDamage(Damage);
+                }
             }
             
             Destroy(projectile, 22);

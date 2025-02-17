@@ -305,7 +305,7 @@ MonoBehaviour:
   explosiveForce: 1
   explosionLayers:
     serializedVersion: 2
-    m_Bits: 24
+    m_Bits: 4294967295
   blastDamage: 1
   KboomCollider: {fileID: 1807731335747562625}
   whatISEnemy:
