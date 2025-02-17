@@ -4,12 +4,7 @@ using UnityEngine.AI;
 
 public class EnemyAI : MonoBehaviour, TakeDamage
 {
-    enum EnemyType
-    {
-        Standard,
-        Grenade,
-        Melee
-    }
+    enum EnemyType { Standard, Grenade, Melee }
 
     [SerializeField] int meleeDamage;
     [SerializeField] int hp;
@@ -36,7 +31,6 @@ public class EnemyAI : MonoBehaviour, TakeDamage
     [SerializeField] EnemyType enemyType;
 
     float angleToPlayer;
-    float stoppingDistanceOrig;
     bool isShooting;
     bool isMelee;
     bool playerInRange;
@@ -52,7 +46,6 @@ public class EnemyAI : MonoBehaviour, TakeDamage
     void Start()
     {
         originalColor = model.material.color;
-        stoppingDistanceOrig = agent.stoppingDistance;
         startingPos = transform.position;
 
         maxHp = hp;
@@ -69,26 +62,28 @@ public class EnemyAI : MonoBehaviour, TakeDamage
 
         if (playerInRange)
         {
-            // Always set destination toward the player.
-            agent.SetDestination(playerTransform.position);
+            // Clamp the destination so the enemy never goes farther than roamDistance from its spawn.
+            float distanceFromSpawn = Vector3.Distance(startingPos, playerTransform.position);
+            Vector3 targetPosition;
+            if (distanceFromSpawn > roamDistance)
+            {
+                // Calculate a destination along the line from startingPos to the player
+                Vector3 direction = (playerTransform.position - startingPos).normalized;
+                targetPosition = startingPos + direction * roamDistance;
+            }
+            else
+            {
+                targetPosition = playerTransform.position;
+            }
+            agent.SetDestination(targetPosition);
 
-            // If we have reached the stopping distance, face the target.
             if (agent.remainingDistance <= agent.stoppingDistance)
             {
                 FaceTarget();
-
-                //if (enemyType == EnemyType.Melee && !isMelee)
-                //{
-                //    StartCoroutine(MeleeAttack());
-                //}
             }
 
-            // Check if the enemy can see the player.
             if (CanSeePlayer())
             {
-               // animatorController.SetBool("Walk", false);
-
-                // For non-melee enemies, trigger shooting if within shooting FOV.
                 if (enemyType != EnemyType.Melee && !isShooting && angleToPlayer <= shootFOV)
                 {
                     StartCoroutine(Shoot());
@@ -96,7 +91,6 @@ public class EnemyAI : MonoBehaviour, TakeDamage
             }
             else
             {
-                //animatorController.SetBool("Walk", true);
                 if (!isRoaming && agent.remainingDistance < 0.01f)
                 {
                     co = StartCoroutine(Roam());
@@ -117,9 +111,12 @@ public class EnemyAI : MonoBehaviour, TakeDamage
         isRoaming = true;
         yield return new WaitForSeconds(roamPauseTime);
         agent.stoppingDistance = 0;
-        Vector3 randomPos = Random.insideUnitSphere * roamDistance + startingPos;
-        NavMesh.SamplePosition(randomPos, out NavMeshHit hit, roamDistance, 1);
-        agent.SetDestination(hit.position);
+        // Instead of roaming around the fixed startingPos, roam from the enemy's current position.
+        Vector3 randomPos = Random.insideUnitSphere * roamDistance + transform.position;
+        if (NavMesh.SamplePosition(randomPos, out NavMeshHit hit, roamDistance, NavMesh.AllAreas))
+        {
+            agent.SetDestination(hit.position);
+        }
         isRoaming = false;
     }
 
@@ -127,30 +124,17 @@ public class EnemyAI : MonoBehaviour, TakeDamage
     bool CanSeePlayer()
     {
         Vector3 localLoweredHeadPos = headPos.position - new Vector3(0, 0.05f, 0);
-        //Debug.DrawRay(localLoweredHeadPos, playerDirection.normalized * 20f, Color.green);
+        Debug.DrawRay(localLoweredHeadPos, playerDirection.normalized * 20f, Color.green);
 
         RaycastHit hit;
         if (Physics.Raycast(localLoweredHeadPos, playerDirection.normalized, out hit))
         {
-            Debug.Log("Ray hit: " + hit.collider.name); // Log what the ray is hitting
-
             if (hit.collider.CompareTag("Player") && angleToPlayer <= fov)
             {
-                //Debug.DrawRay(localLoweredHeadPos, playerDirection.normalized * hit.distance, Color.red); // Show hit in red
-                //Debug.Log("Player detected! Angle: " + angleToPlayer + "°");
-
+                Debug.DrawRay(localLoweredHeadPos, playerDirection.normalized * hit.distance, Color.red);
                 return true;
             }
-            else
-            {
-                Debug.Log("Ray did not hit player. Hit: " + hit.collider.tag);
-            }
         }
-        else
-        {
-            Debug.Log("Raycast did not hit anything.");
-        }
-
         return false;
     }
 
@@ -181,7 +165,7 @@ public class EnemyAI : MonoBehaviour, TakeDamage
     IEnumerator Shoot()
     {
         isShooting = true;
-        // Stop the agent from moving while shooting
+        // Stop the agent from moving while shooting.
         agent.isStopped = true;
 
         GameObject obj = Instantiate(bullet, shootPos.position, transform.rotation);
@@ -191,36 +175,10 @@ public class EnemyAI : MonoBehaviour, TakeDamage
         }
         yield return new WaitForSeconds(shootRate);
 
-        // Resume agent movement after shooting
+        // Resume movement after shooting.
         agent.isStopped = false;
         isShooting = false;
     }
-
-    //IEnumerator MeleeAttack()
-    //{
-    //    isMelee = true;
-
-    //    // Trigger the swing animation
-    //    animatorController.SetTrigger("Swing");
-    //    Debug.Log("Swing animation triggered");
-
-    //    // Wait for the duration of the melee animation before applying damage
-    //    yield return new WaitForSeconds(meleeRate * 0.5f); // Adjust timing if necessary
-
-    //    // Apply damage after the animation has started
-    //    TakeDamage damageable = playerTransform.GetComponent<TakeDamage>();
-    //    if (damageable != null)
-    //    {
-    //        Collider playerCollider = playerTransform.GetComponent<Collider>();
-    //        damageable.takeDamage(meleeDamage, playerCollider);
-    //    }
-
-    //    // Wait for the full melee cooldown before allowing another attack
-    //    yield return new WaitForSeconds(meleeRate * 0.5f);
-
-    //    isMelee = false;
-    //}
-
 
     void FaceTarget()
     {
@@ -231,16 +189,9 @@ public class EnemyAI : MonoBehaviour, TakeDamage
 
     public void takeDamage(int amount)
     {
-        // if (hitCollider.CompareTag("Head"))
-        //{
-        //     hp -= Mathf.RoundToInt(amount * damageMultiplier);
-        // }
-        // else if (hitCollider.CompareTag("Enemy") || hitCollider.CompareTag("Body"))
-        // {
-        //     hp -= Mathf.RoundToInt(amount);
-        // }
         hp -= amount;
 
+        // Re-chase the player on taking damage.
         agent.SetDestination(playerTransform.position);
 
         if (co != null)
@@ -254,7 +205,7 @@ public class EnemyAI : MonoBehaviour, TakeDamage
         if (hp <= spawnThreshold1)
         {
             SpawnEnemySpawner();
-            spawnThreshold1 = int.MinValue; // Prevent multiple spawns at this threshold
+            spawnThreshold1 = int.MinValue; // Prevent multiple spawns at this threshold.
         }
 
         if (hp <= spawnThreshold2)
