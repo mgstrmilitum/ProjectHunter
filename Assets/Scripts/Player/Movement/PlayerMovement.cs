@@ -249,7 +249,7 @@ public class PlayerMovement : MonoBehaviour
         if (activeGrapple) return;
 
         // Calculate move direction relative to where the player is facing
-        moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
+        moveDirection = transform.forward * verticalInput + transform.right * horizontalInput;
 
         // Normalize the movement direction
         if (moveDirection != Vector3.zero)
@@ -282,6 +282,7 @@ public class PlayerMovement : MonoBehaviour
         //}
 
         if (grounded)
+        { 
             rb.AddForce(moveDirection * moveSpeed * 10f, ForceMode.Force);
         }
         // Air movement
@@ -335,7 +336,6 @@ public class PlayerMovement : MonoBehaviour
             rb.AddForce(jumpDirection * jumpForce * 0.5f, ForceMode.Impulse);
         }
 
-        rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
         aud.PlayOneShot(audJump[Random.Range(0, audJump.Length)], audJumpVol);
     }
 
