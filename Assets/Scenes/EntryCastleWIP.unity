@@ -74882,7 +74882,7 @@ MonoBehaviour:
   meleeDamage: 20
   hp: 100
   maxHp: 100
-  meleeRate: 1
+  meleeRate: 2
   model: {fileID: 3932377552596020876}
   agent: {fileID: 1151377369571188320}
   faceTargetSpeed: 20
