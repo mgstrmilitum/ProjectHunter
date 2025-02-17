@@ -30,6 +30,7 @@ public class FlintlockPistol : MonoBehaviour
 
     void LaunchProjectile()
     {
+
         if (projctileLoad >0)
         {
             projectile =  Instantiate(projctilePrehaber, shootPos.position, shootPos.rotation);
@@ -40,10 +41,7 @@ public class FlintlockPistol : MonoBehaviour
             if (projectile.GetComponent<Rigidbody>() != null)
             {
                 Destroy(projectile, 0.3f);
-                if (projectile.GetComponent<EnemyAI>())
-                {
-                    enemy.takeDamage(Damage);
-                }
+               
             }
 
             Destroy(projectile, 22);

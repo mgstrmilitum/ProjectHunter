@@ -22,11 +22,11 @@ public class Holywater : MonoBehaviour
         Debug.Log(collision.contacts[0].point.ToString());
         Boom= Instantiate(Boom, collision.contacts[0].point, Quaternion.identity);//Boom at this exact spot!
         Destroy(Boom, 2f);
-
-        if (collision.gameObject.GetComponent<EnemyAI>() != null)
+        TakeDamage dmg= collision.gameObject.GetComponent<TakeDamage>();
+        if (dmg != null)
         {
-            //collision.gameObject.GetComponent<EnemyAI>().takeDamage(blastDamage);
-            //Destroy(collision.gameObject);
+            dmg.takeDamage(blastDamage);
+            Destroy(collision.gameObject);
             KboomCollider.enabled=true;
             MeshRenderer meshrenderr = this.GetComponent<MeshRenderer>();
             meshrenderr.enabled=false;
@@ -47,8 +47,7 @@ public class Holywater : MonoBehaviour
             {
                 hotcol.GetComponent<Rigidbody>().isKinematic = false;
                 hotcol.GetComponent<Rigidbody>().AddExplosionForce(explosiveForce, explosionPoint, blastRadius, 1, ForceMode.Impulse);
-                hotcol.GetComponent<Rigidbody>().AddForce(transformer.position * throwforce, ForceMode.Force);
-                hotcol.GetComponent<Rigidbody>().useGravity=true;
+                
                 OnTriggerEnter(hotcol);
 
             }

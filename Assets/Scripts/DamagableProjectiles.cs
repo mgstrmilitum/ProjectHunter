@@ -18,16 +18,18 @@ public class DamagableProjectiles : MonoBehaviour
         //Boom= Instantiate(Boom, collision.contacts[0].point, Quaternion.identity);//Boom at this exact spot!
         //Destroy(Boom, 2f);
 
-        if (collision.gameObject.GetComponent<EnemyAI>() != null)
+        TakeDamage dmg= collision.gameObject.GetComponent<TakeDamage>();
+        if (dmg != null)
         {
             //collision.gameObject.GetComponent<EnemyAI>().takeDamage(blastDamage);
             //Destroy(collision.gameObject);
+            dmg.takeDamage(blastDamage);
             KboomCollider.enabled=true;
             MeshRenderer meshrenderr = this.GetComponent<MeshRenderer>();
             meshrenderr.enabled=false;
             MeshFilter meshfilterrr = this.GetComponent<MeshFilter>();
             Destroy(meshfilterrr);
-            enemy.takeDamage(blastDamage);
+            
         }
 
     }
