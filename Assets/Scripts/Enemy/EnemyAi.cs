@@ -24,7 +24,7 @@ public class EnemyAI : MonoBehaviour, TakeDamage
     [SerializeField] int WalkSpeedTrans;
     [SerializeField] int roamDistance;
     [SerializeField] float grenadeSpeed;
-    [SerializeField] Transform playerTransform;
+    
     [SerializeField] float damageMultiplier;
     [SerializeField] GameObject enemySpawnerPrefab;
     [SerializeField] Transform[] spawnerPositions;
@@ -57,23 +57,23 @@ public class EnemyAI : MonoBehaviour, TakeDamage
     {
         // Calculate a lowered head position and update player direction and angle.
         Vector3 loweredHeadPos = headPos.position - new Vector3(0, 0.2f, 0);
-        playerDirection = playerTransform.position - loweredHeadPos;
+        playerDirection = GameManager.Instance.player.transform.position - loweredHeadPos;
         angleToPlayer = Vector3.Angle(playerDirection, transform.forward);
 
         if (playerInRange)
         {
             // Clamp the destination so the enemy never goes farther than roamDistance from its spawn.
-            float distanceFromSpawn = Vector3.Distance(startingPos, playerTransform.position);
+            float distanceFromSpawn = Vector3.Distance(startingPos, GameManager.Instance.player.transform.position);
             Vector3 targetPosition;
             if (distanceFromSpawn > roamDistance)
             {
                 // Calculate a destination along the line from startingPos to the player
-                Vector3 direction = (playerTransform.position - startingPos).normalized;
+                Vector3 direction = (GameManager.Instance.player.transform.position - startingPos).normalized;
                 targetPosition = startingPos + direction * roamDistance;
             }
             else
             {
-                targetPosition = playerTransform.position;
+                targetPosition = GameManager.Instance.player.transform.position;
             }
             agent.SetDestination(targetPosition);
 
@@ -91,7 +91,7 @@ public class EnemyAI : MonoBehaviour, TakeDamage
             }
             else
             {
-                if (!isRoaming && agent.remainingDistance < 0.01f)
+                if (!isRoaming &&  !isShooting && agent.remainingDistance < 0.01f)
                 {
                     co = StartCoroutine(Roam());
                 }
@@ -99,7 +99,7 @@ public class EnemyAI : MonoBehaviour, TakeDamage
         }
         else
         {
-            if (!isRoaming && agent.remainingDistance < 0.01f)
+            if (!isRoaming && !isShooting && agent.remainingDistance < 0.01f)
             {
                 co = StartCoroutine(Roam());
             }
@@ -192,11 +192,15 @@ public class EnemyAI : MonoBehaviour, TakeDamage
         hp -= amount;
 
         // Re-chase the player on taking damage.
-        agent.SetDestination(playerTransform.position);
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(GameManager.Instance.player.transform.position, out hit, 1.0f, NavMesh.AllAreas))
+        {
+            agent.SetDestination(hit.position);
+        }
 
         if (co != null)
         {
-            StopCoroutine(co);
+            StopCoroutine(co);  
             isRoaming = false;
         }
 
