@@ -37,7 +37,7 @@ public class ProjectileShootingWeapons : MonoBehaviour
             projectile.GetComponent<Rigidbody>().AddForce(projectileTransform.right *projectileMovingForce, ForceMode.Impulse);
             if (projectile.GetComponent<Rigidbody>() != null)
             {
-                Destroy(projectile, 0.1f);
+                Destroy(projectile, 0.3f);
             }
             
             Destroy(projectile, 22);
