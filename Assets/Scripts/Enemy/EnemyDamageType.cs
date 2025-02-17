@@ -9,9 +9,9 @@ public class EnemyDamageType : MonoBehaviour// Inherit from MonoBehaviour
     [SerializeField] private DamageType type;
     [SerializeField] private Rigidbody rb;
 
-    [SerializeField] public int damageAmount = 10;
-    [SerializeField] public int speed = 10;
-    [SerializeField] public float destroyTime = 5f;
+    [SerializeField] public int damageAmount;
+    [SerializeField] public int speed;
+    [SerializeField] public float destroyTime;
 
     void Start()
     {
@@ -31,12 +31,14 @@ public class EnemyDamageType : MonoBehaviour// Inherit from MonoBehaviour
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.isTrigger) return;
+        if (other.isTrigger) return;
+        Debug.Log("Bullet hit: " + other.gameObject.name + " | isTrigger: " + other.isTrigger);
 
-            TakeDamage dmg = other.GetComponent<TakeDamage>();
+
+        TakeDamage dmg = other.GetComponent<TakeDamage>();
             if (dmg != null)
             {
-                dmg.takeDamage(damageAmount, other);
+                dmg.takeDamage(damageAmount);
                 Destroy(gameObject);
             }
         }
