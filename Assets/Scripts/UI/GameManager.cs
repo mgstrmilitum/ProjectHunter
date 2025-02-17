@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 //using UnityEditor.ProBuilder;
 public class GameManager : MonoBehaviour
 {
@@ -97,6 +98,10 @@ public class GameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         activeMenu.SetActive(false);
         activeMenu = null;
+    }
+    public void LoadLevel(int level)
+    {
+        SceneManager.LoadSceneAsync(level);
     }
     #endregion
 

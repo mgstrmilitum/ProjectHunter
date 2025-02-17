@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class MeleeEnemyAI : MonoBehaviour
+public class MeleeEnemyAI : MonoBehaviour, TakeDamage
 {
     [Header("Enemy Stats")]
     [SerializeField] int meleeDamage;
@@ -127,7 +127,8 @@ public class MeleeEnemyAI : MonoBehaviour
         hp -= amount;
 
         // On taking damage, immediately re-chase the player.
-        if (NavMesh.SamplePosition(GameManager.Instance.player.transform.position, out NavMeshHit hit, 1.0f, NavMesh.AllAreas))
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(GameManager.Instance.player.transform.position, out hit, 1.0f, NavMesh.AllAreas))
         {
             agent.SetDestination(hit.position);
         }
