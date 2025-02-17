@@ -1218,7 +1218,7 @@ MonoBehaviour:
   faceTargetSpeed: 20
   fov: 120
   shootFOV: 70
-  roamPauseTime: 5
+  roamPauseTime: 2
   headPos: {fileID: 6627469890856524674}
   animatorController: {fileID: 6535902042567146252}
   WalkSpeedTrans: 1

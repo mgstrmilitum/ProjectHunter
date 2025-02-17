@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
     //----Menus-----//
     public GameObject activeMenu;
     public GameObject pauseMenu;
+    public GameObject winMenu;
+    public GameObject loseMenu; 
     bool isPaused;
 
 
@@ -28,6 +30,10 @@ public class GameManager : MonoBehaviour
     [Header("-----Player Info-----")]
     public Image abilityMeterFront;
     public Image abilityMeterBack;
+
+    [Header("Progress")]
+    public bool beatenLvl1Boss;
+
     void Awake()
     {
         Instance = this;
@@ -59,6 +65,20 @@ public class GameManager : MonoBehaviour
                 StateUnpause();
             }
         }
+    }
+
+    public void OnLose()
+    {
+        StatePause();
+        activeMenu = loseMenu;
+        activeMenu.SetActive(isPaused);
+    }
+    public void OnWin() {
+        StatePause();
+        activeMenu = winMenu;
+        activeMenu.SetActive(isPaused);
+
+       
     }
     #region Menus
     public void StatePause()
@@ -140,3 +160,4 @@ public class GameManager : MonoBehaviour
     }
 }
     #endregion
+

@@ -40,7 +40,7 @@ public class ProjectileShootingWeapons : MonoBehaviour
                 Destroy(projectile, 0.3f);
                 if (projectile.GetComponent<EnemyAI>())
                 {
-                    enemy.takeDamage(Damage);
+                    //enemy.takeDamage(Damage);
                 }
             }
             
