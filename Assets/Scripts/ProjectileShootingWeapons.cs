@@ -30,18 +30,17 @@ public class ProjectileShootingWeapons : MonoBehaviour
     {
         if (projctileLoad >0)
         {
+            
             projectile =  Instantiate(projctilePrehaber, shootPos.position, shootPos.rotation);
             Rigidbody body = projectile.GetComponent<Rigidbody>();
             body.isKinematic=false;
 
             projectile.GetComponent<Rigidbody>().AddForce(projectileTransform.right *projectileMovingForce, ForceMode.Impulse);
             if (projectile.GetComponent<Rigidbody>() != null)
-            {
+            {   
+             
                 Destroy(projectile, 0.3f);
-                if (projectile.GetComponent<EnemyAI>())
-                {
-                    //enemy.takeDamage(Damage);
-                }
+                
             }
             
             Destroy(projectile, 22);
