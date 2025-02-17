@@ -309,8 +309,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pm: {fileID: 8663441269294281776}
   cam: {fileID: 1802374300192197845}
-  rb: {fileID: 0}
-  aud: {fileID: 0}
+  rb: {fileID: 412041991249654900}
+  aud: {fileID: 2617838730572632716}
   moveToLedgeSpeed: 0
   maxLedgeGrabDistance: 0
   minTimeOnLedge: 0

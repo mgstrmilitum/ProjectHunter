@@ -26,12 +26,12 @@ public class CrossBowBolt : MonoBehaviour
             return;
         }
 
-        IDamageable dmg = other.GetComponent<IDamageable>();
+        TakeDamage dmg = other.GetComponent<TakeDamage>();
 
         if (dmg != null)
         {
          
-                dmg.TakeDamage(damageAmount);
+                dmg.takeDamage(damageAmount);
             
        
         }
