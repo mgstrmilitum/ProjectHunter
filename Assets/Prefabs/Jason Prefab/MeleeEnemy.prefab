@@ -2232,6 +2232,12 @@ MonoBehaviour:
   maxHp: 100
   meleeRate: 2
   model: {fileID: 2546077334662846711}
+  models:
+  - {fileID: 2546077334662846711}
+  - {fileID: 2194756328987974067}
+  - {fileID: 8653356310341910311}
+  - {fileID: 4750072862155486165}
+  - {fileID: 982449930914213582}
   agent: {fileID: 4064325494486591399}
   faceTargetSpeed: 30
   roamPauseTime: 5

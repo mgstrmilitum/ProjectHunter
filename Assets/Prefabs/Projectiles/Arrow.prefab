@@ -284,7 +284,7 @@ MonoBehaviour:
   explosionLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  blastDamage: 1
+  blastDamage: 20
   KboomCollider: {fileID: 1807731335747562625}
   whatISEnemy:
     serializedVersion: 2
