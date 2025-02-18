@@ -2,14 +2,13 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyAI : MonoBehaviour, IDamageable
+public class EnemyAI : MonoBehaviour, TakeDamage
 {
     enum EnemyType
     {
         Standard,
         Grenade,
-        Melee,
-        Boss1
+        Melee
     }
 
     [SerializeField] int meleeDamage;
@@ -35,7 +34,6 @@ public class EnemyAI : MonoBehaviour, IDamageable
     [SerializeField] GameObject enemySpawnerPrefab;
     [SerializeField] Transform[] spawnerPositions;
     [SerializeField] EnemyType enemyType;
-    [SerializeField] Rigidbody rb;
 
     float angleToPlayer;
     float stoppingDistanceOrig;
@@ -47,15 +45,9 @@ public class EnemyAI : MonoBehaviour, IDamageable
     Vector3 playerDirection;
     Vector3 startingPos;
 
-
     Coroutine co;
     int spawnThreshold1;
     int spawnThreshold2;
-
-    private void Awake()
-    {
-        rb=GetComponent<Rigidbody>();
-    }
 
     void Start()
     {
@@ -71,19 +63,47 @@ public class EnemyAI : MonoBehaviour, IDamageable
     void Update()
     {
         // Calculate a lowered head position and update player direction and angle.
-        //Vector3 loweredHeadPos = headPos.position - new Vector3(0, 0.2f, 0);
-        playerDirection = GameManager.Instance.player.transform.position - headPos.position;
-        //angleToPlayer = Vector3.Angle(playerDirection, transform.forward);
+        Vector3 loweredHeadPos = headPos.position - new Vector3(0, 0.2f, 0);
+        playerDirection = playerTransform.position - loweredHeadPos;
+        angleToPlayer = Vector3.Angle(playerDirection, transform.forward);
 
-        if ((playerInRange && !CanSeePlayer()))
+        if (playerInRange)
         {
-            if (!isRoaming && agent.remainingDistance < 0.01f)
+            // Always set destination toward the player.
+            agent.SetDestination(playerTransform.position);
+
+            // If we have reached the stopping distance, face the target.
+            if (agent.remainingDistance <= agent.stoppingDistance)
             {
-                co = StartCoroutine(Roam());
+                FaceTarget();
+
+                //if (enemyType == EnemyType.Melee && !isMelee)
+                //{
+                //    StartCoroutine(MeleeAttack());
+                //}
             }
 
+            // Check if the enemy can see the player.
+            if (CanSeePlayer())
+            {
+               // animatorController.SetBool("Walk", false);
+
+                // For non-melee enemies, trigger shooting if within shooting FOV.
+                if (enemyType != EnemyType.Melee && !isShooting && angleToPlayer <= shootFOV)
+                {
+                    StartCoroutine(Shoot());
+                }
+            }
+            else
+            {
+                //animatorController.SetBool("Walk", true);
+                if (!isRoaming && agent.remainingDistance < 0.01f)
+                {
+                    co = StartCoroutine(Roam());
+                }
+            }
         }
-        else if (!playerInRange)
+        else
         {
             if (!isRoaming && agent.remainingDistance < 0.01f)
             {
@@ -97,10 +117,8 @@ public class EnemyAI : MonoBehaviour, IDamageable
         isRoaming = true;
         yield return new WaitForSeconds(roamPauseTime);
         agent.stoppingDistance = 0;
-        Vector3 randomPos = Random.insideUnitSphere * roamDistance;
-        randomPos += startingPos;
-        NavMeshHit hit;
-        NavMesh.SamplePosition(randomPos, out hit, roamDistance, 1);
+        Vector3 randomPos = Random.insideUnitSphere * roamDistance + startingPos;
+        NavMesh.SamplePosition(randomPos, out NavMeshHit hit, roamDistance, 1);
         agent.SetDestination(hit.position);
         isRoaming = false;
     }
@@ -108,33 +126,29 @@ public class EnemyAI : MonoBehaviour, IDamageable
     // Only checks if the enemy can see the player.
     bool CanSeePlayer()
     {
-        //Vector3 localLoweredHeadPos = headPos.position - new Vector3(0, 0.05f, 0);
+        Vector3 localLoweredHeadPos = headPos.position - new Vector3(0, 0.05f, 0);
         //Debug.DrawRay(localLoweredHeadPos, playerDirection.normalized * 20f, Color.green);
 
-        playerDirection = GameManager.Instance.player.transform.position - headPos.position;
-        angleToPlayer = Vector3.Angle(playerDirection, transform.forward);
-
-        Debug.Log(angleToPlayer);
-
         RaycastHit hit;
-        if (Physics.Raycast(headPos.position, playerDirection, out hit))
+        if (Physics.Raycast(localLoweredHeadPos, playerDirection.normalized, out hit))
         {
+            Debug.Log("Ray hit: " + hit.collider.name); // Log what the ray is hitting
+
             if (hit.collider.CompareTag("Player") && angleToPlayer <= fov)
             {
-                agent.SetDestination(GameManager.Instance.player.transform.position);
-                if (agent.remainingDistance <= agent.stoppingDistance)
-                {
-                    FaceTarget();
-                }
-                if (!isShooting && angleToPlayer <= shootFOV)
-                {
-                    StartCoroutine(Shoot());
+                //Debug.DrawRay(localLoweredHeadPos, playerDirection.normalized * hit.distance, Color.red); // Show hit in red
+                //Debug.Log("Player detected! Angle: " + angleToPlayer + "°");
 
-                }
-
-                agent.stoppingDistance = stoppingDistanceOrig;
                 return true;
             }
+            else
+            {
+                Debug.Log("Ray did not hit player. Hit: " + hit.collider.tag);
+            }
+        }
+        else
+        {
+            Debug.Log("Raycast did not hit anything.");
         }
 
         return false;
@@ -167,10 +181,18 @@ public class EnemyAI : MonoBehaviour, IDamageable
     IEnumerator Shoot()
     {
         isShooting = true;
-        GameObject obj = Instantiate(bullet, shootPos.position, transform.rotation);
+        // Stop the agent from moving while shooting
+        agent.isStopped = true;
 
-        obj.GetComponent<Rigidbody>().AddForce(transform.forward * 20f, ForceMode.Impulse);
+        GameObject obj = Instantiate(bullet, shootPos.position, transform.rotation);
+        if (enemyType == EnemyType.Grenade)
+        {
+            obj.GetComponent<Rigidbody>().AddForce(Vector3.forward * grenadeSpeed, ForceMode.Impulse);
+        }
         yield return new WaitForSeconds(shootRate);
+
+        // Resume agent movement after shooting
+        agent.isStopped = false;
         isShooting = false;
     }
 
@@ -207,20 +229,20 @@ public class EnemyAI : MonoBehaviour, IDamageable
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, faceTargetSpeed * Time.deltaTime);
     }
 
-    void SpawnEnemySpawner()
+    public void takeDamage(int amount)
     {
-        //if (enemySpawnerPrefab != null && spawnerPositions.Length > 0)
+        // if (hitCollider.CompareTag("Head"))
         //{
-        //    int randomIndex = Random.Range(0, spawnerPositions.Length);
-        //    Instantiate(enemySpawnerPrefab, spawnerPositions[randomIndex].position, Quaternion.identity);
-        //}
-    }
-
-    public void TakeDamage(int amount)
-    {
+        //     hp -= Mathf.RoundToInt(amount * damageMultiplier);
+        // }
+        // else if (hitCollider.CompareTag("Enemy") || hitCollider.CompareTag("Body"))
+        // {
+        //     hp -= Mathf.RoundToInt(amount);
+        // }
         hp -= amount;
 
-        agent.SetDestination(GameManager.Instance.player.transform.position);
+        agent.SetDestination(playerTransform.position);
+
         if (co != null)
         {
             StopCoroutine(co);
@@ -228,9 +250,31 @@ public class EnemyAI : MonoBehaviour, IDamageable
         }
 
         StartCoroutine(FlashRed());
+
+        if (hp <= spawnThreshold1)
+        {
+            SpawnEnemySpawner();
+            spawnThreshold1 = int.MinValue; // Prevent multiple spawns at this threshold
+        }
+
+        if (hp <= spawnThreshold2)
+        {
+            SpawnEnemySpawner();
+            spawnThreshold2 = int.MinValue;
+        }
+
         if (hp <= 0)
         {
             Destroy(gameObject);
+        }
+    }
+
+    void SpawnEnemySpawner()
+    {
+        if (enemySpawnerPrefab != null && spawnerPositions.Length > 0)
+        {
+            int randomIndex = Random.Range(0, spawnerPositions.Length);
+            Instantiate(enemySpawnerPrefab, spawnerPositions[randomIndex].position, Quaternion.identity);
         }
     }
 }

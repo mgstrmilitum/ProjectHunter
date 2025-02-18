@@ -292,8 +292,10 @@ GameObject:
   - component: {fileID: 7310586098510288400}
   - component: {fileID: 6432936056326085912}
   - component: {fileID: 5942106302019566522}
-  - component: {fileID: 6653295252274629724}
-  m_Layer: 0
+  - component: {fileID: 3076787208495081520}
+  - component: {fileID: 3496976550941876212}
+  - component: {fileID: 4517408405858030022}
+  m_Layer: 7
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -347,7 +349,7 @@ MonoBehaviour:
   groundDrag: 1
   whatIsGround:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 72
   grounded: 0
   maxSlopeAngle: 46
   slopeGroundCheckDistance: 0.3
@@ -409,7 +411,7 @@ MonoBehaviour:
   walkSlideForce: 50
   slideYScale: 0.5
   SlideKey: 306
---- !u!114 &6653295252274629724
+--- !u!114 &3076787208495081520
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -431,16 +433,14 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   lr: {fileID: 0}
-  rb: {fileID: 0}
+  rb: {fileID: 6432936056326085912}
   maxGrappleDistance: 25
   grappleDelayTime: 0.25
   overshootYAxis: 5
   grapplePullSpeed: 100
   maxGrappleSpeed: 10
   grappleSpeed: 10
-  audioSource: {fileID: 0}
-  grappleSound: {fileID: 0}
-  grappleCooldown: 1
+  grappleCooldown: 0.25
   GrappleKey: 324
 --- !u!114 &3496976550941876212
 MonoBehaviour:

@@ -4,12 +4,12 @@ using UnityEngine.Rendering;
 public class Player : MonoBehaviour, IDamageable, IPickable, TakeDamage
 {
     [Header("-----Player Stats-----")]
-    
     [SerializeField] public int currentHealth,maxHealth = 100;
     [SerializeField] public int currentShield,maxShield = 100;
     [SerializeField] public int currentAp, maxAp = 100;
     public bool abilityReady;
     bool shieldActive;
+
 
 
     void Start()
@@ -62,10 +62,6 @@ public class Player : MonoBehaviour, IDamageable, IPickable, TakeDamage
             return;
         }
         currentHealth -= amount;
-        if (currentHealth <= 0) {
-            GameManager.Instance.OnLose();
-        }
-
     }
 
     public void GainHealth(int amountToGain) { currentHealth += amountToGain; if (currentHealth > maxHealth) { currentHealth = maxHealth; } }

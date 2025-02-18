@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1586378688369633814}
   - component: {fileID: 2735409440420181363}
   - component: {fileID: 2480587241576143797}
-  m_Layer: 11
+  m_Layer: 9
   m_Name: Bullet
   m_TagString: Bullet
   m_Icon: {fileID: 0}
@@ -58,7 +58,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   rb: {fileID: 2480587241576143797}
-  damageAmount: 50
+  damageAmount: 5
   speed: 10
   destroyTime: 2
 --- !u!23 &1586378688369633814
