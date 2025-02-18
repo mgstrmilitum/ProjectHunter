@@ -53,6 +53,12 @@ public class Door : MonoBehaviour
                 {
                     GameManager.Instance.buttonInteract.SetActive(true);
                     GameManager.Instance.buttonInfo.text = buttonInfo;
+
+                    if (Input.GetButtonDown("Interact"))
+                    {
+                        foreach (GameObject model in models) model.SetActive(false);
+                        GameManager.Instance.buttonInteract.SetActive(false);
+                    }
                 }
                 else
                 {

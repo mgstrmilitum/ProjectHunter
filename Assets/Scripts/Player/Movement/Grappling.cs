@@ -52,6 +52,7 @@ public class Grappling : MonoBehaviour
 
     void Update()
     {
+        Debug.Log("Gun tip active? " + gunTip.gameObject.activeSelf);
         if (Input.GetKeyDown(GrappleKey))
             StartGrapple();
 
