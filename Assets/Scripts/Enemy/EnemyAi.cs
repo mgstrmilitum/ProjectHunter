@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyAI : MonoBehaviour, IDamageable
+public class EnemyAI : MonoBehaviour, TakeDamage
 {
     enum EnemyType
     {
@@ -216,7 +216,7 @@ public class EnemyAI : MonoBehaviour, IDamageable
         //}
     }
 
-    public void TakeDamage(int amount)
+    public void takeDamage(int amount)
     {
         hp -= amount;
 

@@ -1,16 +1,15 @@
 using UnityEngine;
 
-public class PlayerInterfaces : MonoBehaviour, IPickable
+public class PlayerInterfaces : MonoBehaviour, IOpen
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private bool keyInHand;
+    public bool hasKey()
     {
-        
+        return keyInHand;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnTriggerEnter(Collider other)
     {
-        
+        if(other.CompareTag("Key")) keyInHand = true;
     }
 }

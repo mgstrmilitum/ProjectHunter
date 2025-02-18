@@ -2,8 +2,16 @@ using UnityEngine;
 
 public class LevelLoader : MonoBehaviour
 {
+    public int levelToLoad;
+    public bool isFinalLevel;
+
     private void OnTriggerEnter(Collider other)
     {
-        GameManager.Instance.LoadLevel(1);
+        if (!isFinalLevel) GameManager.Instance.LoadLevel(levelToLoad);
+        else
+        {
+            GameManager.Instance.activeMenu = GameManager.Instance.winMenu;
+            GameManager.Instance.activeMenu.SetActive(true);
+        }
     }
 }

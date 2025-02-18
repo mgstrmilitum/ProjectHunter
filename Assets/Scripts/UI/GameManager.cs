@@ -32,6 +32,11 @@ public class GameManager : MonoBehaviour
     public Image abilityMeterFront;
     public Image abilityMeterBack;
 
+    [Header("-----Context-Specific Buttons-----")]
+    [SerializeField] public GameObject buttonInteract;
+    [SerializeField] public TMP_Text buttonInfo;
+    public GameObject buttonLocked;
+
     [Header("Progress")]
     public bool beatenLvl1Boss;
 

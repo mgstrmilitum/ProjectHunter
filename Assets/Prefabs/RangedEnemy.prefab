@@ -1145,7 +1145,7 @@ GameObject:
   - component: {fileID: 3538673969053860213}
   - component: {fileID: 2554698429162744467}
   m_Layer: 10
-  m_Name: FinalEnemy
+  m_Name: RangedEnemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1207,15 +1207,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meleeDamage: 1
-  hp: 10
-  maxHp: 10
+  hp: 100
+  maxHp: 100
   model: {fileID: 65272195357161967}
   shootPos: {fileID: 2581709294045852299}
   bullet: {fileID: 6854347750843841877, guid: 2901a370430183a4a838f838ffbac60c, type: 3}
   shootRate: 1
   meleeRate: 0
   agent: {fileID: 4147810471736199427}
-  faceTargetSpeed: 20
+  faceTargetSpeed: 40
   fov: 120
   shootFOV: 70
   roamPauseTime: 2
@@ -1224,11 +1224,12 @@ MonoBehaviour:
   WalkSpeedTrans: 1
   roamDistance: 5
   grenadeSpeed: 0
-  playerTransform: {fileID: 1802374300192197845, guid: 41ef48e30163a174eb98bc7c8fb21339, type: 3}
+  playerTransform: {fileID: 8676264419197833811}
   damageMultiplier: 2
   enemySpawnerPrefab: {fileID: 1641146219379587604, guid: a0492450a80e6d6488c3fb339c62c868, type: 3}
   spawnerPositions: []
   enemyType: 0
+  rb: {fileID: 0}
 --- !u!195 &4147810471736199427
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1270,7 +1271,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 4
+  m_Radius: 7
   m_Center: {x: 0, y: 1, z: 0}
 --- !u!136 &2554698429162744467
 CapsuleCollider:
@@ -2275,7 +2276,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1230027408252255197
 Transform:
   m_ObjectHideFlags: 0
