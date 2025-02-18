@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 //using UnityEditor.ProBuilder;
 public class GameManager : MonoBehaviour
 {
@@ -14,7 +15,7 @@ public class GameManager : MonoBehaviour
     public GameObject activeMenu;
     public GameObject pauseMenu;
     public GameObject winMenu;
-    public GameObject loseMenu; 
+    public GameObject loseMenu;
     bool isPaused;
 
 
@@ -31,14 +32,17 @@ public class GameManager : MonoBehaviour
     public Image abilityMeterFront;
     public Image abilityMeterBack;
 
+    [Header("-----Context-Specific Buttons-----")]
+    [SerializeField] public GameObject buttonInteract;
+    [SerializeField] public TMP_Text buttonInfo;
+    public GameObject buttonLocked;
+
     [Header("Progress")]
     public bool beatenLvl1Boss;
 
     void Awake()
     {
         Instance = this;
-
-        playerScript = player.GetComponent<Player>();
         movementScript = player.GetComponent<PlayerMovement>();
         Time.timeScale = 1f;
 
@@ -51,7 +55,7 @@ public class GameManager : MonoBehaviour
     {
         UpdatePlayerUI();
 
-        
+
         if (Input.GetButtonDown("Cancel"))
         {
             if (activeMenu == null)
@@ -73,12 +77,13 @@ public class GameManager : MonoBehaviour
         activeMenu = loseMenu;
         activeMenu.SetActive(isPaused);
     }
-    public void OnWin() {
+    public void OnWin()
+    {
         StatePause();
         activeMenu = winMenu;
         activeMenu.SetActive(isPaused);
 
-       
+
     }
     #region Menus
     public void StatePause()
@@ -97,6 +102,10 @@ public class GameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         activeMenu.SetActive(false);
         activeMenu = null;
+    }
+    public void LoadLevel(int level)
+    {
+        SceneManager.LoadSceneAsync(level);
     }
     #endregion
 
@@ -154,10 +163,10 @@ public class GameManager : MonoBehaviour
                 abilityMeterBack.color = Color.green;
                 abilityMeterBack.fillAmount = aFraction;
 
-               abilityMeterFront.fillAmount = Mathf.Lerp(abilityMeterFront.fillAmount, aFraction, Time.deltaTime * barLerpSpeed);
+                abilityMeterFront.fillAmount = Mathf.Lerp(abilityMeterFront.fillAmount, aFraction, Time.deltaTime * barLerpSpeed);
             }
         }
     }
 }
-    #endregion
+#endregion
 
