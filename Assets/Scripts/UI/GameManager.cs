@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 //using UnityEditor.ProBuilder;
 public class GameManager : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class GameManager : MonoBehaviour
     //----Menus-----//
     public GameObject activeMenu;
     public GameObject pauseMenu;
+    public GameObject winMenu;
+    public GameObject loseMenu; 
     bool isPaused;
 
 
@@ -28,6 +31,15 @@ public class GameManager : MonoBehaviour
     [Header("-----Player Info-----")]
     public Image abilityMeterFront;
     public Image abilityMeterBack;
+
+    [Header("-----Context-Specific Buttons-----")]
+    [SerializeField] public GameObject buttonInteract;
+    [SerializeField] public TMP_Text buttonInfo;
+    public GameObject buttonLocked;
+
+    [Header("Progress")]
+    public bool beatenLvl1Boss;
+
     void Awake()
     {
         Instance = this;
@@ -60,6 +72,20 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+
+    public void OnLose()
+    {
+        StatePause();
+        activeMenu = loseMenu;
+        activeMenu.SetActive(isPaused);
+    }
+    public void OnWin() {
+        StatePause();
+        activeMenu = winMenu;
+        activeMenu.SetActive(isPaused);
+
+       
+    }
     #region Menus
     public void StatePause()
     {
@@ -77,6 +103,10 @@ public class GameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         activeMenu.SetActive(false);
         activeMenu = null;
+    }
+    public void LoadLevel(int level)
+    {
+        SceneManager.LoadSceneAsync(level);
     }
     #endregion
 
@@ -140,3 +170,4 @@ public class GameManager : MonoBehaviour
     }
 }
     #endregion
+
