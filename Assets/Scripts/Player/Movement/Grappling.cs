@@ -1,4 +1,4 @@
-using System.Linq.Expressions;
+using System.Linq.Expressions;  
 using UnityEngine;
 using System.Collections;
 public class Grappling : MonoBehaviour
@@ -31,18 +31,16 @@ public class Grappling : MonoBehaviour
     private Vector3 grapplePoint;
 
     [Header("Cooldown")]
-    public float grappleCooldown;
+    public float grappleCooldown; //time between grappling intervals
     private float grapplingCooldownTimer;
 
     [Header("Input")]
-    public KeyCode GrappleKey = KeyCode.Mouse0;
+    public KeyCode GrappleKey = KeyCode.Mouse1;
 
     private bool grappling;
 
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
-        pm = GetComponent<PlayerMovement>();
         lr.enabled = false;
 
         // Ensure audioSource is assigned
@@ -55,14 +53,10 @@ public class Grappling : MonoBehaviour
     void Update()
     {
         if (Input.GetKeyDown(GrappleKey))
-        {
             StartGrapple();
-        }
 
         if (Input.GetKeyUp(GrappleKey))
-        {
             StopGrapple();
-        }
 
         if (grappling)
         {
@@ -86,9 +80,13 @@ public class Grappling : MonoBehaviour
         grappling = true;
         pm.freeze = true;
 
+        if (grapplingCooldownTimer > 0f)
+            return;
+
+        grappling = true;
+
         RaycastHit hit;
-        if (Physics.Raycast(cam.position, cam.forward, out hit, maxGrappleDistance, whatIsGrappleable) ||
-            Physics.Raycast(cam.position, cam.forward, out hit, maxGrappleDistance, grappableGround))
+        if(Physics.Raycast(cam.position, cam.forward, out hit, maxGrappleDistance, whatIsGrappleable) || Physics.Raycast(cam.position, cam.forward, out hit, maxGrappleDistance, grappableGround))
         {
             grapplePoint = hit.point;
             Debug.Log("Grapple hit detected at: " + grapplePoint);
@@ -101,10 +99,11 @@ public class Grappling : MonoBehaviour
 
             Invoke(nameof(ExecuteGrapple), grappleDelayTime);
         }
+
         else
         {
-            Debug.Log("No grapple hit detected!");
             grapplePoint = cam.position + cam.forward * maxGrappleDistance;
+            
             Invoke(nameof(StopGrapple), grappleDelayTime);
         }
 
@@ -116,21 +115,19 @@ public class Grappling : MonoBehaviour
     {
         pm.freeze = false;
 
-        if (!grappling)
-        {
-            Debug.Log("ExecuteGrapple called but grappling is false!");
-            return;
-        }
+        Vector3 lowestPoint = new Vector3(transform.position.x, transform.position.y - 1f, transform.position.z);
 
         Debug.Log("Grapple executed, pulling towards: " + grapplePoint);
         StartCoroutine(GrappleMovement());
     }
 
-    public void StopGrapple()
+    private void StopGrapple()
     {
         pm.freeze = false;
         grappling = false;
+        pm.activeGrapple = false;
         grapplingCooldownTimer = grappleCooldown;
+
         lr.enabled = false;
         //rb.isKinematic = false;
     }
