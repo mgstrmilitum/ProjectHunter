@@ -244,6 +244,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 41833b1475a950647939c7d858c43690, type: 3}
+--- !u!137 &7132796 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 6888097194048570481, guid: 6d34f90cf602b064c90d396982e99662, type: 3}
+  m_PrefabInstance: {fileID: 1151666485}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7883360 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 918293182789584205, guid: e0b2792fd3ecf274fa1b9172d6962562, type: 3}
@@ -6738,6 +6743,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e0b2792fd3ecf274fa1b9172d6962562, type: 3}
+--- !u!137 &195348029 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 5236916893694503635, guid: 6d34f90cf602b064c90d396982e99662, type: 3}
+  m_PrefabInstance: {fileID: 1151666485}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &209892772
 GameObject:
   m_ObjectHideFlags: 0
@@ -34762,6 +34772,30 @@ PrefabInstance:
       propertyPath: m_Name
       value: RangedEnemy (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 6296237165148036514, guid: 6d34f90cf602b064c90d396982e99662, type: 3}
+      propertyPath: models.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6296237165148036514, guid: 6d34f90cf602b064c90d396982e99662, type: 3}
+      propertyPath: 'models.Array.data[0]'
+      value: 
+      objectReference: {fileID: 1223945103}
+    - target: {fileID: 6296237165148036514, guid: 6d34f90cf602b064c90d396982e99662, type: 3}
+      propertyPath: 'models.Array.data[1]'
+      value: 
+      objectReference: {fileID: 195348029}
+    - target: {fileID: 6296237165148036514, guid: 6d34f90cf602b064c90d396982e99662, type: 3}
+      propertyPath: 'models.Array.data[2]'
+      value: 
+      objectReference: {fileID: 7132796}
+    - target: {fileID: 6296237165148036514, guid: 6d34f90cf602b064c90d396982e99662, type: 3}
+      propertyPath: 'models.Array.data[3]'
+      value: 
+      objectReference: {fileID: 1158333578}
+    - target: {fileID: 6296237165148036514, guid: 6d34f90cf602b064c90d396982e99662, type: 3}
+      propertyPath: 'models.Array.data[4]'
+      value: 
+      objectReference: {fileID: 1565772031}
     - target: {fileID: 8676264419197833811, guid: 6d34f90cf602b064c90d396982e99662, type: 3}
       propertyPath: m_LocalPosition.x
       value: -106.96946
@@ -35089,6 +35123,11 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!137 &1158333578 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 3456451624059192128, guid: 6d34f90cf602b064c90d396982e99662, type: 3}
+  m_PrefabInstance: {fileID: 1151666485}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1161124982 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 0bfb723e7ab47bc4393300268cf70363, type: 3}
@@ -35789,6 +35828,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1782b573d69b014996470e1739e2bee, type: 3}
+--- !u!137 &1223945103 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 65272195357161967, guid: 6d34f90cf602b064c90d396982e99662, type: 3}
+  m_PrefabInstance: {fileID: 1151666485}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1224452977 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 0bfb723e7ab47bc4393300268cf70363, type: 3}
@@ -47411,6 +47455,11 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!137 &1565772031 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 4184440376415946193, guid: 6d34f90cf602b064c90d396982e99662, type: 3}
+  m_PrefabInstance: {fileID: 1151666485}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1577100473
 GameObject:
   m_ObjectHideFlags: 0
