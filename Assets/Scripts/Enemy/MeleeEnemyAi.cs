@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class MeleeEnemyAI : MonoBehaviour
+public class MeleeEnemyAI : MonoBehaviour, TakeDamage
 {
     [Header("Enemy Stats")]
     [SerializeField] int meleeDamage;
@@ -12,6 +12,7 @@ public class MeleeEnemyAI : MonoBehaviour
 
     [Header("References")]
     [SerializeField] Renderer model;
+    [SerializeField] Renderer[] models;
     [SerializeField] NavMeshAgent agent;
     [SerializeField] int faceTargetSpeed;
     [SerializeField] int roamPauseTime;
@@ -117,9 +118,16 @@ public class MeleeEnemyAI : MonoBehaviour
 
     IEnumerator FlashRed()
     {
-        model.material.color = Color.red;
+        foreach (Renderer rend in models)
+        {
+            rend.material.color = Color.red;
+        }
         yield return new WaitForSeconds(0.1f);
-        model.material.color = originalColor;
+        foreach (Renderer rend in models)
+        {
+            rend.material.color = originalColor;
+
+        }
     }
 
     public void takeDamage(int amount)
@@ -127,7 +135,8 @@ public class MeleeEnemyAI : MonoBehaviour
         hp -= amount;
 
         // On taking damage, immediately re-chase the player.
-        if (NavMesh.SamplePosition(GameManager.Instance.player.transform.position, out NavMeshHit hit, 1.0f, NavMesh.AllAreas))
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(GameManager.Instance.player.transform.position, out hit, 1.0f, NavMesh.AllAreas))
         {
             agent.SetDestination(hit.position);
         }

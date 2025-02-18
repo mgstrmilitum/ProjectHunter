@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyAI : MonoBehaviour, IDamageable
+public class EnemyAI : MonoBehaviour, TakeDamage
 {
     enum EnemyType
     {
@@ -16,6 +16,7 @@ public class EnemyAI : MonoBehaviour, IDamageable
     [SerializeField] int hp;
     [SerializeField] int maxHp;
     [SerializeField] Renderer model;
+    [SerializeField] Renderer[] models;
     [SerializeField] Transform shootPos;
     [SerializeField] GameObject bullet;
     [SerializeField] float shootRate;
@@ -114,8 +115,6 @@ public class EnemyAI : MonoBehaviour, IDamageable
         playerDirection = GameManager.Instance.player.transform.position - headPos.position;
         angleToPlayer = Vector3.Angle(playerDirection, transform.forward);
 
-        Debug.Log(angleToPlayer);
-
         RaycastHit hit;
         if (Physics.Raycast(headPos.position, playerDirection, out hit))
         {
@@ -159,9 +158,16 @@ public class EnemyAI : MonoBehaviour, IDamageable
 
     IEnumerator FlashRed()
     {
-        model.material.color = Color.red;
+        foreach (Renderer rend in models)
+        {
+            rend.material.color = Color.red;
+        }
         yield return new WaitForSeconds(0.1f);
-        model.material.color = originalColor;
+        foreach (Renderer rend in models)
+        {
+            rend.material.color = originalColor;
+
+        }
     }
 
     IEnumerator Shoot()
@@ -216,7 +222,7 @@ public class EnemyAI : MonoBehaviour, IDamageable
         //}
     }
 
-    public void TakeDamage(int amount)
+    public void takeDamage(int amount)
     {
         hp -= amount;
 

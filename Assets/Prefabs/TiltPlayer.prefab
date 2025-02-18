@@ -313,6 +313,8 @@ GameObject:
   - component: {fileID: 1337218531082241551}
   - component: {fileID: 2140442679659648506}
   - component: {fileID: 3121507664593920949}
+  - component: {fileID: 704631210642752413}
+  - component: {fileID: 8458516089594339459}
   - component: {fileID: 5482271306634612097}
   - component: {fileID: 7114548862901135059}
   m_Layer: 7
@@ -356,7 +358,6 @@ MonoBehaviour:
   walkSpeed: 5
   slideSpeed: 30
   sprintSpeed: 8
-  coyoteTime: 0.2
   sliding: 0
   SlideKey: 306
   jumpForce: 20
@@ -460,17 +461,79 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f925b54f61ebda94bae85eb44304aa61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  orientation: {fileID: 0}
   playerObj: {fileID: 8375449860738901039}
   rb: {fileID: 2140442679659648506}
   pm: {fileID: 1337218531082241551}
-  aud: {fileID: 0}
   maxSlideTime: 0.75
   slideForce: 200
   walkSlideForce: 50
-  slideClips: []
-  slideClipsVol: 0
   slideYScale: 0.5
   SlideKey: 306
+--- !u!114 &704631210642752413
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3064387012276842442}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8428ea8438c980b459d6868263fb3adc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pm: {fileID: 1337218531082241551}
+  cam: {fileID: 1061171247936720428}
+  gunTip: {fileID: 7418488365663871181}
+  whatIsGrappleable:
+    serializedVersion: 2
+    m_Bits: 320
+  grappableGround:
+    serializedVersion: 2
+    m_Bits: 8
+  lr: {fileID: 8806943583558612010}
+  rb: {fileID: 2140442679659648506}
+  maxGrappleDistance: 25
+  grappleDelayTime: 0.25
+  overshootYAxis: 5
+  grapplePullSpeed: 100
+  maxGrappleSpeed: 10
+  grappleSpeed: 10
+  audioSource: {fileID: 0}
+  grappleSound: {fileID: 0}
+  grappleCooldown: 0.25
+  GrappleKey: 324
+--- !u!114 &8458516089594339459
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3064387012276842442}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e31f56aebcebb04d81eef73b45da8c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pm: {fileID: 1337218531082241551}
+  orientation: {fileID: 0}
+  cam: {fileID: 1061171247936720428}
+  rb: {fileID: 2140442679659648506}
+  moveToLedgeSpeed: 12
+  maxLedgeGrabDistance: 2
+  minTimeOnLedge: 0.5
+  GrabKey: 99
+  JumpKey: 32
+  ledgeJumpForwardForce: 14
+  ledgeJumpUpwardForce: 10
+  exitingLedge: 0
+  exitLedgeTime: 0.2
+  holding: 0
+  ledgeDetectionLength: 3
+  ledgeSphereCastRadius: 0.5
+  whatisWall:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!114 &5482271306634612097
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -32,6 +32,7 @@ public class PlayerDropShadow : MonoBehaviour
             //{
                 //shadow.transform.localScale = Vector3.one;
             //}
+            Debug.Log(distanceToGround);
             //shadow.transform.localScale = distanceToGround.normalized;
             //shadow.transform.position = new Vector3(transform.position.x, hit.point.y + offset, transform.position.z);
         }
