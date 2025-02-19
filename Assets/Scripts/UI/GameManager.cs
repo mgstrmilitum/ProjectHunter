@@ -43,8 +43,6 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
-
-        playerScript = player.GetComponent<Player>();
         movementScript = player.GetComponent<PlayerMovement>();
         Time.timeScale = 1f;
 

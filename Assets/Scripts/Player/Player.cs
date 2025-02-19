@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Rendering;
 
-public class Player : MonoBehaviour, IDamageable, IPickable, TakeDamage
+public class Player : MonoBehaviour, IDamageable, IPickable, TakeDamage, IOpen
 {
     [Header("-----Player Stats-----")]
     [SerializeField] public int currentHealth,maxHealth = 100;
@@ -9,7 +9,7 @@ public class Player : MonoBehaviour, IDamageable, IPickable, TakeDamage
     [SerializeField] public int currentAp, maxAp = 100;
     public bool abilityReady;
     bool shieldActive;
-
+    public bool key;
 
 
     void Start()
@@ -70,4 +70,8 @@ public class Player : MonoBehaviour, IDamageable, IPickable, TakeDamage
 
     public void GainAp(int amountToGain) { currentAp += amountToGain;}
 
+    public bool hasKey()
+    {
+        return key;
+    }
 }

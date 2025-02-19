@@ -10,8 +10,7 @@ public class LevelLoader : MonoBehaviour
         if (!isFinalLevel) GameManager.Instance.LoadLevel(levelToLoad);
         else
         {
-            GameManager.Instance.activeMenu = GameManager.Instance.winMenu;
-            GameManager.Instance.activeMenu.SetActive(true);
+            GameManager.Instance.OnWin();
         }
     }
 }
