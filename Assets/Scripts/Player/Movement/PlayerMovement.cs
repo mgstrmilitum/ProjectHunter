@@ -54,8 +54,8 @@ public class PlayerMovement : MonoBehaviour
     public float leanVelocity;
     public KeyCode LeanLeftKey = KeyCode.B;
     public KeyCode LeanRightKey = KeyCode.N;
-    public KeyCode LeanDownKey = KeyCode.V;
-    private bool leanDown;
+    //public KeyCode LeanDownKey = KeyCode.V;
+    //private bool leanDown;
     private bool leanRight;
     private bool leanLeft;
     public bool leaning;
@@ -116,7 +116,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         isPlayingSteps = false;
-        leanDown = false;
+        //leanDown = false;
         exitingSlope = false;
         rb.freezeRotation = true;
         readyToJump = true;
