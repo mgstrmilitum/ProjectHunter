@@ -12,6 +12,12 @@ public class DamagableProjectiles : MonoBehaviour
     [SerializeField] SphereCollider KboomCollider;
     [SerializeField] LayerMask whatISEnemy;
     EnemyAI enemy;
+    public AudioSource hitSound;
+
+    private void Start()
+    {
+        hitSound= GetComponent<AudioSource>();
+    }
     private void OnCollisionEnter(Collision collision)
     {
         //Debug.Log(collision.contacts[0].point.ToString());
@@ -44,6 +50,7 @@ public class DamagableProjectiles : MonoBehaviour
             {
                 hotcol.GetComponent<Rigidbody>().isKinematic = false;
                 hotcol.GetComponent<Rigidbody>().AddExplosionForce(explosiveForce, explosionPoint, blastRadius, 1, ForceMode.Impulse);
+
                 OnTriggerEnter(hotcol);
 
             }
@@ -59,6 +66,8 @@ public class DamagableProjectiles : MonoBehaviour
         TakeDamage dmg= other.GetComponent<TakeDamage>();
         if (dmg != null)
         {
+            
+            hitSound.Play();
             dmg.takeDamage(blastDamage);
             //Destroy(other.gameObject);
         }

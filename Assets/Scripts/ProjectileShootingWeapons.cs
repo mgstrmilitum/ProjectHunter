@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class ProjectileShootingWeapons : MonoBehaviour
@@ -8,6 +9,12 @@ public class ProjectileShootingWeapons : MonoBehaviour
     [SerializeField] Transform shootPos;
     public int Damage;
     public int projctileLoad;
+    public int MaxMagazine;
+    int ammoCount;//to track the bullets
+    bool isReloading;
+    bool canShoot=true;
+    public AudioSource AudioSource;
+    //public AudioSource reloadSound;
 
     EnemyAI enemy;
 
@@ -15,14 +22,23 @@ public class ProjectileShootingWeapons : MonoBehaviour
     void Start()
     {
         Setinitalreference();
+       AudioSource = GetComponent<AudioSource>();
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire1") && projctileLoad>0 && !isReloading && canShoot)
         {
             LaunchProjectile();
+            AudioSource.Play();
+
+        }
+        if (Input.GetButtonDown("Reload"))
+        {//reloadSound = GetComponent<AudioSource>();
+            StartCoroutine(Reloading());
+            
         }
     }
 
@@ -34,8 +50,8 @@ public class ProjectileShootingWeapons : MonoBehaviour
             projectile =  Instantiate(projctilePrehaber, shootPos.position, shootPos.rotation);
             Rigidbody body = projectile.GetComponent<Rigidbody>();
             body.isKinematic=false;
-
             projectile.GetComponent<Rigidbody>().AddForce(projectileTransform.right *projectileMovingForce, ForceMode.Impulse);
+            projctileLoad--;//a bullet was shot
             if (projectile.GetComponent<Rigidbody>() != null)
             {   
              
@@ -43,10 +59,10 @@ public class ProjectileShootingWeapons : MonoBehaviour
                 
             }
             
-            Destroy(projectile, 22);
+            Destroy(projectile, 100);
 
         }
-        projctileLoad--;
+        
 
     }
     void Setinitalreference()
@@ -57,4 +73,20 @@ public class ProjectileShootingWeapons : MonoBehaviour
     {
         Destroy(projectile);
     }
+
+    public IEnumerator Reloading()
+    {
+
+        
+            canShoot = false;
+            isReloading = true;
+            yield return new WaitForSeconds(3);
+            projctileLoad=  MaxMagazine;
+            isReloading=false;
+            canShoot= true;
+        //reloadSound.Play();
+
+    }
+
+    
 }

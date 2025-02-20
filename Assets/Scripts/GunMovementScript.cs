@@ -4,8 +4,8 @@ using UnityEngine.WSA;
 
 public class GunMovementScript : MonoBehaviour
 {
-    public int Magazine;
-    int MaxMagazine;
+    public int CurrentMagazineSize;//the size on hand
+    int MaxMagazine;//the size when reloading
     float pushbackForce;
     float pushbackRadius;
     public Transform pushbackPosistion;
@@ -21,7 +21,7 @@ public class GunMovementScript : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        MaxMagazine=Magazine;
+        
     }
 
     // Update is called once per frame
@@ -37,7 +37,7 @@ public class GunMovementScript : MonoBehaviour
     public void Launcher()
     {
         
-         if(Magazine > 0 && !reloading)
+         if(CurrentMagazineSize > 0 && !reloading)
          {
             //move player in the opposite direction of where they are looking with AddExplosionForce
             
@@ -59,7 +59,7 @@ public class GunMovementScript : MonoBehaviour
         RaycastHit fired;
         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out fired, bulletRange))
         {
-            Magazine--;
+            CurrentMagazineSize--;
             
             TakeDamage dmg = fired.collider.GetComponent<TakeDamage>();
             if (dmg!=null)
@@ -86,7 +86,7 @@ public class GunMovementScript : MonoBehaviour
         {
             canShoot = false;
             reloading = true;
-            Magazine= MaxMagazine;
+            CurrentMagazineSize= CurrentMagazineSize +MaxMagazine;
         }
     }
 }
