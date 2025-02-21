@@ -17,6 +17,10 @@ public class PlayerMovement : MonoBehaviour
     float verticalInput;
     float startYScale;
 
+    [Header("Grappling")]
+    public GameObject grappleGun;
+    private Grappling grappleScript;
+
     [Header("Coyote Time")]
     public float coyoteTime = 0.2f; // Allow jumping for 0.2 seconds after leaving the ground
     private float coyoteTimeCounter;
@@ -121,11 +125,18 @@ public class PlayerMovement : MonoBehaviour
         rb.freezeRotation = true;
         readyToJump = true;
         startYScale = transform.localScale.y;
+        grappleScript = GetComponent<Grappling>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (grappleGun.activeSelf)
+        {
+            grappleScript.enabled = true;
+        }
+        else grappleScript.enabled = false;
+
         //ground check
         grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + groundCheckDistance, whatIsGround);
         MyInput();
@@ -151,8 +162,7 @@ public class PlayerMovement : MonoBehaviour
     {
         //CalculateLean();
     }
-    private void FixedUpdate()
-    {
+    private void FixedUpdate()    {
         MovePlayer();
     }
 
@@ -257,7 +267,7 @@ public class PlayerMovement : MonoBehaviour
         {
             StartCoroutine(PlaySteps());
         }
-        //review cross products so this makes sense
+
         moveDirection = transform.forward * -horizontalInput + transform.right * verticalInput;
         moveDirection = Vector3.Cross(slopeHit.normal,-moveDirection);
 
@@ -339,64 +349,64 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
-    private void LeanLeft()
-    {
-        if(Input.GetKeyDown(LeanLeftKey))
-        {
-            leanLeft = true;
-            leanRight = false;
-        }
-        if (Input.GetKeyUp(LeanLeftKey))
-        {
-            leanLeft = false;
-            leanRight = false;
-        }
-    }
+    //private void LeanLeft()
+    //{
+    //    if(Input.GetKeyDown(LeanLeftKey))
+    //    {
+    //        leanLeft = true;
+    //        leanRight = false;
+    //    }
+    //    if (Input.GetKeyUp(LeanLeftKey))
+    //    {
+    //        leanLeft = false;
+    //        leanRight = false;
+    //    }
+    //}
 
-    private void LeanRight()
-    {
-        if (Input.GetKeyDown(LeanRightKey))
-        {
-            leanLeft = false;
-            leanRight = true;
-        }
-        if (Input.GetKeyUp(LeanRightKey))
-        {
-            leanLeft = false;
-            leanRight = false;
-        }
-    }
+    //private void LeanRight()
+    //{
+    //    if (Input.GetKeyDown(LeanRightKey))
+    //    {
+    //        leanLeft = false;
+    //        leanRight = true;
+    //    }
+    //    if (Input.GetKeyUp(LeanRightKey))
+    //    {
+    //        leanLeft = false;
+    //        leanRight = false;
+    //    }
+    //}
     
-    private void LeanDown()
-    {
-        //if (Input.GetKey(LeanDownKey))
-        //{
-        //    targetLean = leanDownAngle;
-        //    leanDown = true;
-        //}
-    }
+    //private void LeanDown()
+    //{
+    //    //if (Input.GetKey(LeanDownKey))
+    //    //{
+    //    //    targetLean = leanDownAngle;
+    //    //    leanDown = true;
+    //    //}
+    //}
 
-    private void CalculateLean()
-    {
-        LeanLeft();
-        LeanRight();
+    //private void CalculateLean()
+    //{
+    //    LeanLeft();
+    //    LeanRight();
 
-        if(leanLeft)
-        {
-            targetLean = leanAngle;
-        }
-        else if(leanRight)
-        {
-            targetLean = -leanAngle;
-        }
-        else targetLean = 0f;
+    //    if(leanLeft)
+    //    {
+    //        targetLean = leanAngle;
+    //    }
+    //    else if(leanRight)
+    //    {
+    //        targetLean = -leanAngle;
+    //    }
+    //    else targetLean = 0f;
 
-        leaning = leanLeft || leanRight;
+    //    leaning = leanLeft || leanRight;
 
-        currentLean = Mathf.SmoothDamp(currentLean, targetLean, ref leanVelocity, leanSmoothing);
+    //    currentLean = Mathf.SmoothDamp(currentLean, targetLean, ref leanVelocity, leanSmoothing);
 
-        //leanPivot.localRotation = Quaternion.Euler(new Vector3(0f, 0f, currentLean));
-    }
+    //    //leanPivot.localRotation = Quaternion.Euler(new Vector3(0f, 0f, currentLean));
+    //}
 
     public void JumpToPosition(Vector3 targetPosition, float trajectoryHeight)
     {

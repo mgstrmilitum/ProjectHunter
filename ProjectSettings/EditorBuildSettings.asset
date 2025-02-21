@@ -12,7 +12,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Tutorial.unity
     guid: 133626cee832f5c439b7dcb9f4e8c249
   - enabled: 1
-    path: Assets/Scenes/EntryCastleWIP.unity
+    path: Assets/Scenes/Level1-EntryCastle.unity
     guid: 23bd8af959bac6c44a5bf4734f97d7cb
   - enabled: 0
     path: Assets/Scenes/Light Scenes/Level3.unity
