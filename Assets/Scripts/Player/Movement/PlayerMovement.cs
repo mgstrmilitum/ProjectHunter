@@ -17,6 +17,10 @@ public class PlayerMovement : MonoBehaviour
     float verticalInput;
     float startYScale;
 
+    [Header("Grappling")]
+    public GameObject grappleGun;
+    private Grappling grappleScript;
+
     [Header("Coyote Time")]
     public float coyoteTime = 0.2f; // Allow jumping for 0.2 seconds after leaving the ground
     private float coyoteTimeCounter;
@@ -102,10 +106,6 @@ public class PlayerMovement : MonoBehaviour
 
     public Difficulty difficulty;
 
-    [SerializeField] GameObject playertransform;
-
-    public CapsuleCollider capsuleCollider;
-
     public enum MovementState
     {
         Freeze,
@@ -125,16 +125,18 @@ public class PlayerMovement : MonoBehaviour
         rb.freezeRotation = true;
         readyToJump = true;
         startYScale = transform.localScale.y;
-        capsuleCollider = playertransform.GetComponentInChildren<CapsuleCollider>();
-        
-
+        grappleScript = GetComponent<Grappling>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        //difficulty easy
-        EasyMode();
+        if (grappleGun.activeSelf)
+        {
+            grappleScript.enabled = true;
+        }
+        else grappleScript.enabled = false;
+
         //ground check
         grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + groundCheckDistance, whatIsGround);
         MyInput();
@@ -160,13 +162,12 @@ public class PlayerMovement : MonoBehaviour
     {
         //CalculateLean();
     }
-    private void FixedUpdate()
-    {
+    private void FixedUpdate()    {
         MovePlayer();
     }
 
     private void OnCollisionEnter(Collision collision)
-    {
+    { 
     }
 
     private void StateHandler()
@@ -262,13 +263,13 @@ public class PlayerMovement : MonoBehaviour
                 rb.AddForce(Vector3.down * 80f, ForceMode.Force);
         }
         // Regular ground movement
-        if (moveDirection.magnitude > 0.3f && !isPlayingSteps)
+        if(moveDirection.magnitude > 0.3f && !isPlayingSteps)
         {
             StartCoroutine(PlaySteps());
         }
-        //review cross products so this makes sense
+
         moveDirection = transform.forward * -horizontalInput + transform.right * verticalInput;
-        moveDirection = Vector3.Cross(slopeHit.normal, -moveDirection);
+        moveDirection = Vector3.Cross(slopeHit.normal,-moveDirection);
 
         //if (OnSlope() && !exitingSlope)
         //{
@@ -280,7 +281,7 @@ public class PlayerMovement : MonoBehaviour
         //}
 
         if (grounded)
-        {
+        { 
             rb.AddForce(moveDirection * moveSpeed * 10f, ForceMode.Force);
         }
         // Air movement
@@ -295,7 +296,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void SpeedControl()
     {
-        if (activeGrapple) return;
+        if(activeGrapple) return;
 
         if (OnSlope() && !exitingSlope)
         {
@@ -348,64 +349,64 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
-    private void LeanLeft()
-    {
-        if (Input.GetKeyDown(LeanLeftKey))
-        {
-            leanLeft = true;
-            leanRight = false;
-        }
-        if (Input.GetKeyUp(LeanLeftKey))
-        {
-            leanLeft = false;
-            leanRight = false;
-        }
-    }
+    //private void LeanLeft()
+    //{
+    //    if(Input.GetKeyDown(LeanLeftKey))
+    //    {
+    //        leanLeft = true;
+    //        leanRight = false;
+    //    }
+    //    if (Input.GetKeyUp(LeanLeftKey))
+    //    {
+    //        leanLeft = false;
+    //        leanRight = false;
+    //    }
+    //}
 
-    private void LeanRight()
-    {
-        if (Input.GetKeyDown(LeanRightKey))
-        {
-            leanLeft = false;
-            leanRight = true;
-        }
-        if (Input.GetKeyUp(LeanRightKey))
-        {
-            leanLeft = false;
-            leanRight = false;
-        }
-    }
+    //private void LeanRight()
+    //{
+    //    if (Input.GetKeyDown(LeanRightKey))
+    //    {
+    //        leanLeft = false;
+    //        leanRight = true;
+    //    }
+    //    if (Input.GetKeyUp(LeanRightKey))
+    //    {
+    //        leanLeft = false;
+    //        leanRight = false;
+    //    }
+    //}
+    
+    //private void LeanDown()
+    //{
+    //    //if (Input.GetKey(LeanDownKey))
+    //    //{
+    //    //    targetLean = leanDownAngle;
+    //    //    leanDown = true;
+    //    //}
+    //}
 
-    private void LeanDown()
-    {
-        //if (Input.GetKey(LeanDownKey))
-        //{
-        //    targetLean = leanDownAngle;
-        //    leanDown = true;
-        //}
-    }
+    //private void CalculateLean()
+    //{
+    //    LeanLeft();
+    //    LeanRight();
 
-    private void CalculateLean()
-    {
-        LeanLeft();
-        LeanRight();
+    //    if(leanLeft)
+    //    {
+    //        targetLean = leanAngle;
+    //    }
+    //    else if(leanRight)
+    //    {
+    //        targetLean = -leanAngle;
+    //    }
+    //    else targetLean = 0f;
 
-        if (leanLeft)
-        {
-            targetLean = leanAngle;
-        }
-        else if (leanRight)
-        {
-            targetLean = -leanAngle;
-        }
-        else targetLean = 0f;
+    //    leaning = leanLeft || leanRight;
 
-        leaning = leanLeft || leanRight;
+    //    currentLean = Mathf.SmoothDamp(currentLean, targetLean, ref leanVelocity, leanSmoothing);
 
-        currentLean = Mathf.SmoothDamp(currentLean, targetLean, ref leanVelocity, leanSmoothing);
-
-        //leanPivot.localRotation = Quaternion.Euler(new Vector3(0f, 0f, currentLean));
-    }
+    //    //leanPivot.localRotation = Quaternion.Euler(new Vector3(0f, 0f, currentLean));
+    //}
 
     public void JumpToPosition(Vector3 targetPosition, float trajectoryHeight)
     {
@@ -420,7 +421,7 @@ public class PlayerMovement : MonoBehaviour
 
     public bool OnSlope()
     {
-        if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, playerHeight * 0.5f + slopeGroundCheckDistance))
+        if(Physics.Raycast(transform.position, Vector3.down, out slopeHit, playerHeight * 0.5f + slopeGroundCheckDistance))
         {
             float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
             return angle < maxSlopeAngle && angle != 0f;
@@ -453,7 +454,7 @@ public class PlayerMovement : MonoBehaviour
         float difference = Mathf.Abs(desiredMoveSpeed - moveSpeed);
         float startValue = moveSpeed;
 
-        while (time < difference)
+        while(time < difference)
         {
             moveSpeed = Mathf.Lerp(startValue, desiredMoveSpeed, time / difference);
             time += Time.deltaTime;
@@ -480,14 +481,5 @@ public class PlayerMovement : MonoBehaviour
         //GameManager.Instance.damagePanel.SetActive(true);
         yield return new WaitForSeconds(.1f);
         //GameManager.Instance.damagePanel.SetActive(false);
-    }
-
-    public void EasyMode()
-    {
-        if (difficulty == Difficulty.Easy)
-        {
-            capsuleCollider.height = 1;
-
-        }
     }
 }
