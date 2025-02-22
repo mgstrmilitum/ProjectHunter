@@ -69,7 +69,7 @@ public class GuardBoss : MonoBehaviour, TakeDamage
             {
                 // Calculate an adjusted target position using the player's x and z but the boss's shootPos.y.
                 Vector3 playerPos = GameManager.Instance.player.transform.position;
-                Vector3 adjustedPlayerPos = new Vector3(playerPos.x, shootPos.position.y, playerPos.z);
+                Vector3 adjustedPlayerPos = new Vector3(playerPos.x, playerPos.y, playerPos.z);
                 Vector3 direction = (adjustedPlayerPos - shootPos.position).normalized;
 
                 // Only shoot if the player is within the shooting FOV.
