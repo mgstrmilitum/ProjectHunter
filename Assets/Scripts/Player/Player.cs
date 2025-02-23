@@ -7,7 +7,12 @@ public class Player : MonoBehaviour, IDamageable, IPickable, TakeDamage
     [SerializeField] public int currentHealth,maxHealth = 100;
     [SerializeField] public int currentShield,maxShield = 100;
     [SerializeField] public int currentAp, maxAp = 100;
+    [SerializeField] public float combatTimer;
+    [SerializeField] AudioSource combatMusic;
+    [SerializeField] AudioSource nonCombatMusic;
+    public float localCombatTimer;
     public bool abilityReady;
+    public bool inCombat;
     bool shieldActive;
 
 
@@ -18,12 +23,43 @@ public class Player : MonoBehaviour, IDamageable, IPickable, TakeDamage
         currentShield = maxShield;
         currentAp = 0;
         shieldActive = true;
+
+        
     }
 
-   
+
     void Update()
     {
-       
+        if (localCombatTimer > 0 && inCombat == false)
+        {
+            inCombat = true;
+            if (combatMusic.volume < 1)
+            {
+                combatMusic.volume += Time.deltaTime;
+            }
+            if (nonCombatMusic.volume > 0)
+            {
+                nonCombatMusic.volume -= Time.deltaTime;
+            }
+        }
+
+        if (localCombatTimer <= 0 && inCombat == true)
+        {
+            inCombat = false;
+            if (combatMusic.volume > 0)
+            {
+                combatMusic.volume -= Time.deltaTime;
+            }
+            if (nonCombatMusic.volume < 1)
+            {
+                nonCombatMusic.volume += Time.deltaTime;
+            }
+        }
+        
+        if (localCombatTimer >= 0)
+        {
+            localCombatTimer -= Time.deltaTime;
+        }
     }
     void ShieldBehavior()
     {
@@ -35,6 +71,7 @@ public class Player : MonoBehaviour, IDamageable, IPickable, TakeDamage
 
     public void TakeDamage(int amount)
     {
+        localCombatTimer = combatTimer;
         ShieldBehavior();
         if (shieldActive)
         {
@@ -51,6 +88,7 @@ public class Player : MonoBehaviour, IDamageable, IPickable, TakeDamage
 
     public void takeDamage(int amount)
     {
+        localCombatTimer = combatTimer;
         if (shieldActive)
         {
             currentShield -= amount;
@@ -63,6 +101,7 @@ public class Player : MonoBehaviour, IDamageable, IPickable, TakeDamage
         }
         currentHealth -= amount;
     }
+
 
     public void GainHealth(int amountToGain) { currentHealth += amountToGain; if (currentHealth > maxHealth) { currentHealth = maxHealth; } }
 
