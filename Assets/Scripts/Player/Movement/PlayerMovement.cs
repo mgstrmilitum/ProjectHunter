@@ -168,7 +168,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void OnCollisionEnter(Collision collision)
-    {
+    { 
     }
 
     private void StateHandler()
@@ -264,13 +264,13 @@ public class PlayerMovement : MonoBehaviour
                 rb.AddForce(Vector3.down * 80f, ForceMode.Force);
         }
         // Regular ground movement
-        if (moveDirection.magnitude > 0.3f && !isPlayingSteps)
+        if(moveDirection.magnitude > 0.3f && !isPlayingSteps)
         {
             StartCoroutine(PlaySteps());
         }
 
         moveDirection = transform.forward * -horizontalInput + transform.right * verticalInput;
-        moveDirection = Vector3.Cross(slopeHit.normal, -moveDirection);
+        moveDirection = Vector3.Cross(slopeHit.normal,-moveDirection);
 
         //if (OnSlope() && !exitingSlope)
         //{
@@ -282,7 +282,7 @@ public class PlayerMovement : MonoBehaviour
         //}
 
         if (grounded)
-        {
+        { 
             rb.AddForce(moveDirection * moveSpeed * 10f, ForceMode.Force);
         }
         // Air movement
@@ -297,7 +297,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void SpeedControl()
     {
-        if (activeGrapple) return;
+        if(activeGrapple) return;
 
         if (OnSlope() && !exitingSlope)
         {
@@ -422,7 +422,7 @@ public class PlayerMovement : MonoBehaviour
 
     public bool OnSlope()
     {
-        if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, playerHeight * 0.5f + slopeGroundCheckDistance))
+        if(Physics.Raycast(transform.position, Vector3.down, out slopeHit, playerHeight * 0.5f + slopeGroundCheckDistance))
         {
             float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
             return angle < maxSlopeAngle && angle != 0f;
@@ -455,7 +455,7 @@ public class PlayerMovement : MonoBehaviour
         float difference = Mathf.Abs(desiredMoveSpeed - moveSpeed);
         float startValue = moveSpeed;
 
-        while (time < difference)
+        while(time < difference)
         {
             moveSpeed = Mathf.Lerp(startValue, desiredMoveSpeed, time / difference);
             time += Time.deltaTime;

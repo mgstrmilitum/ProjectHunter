@@ -2,36 +2,107 @@ using UnityEngine;
 
 public class Throwholywater : MonoBehaviour
 {
-    public Transform startPoint;
-    public GameObject HolyWaterBottle;
-    private Collider[] hitColliders;
-    float range = 10;
-    
-    void Start()
-    {
+    [Header("Gernade prefab")]
+    [SerializeField] private GameObject gernadePrefab;
 
+    [Header("Gernade Settings")]
+    [SerializeField] private Transform throwPos;
+    [SerializeField] Vector3 throwDirection=new Vector3(0,1,0);
+
+
+    [Header("Gernade Force")]
+    [SerializeField] private float throwforce=10f;//the force thrown
+    [SerializeField] private float maxForce=20f;//the max force that it can be thrown
+
+    private Camera maincamera;
+    private float chargeTime=0f;
+    bool isCharging=false;
+
+    [Header("Gernade Audio")]
+    [SerializeField] private AudioClip chargeAudio;
+    [SerializeField] private AudioClip throwAudio;
+
+    [Header("Trajectory Settings")]
+    [SerializeField] private LineRenderer trajectoryLine;
+
+
+
+    private void Start()
+    {
+        maincamera= Camera.main;
     }
 
-    void Update()
+    private void Update()
     {
         if(Input.GetMouseButtonDown(0))
         {
-            Launch();
+            StartCharging();
+        }
+        if (isCharging)
+        {
+            ChargeThrow();
+        }
+        if(Input.GetMouseButtonUp(0))
+        {
+            Release();
         }
     }
 
-    private void Launch()
+    void StartCharging()
+    {
+        //GernadethrowingAudio.instance.PlayOneShot(chargeAudio, 0.5f);
+        
+        isCharging = true;
+        chargeTime=0f;
+
+        trajectoryLine.enabled=true;
+    }
+
+    void ChargeThrow()
+    {
+        chargeTime+=Time.deltaTime;
+
+        Vector3 gernadeVel= (maincamera.transform.forward+throwDirection).normalized*Mathf.Min(chargeTime*throwforce,maxForce);
+        ShowTrajectory(throwPos.position+throwPos.forward, gernadeVel);
+    }
+
+    void Release()
+    {
+        ThrowGernade(Mathf.Min(chargeTime*throwforce, maxForce));
+        isCharging= false;
+
+        trajectoryLine.enabled=false;
+    }
+
+    void ThrowGernade(float force)
     {
         
-        GameObject holywaterInstance= Instantiate(HolyWaterBottle,startPoint.position,startPoint.rotation);
-        holywaterInstance.GetComponent<Rigidbody>().isKinematic = false;
-        holywaterInstance.GetComponent<Rigidbody>().AddForce(startPoint.forward * range, ForceMode.Force);
-        holywaterInstance.GetComponent<Rigidbody>().useGravity=true;
-        if (holywaterInstance.GetComponent<Rigidbody>()!=null )
-        {
-           
-            Destroy(gameObject, 1f);
-        }
-        
+
+        Vector3 spawnPos= throwPos.position+maincamera.transform.forward;//throws where we are looking
+
+        GameObject gernade=Instantiate(gernadePrefab,spawnPos,maincamera.transform.rotation);//spawn gernade
+
+        Rigidbody rb=gernade.GetComponent<Rigidbody>();
+
+        Vector3 finalThrowDirction=(maincamera.transform.forward+throwDirection).normalized;
+
+        rb.AddForce(finalThrowDirction*force,ForceMode.VelocityChange);
+        //GernadethrowingAudio.instance.PlayOneShot(throwAudio, 0.5f);
+
+        //throwing sound
     }
+
+    //logic for showing trajectory
+    void ShowTrajectory(Vector3 origin,Vector3 speed)
+    {
+        Vector3[] points= new Vector3[100];
+        trajectoryLine.positionCount=points.Length;
+        for (int i = 0; i < points.Length; i++)
+        {
+            float time= i*0.1f;
+            points[i]=origin+speed*time+0.5f* Physics.gravity*time*time;//Displacement Math(Inital Velocity, time, 0.5, accerlation, time^2)
+        }
+        trajectoryLine.SetPositions(points);
+    }
+
 }

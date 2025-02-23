@@ -1,5 +1,10 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Breakable Windows.meta
+guid: 2d910f61a3bf22f43a75b9eedf9da0d7
+folderAsset: yes
+========
 guid: 880b7a8cdd3b05d49864ad67db05d08b
+>>>>>>>> AustinBranch:Assets/Scenes/Main Menu.unity.meta
 DefaultImporter:
   externalObjects: {}
   userData: 

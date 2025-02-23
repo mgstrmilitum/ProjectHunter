@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,97 +6,114 @@ using UnityEngine;
 public class Holywater : MonoBehaviour
 {
 
-    private Collider[] hitColliders;
-    private Collider hit;
-    public float blastRadius;
-    public float explosiveForce;
-    public LayerMask explosionLayers;
-    public ParticleSystem Boom;
-    public int blastDamage;
-    public int throwforce;
-    public Transform transformer;
-    [SerializeField] SphereCollider KboomCollider;
-    [SerializeField] LayerMask whatISEnemy;
+    [Header("Explosion prefab")]
+    [SerializeField] private GameObject explosionEffectPrefab;
+    [SerializeField] private Vector3 explosionPratciles = new Vector3(0, 1, 0);
+    [SerializeField] private GameObject audioSourcePrefab;
 
-    private void OnCollisionEnter(Collision collision)
+    [Header("Explsoion Settings")]
+    [SerializeField] private float explosionDelay = 2f;
+    [SerializeField] private float explosionforce = 700f;
+    [SerializeField] private float explosionradius = 5f;
+
+    [Header("Audio Effects")]
+    [SerializeField] private AudioClip explosionAudioSource;
+    [SerializeField] private AudioClip impactSound;
+
+    private float countdown;
+    private bool hasExploded;
+    private AudioSource audio_;
+
+    [Header("Gernade Damage")]
+    [SerializeField] private int Damage;
+    private void Start()
     {
-        Debug.Log(collision.contacts[0].point.ToString());
-        Boom= Instantiate(Boom, collision.contacts[0].point, Quaternion.identity);//Boom at this exact spot!
-        Destroy(Boom, 2f);
-        TakeDamage dmg= collision.gameObject.GetComponent<TakeDamage>();
-        if (dmg != null)
-        {
-            dmg.takeDamage(blastDamage);
-            Destroy(collision.gameObject);
-            KboomCollider.enabled=true;
-            MeshRenderer meshrenderr = this.GetComponent<MeshRenderer>();
-            meshrenderr.enabled=false;
-            MeshFilter meshfilterrr = this.GetComponent<MeshFilter>();
-            Destroy(meshfilterrr);
 
+
+        countdown=explosionDelay;
+        audio_ = GetComponent<AudioSource>();
+    }
+
+    private void Update()
+    {
+        if (!hasExploded)
+        {
+            countdown-=Time.deltaTime;
+            if (countdown<=0f)
+            {
+                Explode();
+                hasExploded = true;
+            }
         }
+    }
+
+    void Explode()
+    {
+        GameObject explosioneffect = Instantiate(explosionEffectPrefab, transform.position+explosionPratciles, Quaternion.identity);
+        Destroy(explosioneffect, 4f);
+
+        PlaySound(explosionAudioSource);
+
+        NearbyForceApply();
+
+        Destroy(gameObject);
+    }
+
+    private void PlaySound(AudioClip clip)
+    {
+        GameObject audioSourceObject_= Instantiate(audioSourcePrefab, transform.position, Quaternion.identity);
+        AudioSource inststantedAudio= audioSourceObject_.GetComponent<AudioSource>();
+        inststantedAudio.clip=clip;
+        inststantedAudio.spatialBlend=1;//3d sound
+        inststantedAudio.Play();
+
+        Destroy(audioSourceObject_,inststantedAudio.clip.length);
 
     }
 
-    void OnExplosion(Vector3 explosionPoint)
+    void NearbyForceApply()
     {
-        hitColliders = Physics.OverlapSphere(explosionPoint, blastRadius, explosionLayers);
-        foreach (Collider hotcol in hitColliders)
+        Collider[] colliders = Physics.OverlapSphere(transform.position, explosionradius);
+        foreach (Collider nearbyObject in colliders)
         {
-            Debug.Log(hotcol.gameObject.name);
-            if (hotcol.GetComponent<Rigidbody>() != null)
+            Rigidbody rb = nearbyObject.GetComponent<Rigidbody>();
+            if (rb != null)
             {
-                hotcol.GetComponent<Rigidbody>().isKinematic = false;
-                hotcol.GetComponent<Rigidbody>().AddExplosionForce(explosiveForce, explosionPoint, blastRadius, 1, ForceMode.Impulse);
-                
-                OnTriggerEnter(hotcol);
-
+                rb.AddExplosionForce(explosionforce, transform.position, explosionradius);
+                TakeDamage dmg= colliders[0].GetComponent<TakeDamage>();
+                if(dmg != null)
+                {
+                    dmg.takeDamage(Damage);
+                }
             }
 
         }
     }
+
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.isTrigger)
         {
             return;
         }
-        if (other.GetComponent<TakeDamage>() != null)
+        TakeDamage dmg = other.GetComponent<TakeDamage>();
+        if (dmg != null)
         {
-            other.GetComponent<TakeDamage>().takeDamage(blastDamage);
-            Destroy(other.gameObject);
+
+            
+            dmg.takeDamage(Damage);
+            //Destroy(other.gameObject);
         }
 
 
     }
 
-    //public GameObject explsoiveEffect;
-    //public float delay = 3f;
+    private void OnCollisionEnter(Collision collision)
+    {
+        audio_.clip=impactSound;
+        audio_.spatialBlend=1;
+        audio_.Play();
+    }
 
-    //public float explosiveforce = 10f;
-    //public float radius = 20f;
-
-    //void Start()
-    //{
-    //    Invoke("Explosion", delay);
-    //}
-
-    //private void Explode()
-    //{
-    //    //check nearby colliders
-    //    Collider[] colliders = Physics.OverlapSphere(transform.position, radius);
-
-    //    //Apply them a force
-    //    foreach(Collider near in colliders)
-    //    {
-    //        Rigidbody rig = near.GetComponent<Rigidbody>();
-    //        if (rig != null )
-    //        {
-    //            rig.AddExplosionForce(explosiveforce, transform.position, radius, 1, ForceMode.Impulse);
-    //        }
-    //    }
-
-    //    Instantiate(explosiveforce,transform.position, transform.rotation);
-    //    Destroy(gameObject);
-    //}
 }

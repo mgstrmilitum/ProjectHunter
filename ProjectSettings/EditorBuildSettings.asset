@@ -8,15 +8,21 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 0
+    path: Assets/Scenes/Light Scenes/Level3.unity
+    guid: 5be3914d9f380fa489a53c31573ef67c
   - enabled: 1
     path: Assets/Scenes/Tutorial.unity
     guid: 133626cee832f5c439b7dcb9f4e8c249
   - enabled: 1
     path: Assets/Scenes/Level1-EntryCastle.unity
     guid: 23bd8af959bac6c44a5bf4734f97d7cb
-  - enabled: 0
-    path: Assets/Scenes/Light Scenes/Level3.unity
-    guid: 5be3914d9f380fa489a53c31573ef67c
+  - enabled: 1
+    path: Assets/Scenes/Level3-ClimbingTheTower.unity
+    guid: 8360a403e19477749860b234d754e057
+  - enabled: 1
+    path: Assets/Scenes/Level4-FinalBossArena.unity
+    guid: 4d175e232e708e841ab2acb722302b9e
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

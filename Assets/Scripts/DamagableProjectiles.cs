@@ -12,18 +12,27 @@ public class DamagableProjectiles : MonoBehaviour
     [SerializeField] SphereCollider KboomCollider;
     [SerializeField] LayerMask whatISEnemy;
     EnemyAI enemy;
-    Player player;
-
+    public AudioSource hitSound;
+    public ParticleSystem particleCollision;
+    public Player player;
 
     private void Start()
     {
-        player = GameManager.Instance.playerScript;
+        hitSound= GetComponent<AudioSource>();
+        player= GameManager.Instance.playerScript;
     }
     private void OnCollisionEnter(Collision collision)
     {
         //Debug.Log(collision.contacts[0].point.ToString());
         //Boom= Instantiate(Boom, collision.contacts[0].point, Quaternion.identity);//Boom at this exact spot!
         //Destroy(Boom, 2f);
+
+        particleCollision = Instantiate(particleCollision, collision.contacts[0].point, Quaternion.identity);
+        if(particleCollision.GetComponent<Collider>() != null)
+        {Destroy(particleCollision);
+
+        }
+        
 
         TakeDamage dmg= collision.gameObject.GetComponent<TakeDamage>();
         if (dmg != null)
@@ -53,6 +62,7 @@ public class DamagableProjectiles : MonoBehaviour
             {
                 hotcol.GetComponent<Rigidbody>().isKinematic = false;
                 hotcol.GetComponent<Rigidbody>().AddExplosionForce(explosiveForce, explosionPoint, blastRadius, 1, ForceMode.Impulse);
+
                 OnTriggerEnter(hotcol);
 
             }
@@ -68,6 +78,8 @@ public class DamagableProjectiles : MonoBehaviour
         TakeDamage dmg= other.GetComponent<TakeDamage>();
         if (dmg != null)
         {
+            
+            hitSound.Play();
             dmg.takeDamage(blastDamage);
             //Destroy(other.gameObject);
         }
