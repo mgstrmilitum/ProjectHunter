@@ -25,11 +25,11 @@ public class TrapDamage : MonoBehaviour
             return;
         }
 
-        IDamageable dmg = other.GetComponent<IDamageable>();
+        TakeDamage dmg = other.GetComponent<TakeDamage>();
 
         if (dmg != null)
         {
-            dmg.TakeDamage(damageAmount);
+            dmg.takeDamage(damageAmount);
         }
     }
 
@@ -41,13 +41,14 @@ public class TrapDamage : MonoBehaviour
             return;
         }
 
-        IDamageable dmg = other.GetComponent<IDamageable>();
+        TakeDamage dmg = other.GetComponent<TakeDamage>();
 
         if (dmg != null && isLava == true)
         {
             if (localDamageDelay <= 0)
             {
-                dmg.TakeDamage(damageAmount);
+                dmg.takeDamage(damageAmount);
+                if (isLava) GameManager.Instance.lavaOverlay.SetActive(true);
                 localDamageDelay = damageDelay;
             }
             else
@@ -55,5 +56,10 @@ public class TrapDamage : MonoBehaviour
                 localDamageDelay -= Time.deltaTime;
             }
         }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        GameManager.Instance.lavaOverlay.SetActive(false);
     }
 }
