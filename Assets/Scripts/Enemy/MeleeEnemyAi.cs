@@ -30,9 +30,13 @@ public class MeleeEnemyAI : MonoBehaviour, TakeDamage
     bool isAttacking = false;
 
     Coroutine roamCoroutine;
-
+    void Awake()
+    {
+        
+    }
     void Start()
     {
+        GameManager.Instance.gameStats.enemiesTotal++;
         originalColor = model.material.color;
         startingPos = transform.position;
         maxHp = hp;
@@ -153,6 +157,7 @@ public class MeleeEnemyAI : MonoBehaviour, TakeDamage
         if (hp <= 0)
         {
             Destroy(gameObject);
+            GameManager.Instance.gameStats.enemiesRemaining--;
         }
     }
 

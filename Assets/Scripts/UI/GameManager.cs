@@ -4,6 +4,8 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using System.Collections;
 using UnityEngine.InputSystem;
+using UnityEngine.Audio;
+using UnityEngine.PlayerLoop;
 //using UnityEditor.ProBuilder;
 public class GameManager : MonoBehaviour
 {
@@ -48,6 +50,20 @@ public class GameManager : MonoBehaviour
     [Header("Input System")]
     public PlayerControls controls;
 
+    [Header("ScoreBoard")]
+    public GameStats gameStats;
+    public TMP_Text tshotsFired;
+    public TMP_Text tshotsHit;
+    public TMP_Text tenemiesTotal;
+    public TMP_Text tenemiesRemaining;
+
+   public struct GameStats
+    {
+        public int shotsFired;
+        public int shotsHit;
+        public int enemiesTotal;
+        public int enemiesRemaining;
+    }
     void Awake()
     {
         Instance = this;
@@ -56,9 +72,9 @@ public class GameManager : MonoBehaviour
         //controls = new PlayerControls();
     }
 
-    private void OnEnable()
+    public void Start()
     {
-   
+        gameStats.enemiesRemaining = gameStats.enemiesTotal;
     }
 
     public IEnumerator ShowGarlicStats()
@@ -97,6 +113,7 @@ public class GameManager : MonoBehaviour
     }
     public void OnWin() {
         StatePause();
+        DisplayLevelStats();
         activeMenu = winMenu;
         activeMenu.SetActive(isPaused);
 
@@ -188,6 +205,14 @@ public class GameManager : MonoBehaviour
                abilityMeterFront.fillAmount = Mathf.Lerp(abilityMeterFront.fillAmount, aFraction, Time.deltaTime * barLerpSpeed);
             }
         }
+    }
+
+    public void DisplayLevelStats()
+    {
+        tshotsFired.text = gameStats.shotsFired.ToString();
+        tshotsHit.text = gameStats.shotsHit.ToString();
+        tenemiesRemaining.text = gameStats.enemiesRemaining.ToString();
+        tenemiesTotal.text = gameStats.enemiesTotal.ToString();
     }
 }
     #endregion

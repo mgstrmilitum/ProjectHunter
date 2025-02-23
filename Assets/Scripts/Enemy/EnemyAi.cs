@@ -56,10 +56,13 @@ public class EnemyAI : MonoBehaviour, TakeDamage
     private void Awake()
     {
         rb=GetComponent<Rigidbody>();
+ 
     }
 
     void Start()
     {
+        GameManager.Instance.gameStats.enemiesTotal++;
+
         originalColor = model.material.color;
         stoppingDistanceOrig = agent.stoppingDistance;
         startingPos = transform.position;
@@ -237,6 +240,7 @@ public class EnemyAI : MonoBehaviour, TakeDamage
         if (hp <= 0)
         {
             Destroy(gameObject);
+            GameManager.Instance.gameStats.enemiesRemaining--;
         }
     }
 }

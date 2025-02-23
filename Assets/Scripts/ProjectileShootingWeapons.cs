@@ -33,7 +33,7 @@ public class ProjectileShootingWeapons : Weapon
     {
         if (projctileLoad >0)
         {
-            
+            GameManager.Instance.gameStats.shotsFired++;
             projectile =  Instantiate(projctilePrehaber, shootPos.position, shootPos.rotation);
             Rigidbody body = projectile.GetComponent<Rigidbody>();
             body.isKinematic=false;

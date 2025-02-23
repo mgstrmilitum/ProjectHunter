@@ -32,6 +32,7 @@ public class DamagableProjectiles : MonoBehaviour
             //Destroy(collision.gameObject);
             dmg.takeDamage(blastDamage);
             player.GainAp(10);
+            GameManager.Instance.gameStats.shotsHit++;
             KboomCollider.enabled=true;
             MeshRenderer meshrenderr = this.GetComponent<MeshRenderer>();
             meshrenderr.enabled=false;
