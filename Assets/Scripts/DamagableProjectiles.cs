@@ -12,6 +12,13 @@ public class DamagableProjectiles : MonoBehaviour
     [SerializeField] SphereCollider KboomCollider;
     [SerializeField] LayerMask whatISEnemy;
     EnemyAI enemy;
+    Player player;
+
+
+    private void Start()
+    {
+        player = GameManager.Instance.playerScript;
+    }
     private void OnCollisionEnter(Collision collision)
     {
         //Debug.Log(collision.contacts[0].point.ToString());
@@ -24,6 +31,7 @@ public class DamagableProjectiles : MonoBehaviour
             //collision.gameObject.GetComponent<EnemyAI>().takeDamage(blastDamage);
             //Destroy(collision.gameObject);
             dmg.takeDamage(blastDamage);
+            player.GainAp(10);
             KboomCollider.enabled=true;
             MeshRenderer meshrenderr = this.GetComponent<MeshRenderer>();
             meshrenderr.enabled=false;

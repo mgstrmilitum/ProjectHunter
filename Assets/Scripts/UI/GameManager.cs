@@ -15,7 +15,8 @@ public class GameManager : MonoBehaviour
     public GameObject activeMenu;
     public GameObject pauseMenu;
     public GameObject winMenu;
-    public GameObject loseMenu; 
+    public GameObject loseMenu;
+    public GameObject WheelMenu; 
     bool isPaused;
 
 
@@ -56,7 +57,7 @@ public class GameManager : MonoBehaviour
         UpdatePlayerUI();
 
         
-        if (Input.GetButtonDown("Cancel"))
+        if (Input.GetButtonDown("Cancel") && WeaponWheelController.weaponWheelOpened == false)
         {
             if (activeMenu == null)
             {

@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-public class FlintlockPistol : MonoBehaviour
+public class FlintlockPistol : Weapon
 {
     public GameObject projctilePrehaber;
     private Transform projectileTransform;
@@ -14,21 +14,23 @@ public class FlintlockPistol : MonoBehaviour
     EnemyAI enemy;
 
     GameObject projectile;
-    void Start()
+    public override void Start()
     {
+        base.Start();
         Setinitalreference();
     }
 
     // Update is called once per frame
-    void Update()
+    public override void Update()
     {
+        base.Update();
         if (Input.GetButtonDown("Fire1"))
         {
-            LaunchProjectile();
+            Shoot();
         }
     }
 
-    void LaunchProjectile()
+    public override void Shoot()
     {
 
         if (projctileLoad >0)

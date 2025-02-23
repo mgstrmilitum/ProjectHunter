@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ProjectileShootingWeapons : MonoBehaviour
+public class ProjectileShootingWeapons : Weapon
 {
     public GameObject projctilePrehaber;
     private Transform projectileTransform;
@@ -12,21 +12,24 @@ public class ProjectileShootingWeapons : MonoBehaviour
     EnemyAI enemy;
 
     GameObject projectile;
-    void Start()
+    public override void Start()
     {
+        base.Start();
         Setinitalreference();
     }
 
     // Update is called once per frame
-    void Update()
+    public override void Update()
     {
-        if (Input.GetButtonDown("Fire1"))
+        base.Update();
+
+        if (Input.GetButtonDown("Fire1") && Time.timeScale == 1)
         {
-            LaunchProjectile();
+            Shoot();
         }
     }
 
-    void LaunchProjectile()
+    public override void Shoot()
     {
         if (projctileLoad >0)
         {

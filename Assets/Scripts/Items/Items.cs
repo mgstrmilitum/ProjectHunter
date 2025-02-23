@@ -17,7 +17,7 @@ public class Items : MonoBehaviour, IPickable
     {
         //checking if the object that entered is the player
         if (other.isTrigger) { return; }
-        Player player = other.transform.GetComponent<Player>();
+        Player player = other.transform.GetComponentInParent<Player>();
 
         if (player != null)
         {
@@ -42,7 +42,8 @@ public class Items : MonoBehaviour, IPickable
     private void OnTriggerEnter(Collider other)
     {
         //if the object is a child of IPickable then execute OnPickup()
-        IPickable player = other.GetComponent<IPickable>();
+
+     IPickable player = other.GetComponent<IPickable>();
 
         if (player != null)
         {

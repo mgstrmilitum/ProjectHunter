@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class SwordAbility : Ability
 {
-    public GameObject player;
+    public Player player;
     public GameObject sword;
 
     public Transform playerRotation;
@@ -22,9 +22,9 @@ public class SwordAbility : Ability
     public Vector3 hitposition;
 
 
-    public void Update()
+    public void Start()
     {
-
+        player = GameManager.Instance.playerScript;
 
         
         
@@ -32,24 +32,29 @@ public class SwordAbility : Ability
 
     public override void Activate(GameObject parent)
     {
-        Animator anim = sword.GetComponent<Animator>();
-        anim.SetTrigger("Attack");
-        Debug.Log("you have attacked");
-
-        Collider[] hitEnemies = Physics.OverlapSphere(attackPoint.position,attackRange);
-
-        foreach(Collider collider in hitEnemies)
+        if (player.currentAp == player.maxAp)
         {
-            //checking if the object that was collided with is Damageable
-            IDamageable enemy = collider.gameObject.GetComponent<IDamageable>();
+            player.ResetAp();
+            Animator anim = sword.GetComponent<Animator>();
+            anim.SetTrigger("Attack");
+            Debug.Log("you have attacked");
 
-            if (enemy != null){
+            Collider[] hitEnemies = Physics.OverlapSphere(attackPoint.position, attackRange);
 
-                enemy.TakeDamage(damageAmount);
-                Debug.Log("Enemy Hit");
+            foreach (Collider collider in hitEnemies)
+            {
+                //checking if the object that was collided with is Damageable
+                TakeDamage enemy = collider.gameObject.GetComponent<TakeDamage>();
+
+                if (enemy != null)
+                {
+
+                    enemy.takeDamage(damageAmount);
+                    
+                    Debug.Log("Enemy Hit");
+                }
             }
         }
-        
     }
 
     void OnDrawGizmosSelected()

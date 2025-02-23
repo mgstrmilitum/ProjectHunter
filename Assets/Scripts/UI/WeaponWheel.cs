@@ -6,6 +6,7 @@ public class WeaponWheel : MonoBehaviour
 {
     public int Id;
     public string itemName;
+    public GameObject item;
 
     private Animator anim;
     public Sprite icon;
@@ -36,7 +37,7 @@ public class WeaponWheel : MonoBehaviour
         anim.SetBool("Hover", true);
         itemText.text = itemName;
     }
-    public void Selected() { selected = true; WeaponWheelController.weaponId = Id; }
+    public void Selected() { selected = true; WeaponWheelController.buttonSelected = true;  WeaponWheelController.weaponId = Id; }
     public void Deselected() { selected = false; WeaponWheelController.weaponId = 0; }
 
     public void HoverExit()

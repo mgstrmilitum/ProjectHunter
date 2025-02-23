@@ -1,6 +1,6 @@
 using System;
 using UnityEngine;
-using UnityEngine.WSA;
+//using UnityEngine.WSA;
 
 public class GunMovementScript : MonoBehaviour
 {

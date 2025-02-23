@@ -74,6 +74,7 @@ public class Player : MonoBehaviour, IDamageable, IPickable, TakeDamage, IOpen
 
     public void GainAp(int amountToGain) { currentAp += amountToGain;}
 
+    public void ResetAp() { currentAp = 0; }
     public bool hasKey()
     {
         return key;
