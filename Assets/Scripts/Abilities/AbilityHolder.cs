@@ -8,7 +8,7 @@ public class AbilityHolder : MonoBehaviour
     
     private void Update()
     {
-        if (Input.GetButtonDown("Ability"))
+        if (Input.GetKey(KeyCode.X))
         {
             ability.Activate(gameObject);
         }
