@@ -17,7 +17,15 @@ public class Throwholywater : MonoBehaviour
     private Camera maincamera;
     private float chargeTime=0f;
     bool isCharging=false;
-    
+
+    [Header("Gernade Audio")]
+    [SerializeField] private AudioClip chargeAudio;
+    [SerializeField] private AudioClip throwAudio;
+
+    [Header("Trajectory Settings")]
+    [SerializeField] private LineRenderer trajectoryLine;
+
+
 
     private void Start()
     {
@@ -42,27 +50,34 @@ public class Throwholywater : MonoBehaviour
 
     void StartCharging()
     {
+        //GernadethrowingAudio.instance.PlayOneShot(chargeAudio, 0.5f);
+        
         isCharging = true;
         chargeTime=0f;
 
-        //TrajectoryLine
+        trajectoryLine.enabled=true;
     }
 
     void ChargeThrow()
     {
         chargeTime+=Time.deltaTime;
 
-        //trajectoryline Velocity
+        Vector3 gernadeVel= (maincamera.transform.forward+throwDirection).normalized*Mathf.Min(chargeTime*throwforce,maxForce);
+        ShowTrajectory(throwPos.position+throwPos.forward, gernadeVel);
     }
 
     void Release()
     {
         ThrowGernade(Mathf.Min(chargeTime*throwforce, maxForce));
         isCharging= false;
+
+        trajectoryLine.enabled=false;
     }
 
     void ThrowGernade(float force)
     {
+        
+
         Vector3 spawnPos= throwPos.position+maincamera.transform.forward;//throws where we are looking
 
         GameObject gernade=Instantiate(gernadePrefab,spawnPos,maincamera.transform.rotation);//spawn gernade
@@ -72,11 +87,22 @@ public class Throwholywater : MonoBehaviour
         Vector3 finalThrowDirction=(maincamera.transform.forward+throwDirection).normalized;
 
         rb.AddForce(finalThrowDirction*force,ForceMode.VelocityChange);
+        //GernadethrowingAudio.instance.PlayOneShot(throwAudio, 0.5f);
 
         //throwing sound
     }
 
     //logic for showing trajectory
-
+    void ShowTrajectory(Vector3 origin,Vector3 speed)
+    {
+        Vector3[] points= new Vector3[100];
+        trajectoryLine.positionCount=points.Length;
+        for (int i = 0; i < points.Length; i++)
+        {
+            float time= i*0.1f;
+            points[i]=origin+speed*time+0.5f* Physics.gravity*time*time;//Displacement Math(Inital Velocity, time, 0.5, accerlation, time^2)
+        }
+        trajectoryLine.SetPositions(points);
+    }
 
 }
