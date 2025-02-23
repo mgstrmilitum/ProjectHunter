@@ -28,7 +28,11 @@ public class DamagableProjectiles : MonoBehaviour
         //Destroy(Boom, 2f);
 
         particleCollision = Instantiate(particleCollision, collision.contacts[0].point, Quaternion.identity);
-        Destroy(particleCollision);
+        if(particleCollision.GetComponent<Collider>() != null)
+        {Destroy(particleCollision);
+
+        }
+        
 
         TakeDamage dmg= collision.gameObject.GetComponent<TakeDamage>();
         if (dmg != null)
