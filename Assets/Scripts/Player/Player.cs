@@ -11,6 +11,17 @@ public class Player : MonoBehaviour, IDamageable, IPickable, TakeDamage, IOpen
     public bool abilityReady;
     bool shieldActive;
     public bool key;
+    public PlayerStats stats;
+
+    [Header("Collectibles")]
+    public int numGarlic;
+
+    public struct PlayerStats
+    {
+        int shotsFired;
+        int shotsHit;
+        int enemiesKilled;
+    }
 
     void Start()
     {
@@ -18,6 +29,7 @@ public class Player : MonoBehaviour, IDamageable, IPickable, TakeDamage, IOpen
         currentShield = maxShield;
         currentAp = 0;
         shieldActive = true;
+        numGarlic = 0;
     }
 
    
@@ -77,5 +89,13 @@ public class Player : MonoBehaviour, IDamageable, IPickable, TakeDamage, IOpen
     public bool hasKey()
     {
         return key;
+    }
+
+    public void AddGarlic()
+    {
+        numGarlic++;
+        Debug.Log("Garlic count: " + numGarlic);
+        GameManager.Instance.garlicCount.text = numGarlic.ToString();
+        StartCoroutine(GameManager.Instance.ShowGarlicStats());
     }
 }

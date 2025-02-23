@@ -2807,8 +2807,8 @@ MonoBehaviour:
   amount: 30
   slerpAmount: 20
   pm: {fileID: 3942179665214468786}
-  LeanLeftKey: 122
-  LeanRightKey: 120
+  LeanLeftKey: 113
+  LeanRightKey: 101
 --- !u!1 &4227614849931472389
 GameObject:
   m_ObjectHideFlags: 0
@@ -2917,7 +2917,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e16a405484a2a734c95499cea6293a31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sensitivity: 400
+  sensitivity: 10
   lockVertMin: -90
   lockVertMax: 90
   invertY: 0
@@ -5070,7 +5070,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4223695519562639681}
-  - component: {fileID: 7603168988400148265}
   - component: {fileID: 3942179665214468786}
   - component: {fileID: 3394109717184932883}
   - component: {fileID: 636951932077436450}
@@ -5078,6 +5077,7 @@ GameObject:
   - component: {fileID: 1600483642158054398}
   - component: {fileID: 6995755198295394675}
   - component: {fileID: 1087124562993925264}
+  - component: {fileID: 4431691039489007816}
   m_Layer: 7
   m_Name: TiltPlayer 3
   m_TagString: Player
@@ -5103,26 +5103,6 @@ Transform:
   - {fileID: 6869358365584432146}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
---- !u!114 &7603168988400148265
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8223060285213209106}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8007cc393c207584387edbf376d29798, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentHealth: 0
-  maxHealth: 100
-  currentShield: 0
-  maxShield: 100
-  currentAp: 0
-  maxAp: 100
-  abilityReady: 0
-  key: 0
 --- !u!114 &3942179665214468786
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5139,6 +5119,7 @@ MonoBehaviour:
   walkSpeed: 5
   slideSpeed: 30
   sprintSpeed: 8
+  grappleGun: {fileID: 495584172278656295}
   coyoteTime: 0.2
   sliding: 0
   SlideKey: 306
@@ -5160,9 +5141,8 @@ MonoBehaviour:
   leanDownAngle: 0
   leanSmoothing: 0.05
   leanVelocity: 0
-  LeanLeftKey: 122
-  LeanRightKey: 120
-  LeanDownKey: 118
+  LeanLeftKey: 113
+  LeanRightKey: 101
   leaning: 0
   maxSlopeAngle: 46
   slopeGroundCheckDistance: 0.3
@@ -5201,6 +5181,7 @@ MonoBehaviour:
   wallGrabSoundsVol: 0
   state: 0
   activeGrapple: 0
+  xzMove: {x: 0, y: 0}
   rb: {fileID: 3394109717184932883}
   restricted: 0
   difficulty: 0
@@ -5228,7 +5209,7 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 1
+  m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 1
 --- !u!114 &636951932077436450
@@ -5433,6 +5414,27 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &4431691039489007816
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8223060285213209106}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8007cc393c207584387edbf376d29798, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentHealth: 0
+  maxHealth: 100
+  currentShield: 0
+  maxShield: 100
+  currentAp: 0
+  maxAp: 100
+  abilityReady: 0
+  key: 0
+  numGarlic: 0
 --- !u!1 &8238064887735984621
 GameObject:
   m_ObjectHideFlags: 0
@@ -5633,9 +5635,10 @@ GameObject:
   - component: {fileID: 676335462469131190}
   - component: {fileID: 8103650964441391663}
   - component: {fileID: 6964527347962227312}
+  - component: {fileID: 2550112862925442294}
   m_Layer: 7
   m_Name: PlayerObject
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5731,6 +5734,18 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2550112862925442294
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8454169096142345992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47f129d971c16a241beb52d4f8cf4bc0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8601991402668395155
 GameObject:
   m_ObjectHideFlags: 0

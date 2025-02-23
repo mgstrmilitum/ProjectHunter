@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
+using System.Collections;
+using UnityEngine.InputSystem;
 //using UnityEditor.ProBuilder;
 public class GameManager : MonoBehaviour
 {
@@ -16,7 +18,7 @@ public class GameManager : MonoBehaviour
     public GameObject pauseMenu;
     public GameObject winMenu;
     public GameObject loseMenu; 
-    bool isPaused;
+    public bool isPaused;
 
 
     //----Player Health-----//
@@ -36,19 +38,34 @@ public class GameManager : MonoBehaviour
     [SerializeField] public GameObject buttonInteract;
     [SerializeField] public TMP_Text buttonInfo;
     public GameObject buttonLocked;
+    public GameObject garlicLabel;
+    public TMP_Text garlicCount;
 
     [Header("Progress")]
     public bool beatenLvl1Boss;
+
+    [Header("Input System")]
+    public PlayerControls controls;
 
     void Awake()
     {
         Instance = this;
         movementScript = player.GetComponent<PlayerMovement>();
         Time.timeScale = 1f;
-
+        //controls = new PlayerControls();
     }
 
+    private void OnEnable()
+    {
+        controls.Enable();
+    }
 
+    public IEnumerator ShowGarlicStats()
+    {
+        garlicLabel.SetActive(true);
+        yield return new WaitForSeconds(5f);
+        garlicLabel.SetActive(false);
+    }
 
 
     private void Update()
@@ -85,6 +102,11 @@ public class GameManager : MonoBehaviour
        
     }
     #region Menus
+
+    public void HandlePauseMenu()
+    {
+
+    }
     public void StatePause()
     {
         isPaused = !isPaused;
