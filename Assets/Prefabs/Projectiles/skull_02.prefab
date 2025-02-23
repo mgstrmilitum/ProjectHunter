@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: -3778463667071386423}
   - component: {fileID: 3815232401526320466}
   - component: {fileID: -806037888741815691}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: skull_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -132,6 +132,7 @@ MonoBehaviour:
     m_Bits: 4294967295
   hitSound: {fileID: -806037888741815691}
   particleCollision: {fileID: 8443315704496310908, guid: 6ef35fa36e3a65043b2d800600204bdd, type: 3}
+  player: {fileID: 0}
 --- !u!54 &438185506885752418
 Rigidbody:
   m_ObjectHideFlags: 0

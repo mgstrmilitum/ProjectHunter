@@ -1579,7 +1579,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1841290430629620364}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 34.09, y: 11.002672, z: -228.1568}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1626,7 +1626,7 @@ MonoBehaviour:
   walkSpeed: 5
   slideSpeed: 30
   sprintSpeed: 8
-  grappleGun: {fileID: 0}
+  grappleGun: {fileID: 8136654695467268359}
   coyoteTime: 0.2
   sliding: 0
   SlideKey: 306
@@ -2355,7 +2355,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8623306701990410461
 Transform:
   m_ObjectHideFlags: 0
@@ -4756,7 +4756,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &622853118700605426
 Transform:
   m_ObjectHideFlags: 0
@@ -5843,7 +5843,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5012190831481090219
 Transform:
   m_ObjectHideFlags: 0
@@ -7411,13 +7411,13 @@ GameObject:
   - component: {fileID: 6977911870359199766}
   - component: {fileID: 6929076501199254470}
   - component: {fileID: 3040552558429259398}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: holy thrower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6977911870359199766
 Transform:
   m_ObjectHideFlags: 0
@@ -8099,6 +8099,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bottle_Mana
       objectReference: {fileID: 0}
+    - target: {fileID: 1000013317980782, guid: 2cf6690298568294cb6b655c0a3aeb87, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4000011383747138, guid: 2cf6690298568294cb6b655c0a3aeb87, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.5
@@ -8239,7 +8243,7 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 0
+  m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
@@ -8361,7 +8365,7 @@ MonoBehaviour:
   explosionradius: 5
   explosionAudioSource: {fileID: 8300000, guid: 3155fe47d91f04f4faff115376f12d63, type: 3}
   impactSound: {fileID: 8300000, guid: 408eaf5a6ea7c6840adeeb13ce5057c0, type: 3}
-  Damage: 0
+  Damage: 100
 --- !u!4 &8344171514857626081 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4000011650569256, guid: 2cf6690298568294cb6b655c0a3aeb87, type: 3}
