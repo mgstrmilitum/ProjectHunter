@@ -14,10 +14,12 @@ public class DamagableProjectiles : MonoBehaviour
     EnemyAI enemy;
     public AudioSource hitSound;
     public ParticleSystem particleCollision;
+    public Player player;
 
     private void Start()
     {
         hitSound= GetComponent<AudioSource>();
+        player= GameManager.Instance.playerScript;
     }
     private void OnCollisionEnter(Collision collision)
     {

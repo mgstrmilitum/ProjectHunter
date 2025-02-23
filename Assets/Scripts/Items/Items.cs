@@ -47,7 +47,7 @@ public class Items : MonoBehaviour, IpickupWeapons
     private void OnTriggerEnter(Collider other)
     {
         //if the object is a child of IPickable then execute OnPickup()
-        IPickable player = other.GetComponent<IPickable>();
+        IpickupWeapons player = other.GetComponent<IpickupWeapons>();
         if (player != null)
         {
             OnPickup(other);
@@ -56,7 +56,7 @@ public class Items : MonoBehaviour, IpickupWeapons
 
     private void OnCollisionEnter(Collision collision)
     {
-        IPickable player = collision.gameObject.GetComponent<IPickable>();
+        IpickupWeapons player = collision.gameObject.GetComponent<IpickupWeapons>();
         if (player != null)
         {
             OnPickup(collision.collider);

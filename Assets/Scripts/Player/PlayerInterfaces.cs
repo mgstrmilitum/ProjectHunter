@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerInterfaces : MonoBehaviour, IOpen, IPickable
+public class PlayerInterfaces : MonoBehaviour, IOpen, IpickupWeapons
 {
     private bool keyInHand;
     public bool hasKey()
