@@ -48,6 +48,9 @@ public class GameManager : MonoBehaviour
     [Header("Input System")]
     public PlayerControls controls;
 
+    [Header("HurtOverlay")]
+    public GameObject lavaOverlay;
+
     void Awake()
     {
         Instance = this;

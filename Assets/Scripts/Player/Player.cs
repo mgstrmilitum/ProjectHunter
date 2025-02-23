@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Rendering;
 
-public class Player : MonoBehaviour, IPickable, TakeDamage, IOpen
+public class Player : MonoBehaviour, IpickupWeapons, TakeDamage, IOpen
 {
     [Header("-----Player Stats-----")]
     
@@ -105,6 +105,8 @@ public class Player : MonoBehaviour, IPickable, TakeDamage, IOpen
     public void GainShield(int amountToGain){currentShield += amountToGain;}
 
     public void GainAp(int amountToGain) { currentAp += amountToGain;}
+
+    public void ResetAp() { currentAp = 0;}
 
     public bool hasKey()
     {

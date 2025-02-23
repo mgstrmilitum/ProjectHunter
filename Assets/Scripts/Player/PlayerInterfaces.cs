@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerInterfaces : MonoBehaviour, IOpen, IPickable, TakeDamage
+public class PlayerInterfaces : MonoBehaviour, IOpen, IpickupWeapons, TakeDamage
 {
     private Player player;
     private bool keyInHand;
