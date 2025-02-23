@@ -13,6 +13,7 @@ public class DamagableProjectiles : MonoBehaviour
     [SerializeField] LayerMask whatISEnemy;
     EnemyAI enemy;
     public AudioSource hitSound;
+    public ParticleSystem particleCollision;
 
     private void Start()
     {
@@ -23,6 +24,9 @@ public class DamagableProjectiles : MonoBehaviour
         //Debug.Log(collision.contacts[0].point.ToString());
         //Boom= Instantiate(Boom, collision.contacts[0].point, Quaternion.identity);//Boom at this exact spot!
         //Destroy(Boom, 2f);
+
+        particleCollision = Instantiate(particleCollision, collision.contacts[0].point, Quaternion.identity);
+        Destroy(particleCollision);
 
         TakeDamage dmg= collision.gameObject.GetComponent<TakeDamage>();
         if (dmg != null)
