@@ -100391,6 +100391,10 @@ PrefabInstance:
       propertyPath: m_UseGravity
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6616578910348153300, guid: 2fc8954d2e9f49d40870f566eee27ae1, type: 3}
+      propertyPath: Damage
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 6929076501199254470, guid: 2fc8954d2e9f49d40870f566eee27ae1, type: 3}
       propertyPath: HolyWaterBottle
       value: 

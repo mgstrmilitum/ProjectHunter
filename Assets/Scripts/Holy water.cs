@@ -19,6 +19,8 @@ public class Holywater : MonoBehaviour
     private float countdown;
     private bool hasExploded;
 
+    [Header("Gernade Damage")]
+    [SerializeField] private int Damage;
     private void Start()
     {
 
@@ -61,11 +63,34 @@ public class Holywater : MonoBehaviour
             if (rb != null)
             {
                 rb.AddExplosionForce(explosionforce, transform.position, explosionradius);
+                TakeDamage dmg= colliders[0].GetComponent<TakeDamage>();
+                if(dmg != null)
+                {
+                    dmg.takeDamage(Damage);
+                }
             }
 
         }
     }
 
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.isTrigger)
+        {
+            return;
+        }
+        TakeDamage dmg = other.GetComponent<TakeDamage>();
+        if (dmg != null)
+        {
+
+            
+            dmg.takeDamage(Damage);
+            //Destroy(other.gameObject);
+        }
+
+
+    }
     //public GameObject explsoiveEffect;
     //public float delay = 3f;
 
