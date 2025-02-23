@@ -11,9 +11,17 @@ public class Player : MonoBehaviour, IDamageable, IPickable, TakeDamage, IOpen
     public bool abilityReady;
     bool shieldActive;
     public bool key;
+    public PlayerStats stats;
 
     [Header("Collectibles")]
     public int numGarlic;
+
+    public struct PlayerStats
+    {
+        int shotsFired;
+        int shotsHit;
+        int enemiesKilled;
+    }
 
     void Start()
     {
