@@ -79,7 +79,7 @@ public class SpiderBossAi : MonoBehaviour, TakeDamage
         {
             if (hit.collider.CompareTag("Player") && angleToPlayer <= fov)
             {
-                agent.SetDestination(GameManager.Instance.player.transform.position);
+                agent.isStopped = true;
                 if (agent.remainingDistance <= agent.stoppingDistance)
                 {
                     FaceTarget();
@@ -172,7 +172,7 @@ public class SpiderBossAi : MonoBehaviour, TakeDamage
     public void takeDamage(int amount)
     {
         hp -= amount;
-        agent.SetDestination(GameManager.Instance.player.transform.position);
+       
         StartCoroutine(FlashRed());
 
         // Spawn the enemy spawner once when HP drops below 1/3.

@@ -35,6 +35,7 @@ public class GuardBoss : MonoBehaviour, TakeDamage
     Vector3 startingPos;
     bool isShooting;
     bool isAttacking;
+    bool hasRoared;
     bool isWalking;
     bool playerInRange;
     bool phase2Activated = false; // Ensures phase 2 initialization runs once.
@@ -49,6 +50,7 @@ public class GuardBoss : MonoBehaviour, TakeDamage
 
     void Start()
     {
+        phase2Activated = false;
         startingPos = transform.position;
         maxHp = hp;
         berserkThreshold = Mathf.RoundToInt(maxHp * 0.5f);
@@ -87,19 +89,27 @@ public class GuardBoss : MonoBehaviour, TakeDamage
         else
         {
             // On first entry to phase 2, increase speed and play the "Roar" animation.
+            animatorController.SetBool("Shoot", false);
             if (!phase2Activated)
             {
                 agent.speed *= phase2SpeedMultiplier;
-                phase2Activated = true;
+                
                 StartCoroutine(PlayRoarThenWalk());
+                
+
+                phase2Activated = true;
             }
 
             // Always chase the player.
+            isWalking = true;
+            animatorController.SetBool("Walk", true);
             agent.SetDestination(GameManager.Instance.player.transform.position);
-
+            
+            
             // When within stopping distance, stop walking and perform the melee attack.
             if (agent.remainingDistance <= agent.stoppingDistance)
             {
+
                 if (isWalking)
                 {
                     animatorController.SetBool("Walk", false);
@@ -126,7 +136,7 @@ public class GuardBoss : MonoBehaviour, TakeDamage
     IEnumerator ShootRanged(Vector3 direction)
     {
         isShooting = true;
-        animatorController.SetTrigger("Shoot");
+        animatorController.SetBool("Shoot",true);
         Quaternion bulletRotation = Quaternion.LookRotation(direction);
         GameObject obj = Instantiate(bullet, shootPos.position, bulletRotation);
         obj.GetComponent<Rigidbody>().AddForce(direction * 20f, ForceMode.Impulse);
@@ -148,7 +158,7 @@ public class GuardBoss : MonoBehaviour, TakeDamage
         // Stop moving while attacking.
         agent.isStopped = true;
         // Trigger the swing animation.
-        animatorController.SetTrigger("Swing");
+        animatorController.SetBool("Swing",true);
         Debug.Log("Swing animation triggered");
 
         // Wait for half of the melee cycle (simulate wind-up).
@@ -163,6 +173,7 @@ public class GuardBoss : MonoBehaviour, TakeDamage
 
         // Wait for the remainder of the melee cycle.
         yield return new WaitForSeconds(meleeRate * 0.5f);
+        animatorController.SetBool("Swing", true);
         agent.isStopped = false;
         isAttacking = false;
     }
@@ -170,12 +181,15 @@ public class GuardBoss : MonoBehaviour, TakeDamage
     // Plays the "Roar" animation then switches to "Walk."
     IEnumerator PlayRoarThenWalk()
     {
-        animatorController.SetTrigger("Roar");
+        animatorController.SetBool("Roar",true);
         yield return new WaitForSeconds(roarDuration);
-        // After roaring, start walking.
-        animatorController.SetBool("Walk", true);
-        isWalking = true;
+        animatorController.SetBool("Roar", false);
+
+
+
     }
+
+    
     #endregion
 
     #region Utility Methods
