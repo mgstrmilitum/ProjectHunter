@@ -58573,6 +58573,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1362094386}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1362850904 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8341171960425622113, guid: 2fc8954d2e9f49d40870f566eee27ae1, type: 3}
+  m_PrefabInstance: {fileID: 8134325147344222846}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1363833984
 GameObject:
   m_ObjectHideFlags: 0
@@ -100381,6 +100386,22 @@ PrefabInstance:
     - target: {fileID: 1841290430629620364, guid: 2fc8954d2e9f49d40870f566eee27ae1, type: 3}
       propertyPath: m_Name
       value: TiltPlayer 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5109900874429211051, guid: 2fc8954d2e9f49d40870f566eee27ae1, type: 3}
+      propertyPath: m_UseGravity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6929076501199254470, guid: 2fc8954d2e9f49d40870f566eee27ae1, type: 3}
+      propertyPath: HolyWaterBottle
+      value: 
+      objectReference: {fileID: 1362850904}
+    - target: {fileID: 8341171960425622113, guid: 2fc8954d2e9f49d40870f566eee27ae1, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 8341171960550838183, guid: 2fc8954d2e9f49d40870f566eee27ae1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8748438842092736223, guid: 2fc8954d2e9f49d40870f566eee27ae1, type: 3}
       propertyPath: m_LocalPosition.x

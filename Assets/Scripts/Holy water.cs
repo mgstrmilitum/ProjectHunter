@@ -5,68 +5,65 @@ using UnityEngine;
 public class Holywater : MonoBehaviour
 {
 
-    private Collider[] hitColliders;
-    private Collider hit;
-    public float blastRadius;
-    public float explosiveForce;
-    public LayerMask explosionLayers;
-    public ParticleSystem Boom;
-    public int blastDamage;
-    public int throwforce;
-    public Transform transformer;
-    [SerializeField] SphereCollider KboomCollider;
-    [SerializeField] LayerMask whatISEnemy;
+    [Header("Explosion prefab")]
+    [SerializeField] private GameObject explosionEffectPrefab;
+    [SerializeField] private Vector3 explosionPratciles = new Vector3(0, 1, 0);
 
-    private void OnCollisionEnter(Collision collision)
+    [Header("Explsoion Settings")]
+    [SerializeField] private float explosionDelay = 2f;
+    [SerializeField] private float explosionforce = 700f;
+    [SerializeField] private float explosionradius = 5f;
+
+    [Header("Audio Effects")]
+
+    private float countdown;
+    private bool hasExploded;
+
+    private void Start()
     {
-        Debug.Log(collision.contacts[0].point.ToString());
-        Boom= Instantiate(Boom, collision.contacts[0].point, Quaternion.identity);//Boom at this exact spot!
-        Destroy(Boom, 2f);
-        TakeDamage dmg= collision.gameObject.GetComponent<TakeDamage>();
-        if (dmg != null)
-        {
-            dmg.takeDamage(blastDamage);
-            Destroy(collision.gameObject);
-            KboomCollider.enabled=true;
-            MeshRenderer meshrenderr = this.GetComponent<MeshRenderer>();
-            meshrenderr.enabled=false;
-            MeshFilter meshfilterrr = this.GetComponent<MeshFilter>();
-            Destroy(meshfilterrr);
 
-        }
+
+        countdown=explosionDelay;
 
     }
 
-    void OnExplosion(Vector3 explosionPoint)
+    private void Update()
     {
-        hitColliders = Physics.OverlapSphere(explosionPoint, blastRadius, explosionLayers);
-        foreach (Collider hotcol in hitColliders)
+        if (!hasExploded)
         {
-            Debug.Log(hotcol.gameObject.name);
-            if (hotcol.GetComponent<Rigidbody>() != null)
+            countdown-=Time.deltaTime;
+            if (countdown<=0f)
             {
-                hotcol.GetComponent<Rigidbody>().isKinematic = false;
-                hotcol.GetComponent<Rigidbody>().AddExplosionForce(explosiveForce, explosionPoint, blastRadius, 1, ForceMode.Impulse);
-                
-                OnTriggerEnter(hotcol);
+                Explode();
+                hasExploded = true;
+            }
+        }
+    }
 
+    void Explode()
+    {
+        GameObject explosioneffect = Instantiate(explosionEffectPrefab, transform.position+explosionPratciles, Quaternion.identity);
+        Destroy(explosioneffect, 4f);
+
+        //play sound effect
+
+        NearbyForceApply();
+
+        Destroy(gameObject);
+    }
+
+    void NearbyForceApply()
+    {
+        Collider[] colliders = Physics.OverlapSphere(transform.position, explosionradius);
+        foreach (Collider nearbyObject in colliders)
+        {
+            Rigidbody rb = nearbyObject.GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                rb.AddExplosionForce(explosionforce, transform.position, explosionradius);
             }
 
         }
-    }
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.isTrigger)
-        {
-            return;
-        }
-        if (other.GetComponent<TakeDamage>() != null)
-        {
-            other.GetComponent<TakeDamage>().takeDamage(blastDamage);
-            Destroy(other.gameObject);
-        }
-
-
     }
 
     //public GameObject explsoiveEffect;
