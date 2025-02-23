@@ -30,6 +30,7 @@ public class WeaponWheelController : MonoBehaviour
             }
             else
             {
+                GameManager.Instance.isPaused = !GameManager.Instance.isPaused;
                 Time.timeScale = 1f;
                 Cursor.visible = false;
                 Cursor.lockState = CursorLockMode.Locked;

@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
     public GameObject winMenu;
     public GameObject loseMenu;
     public GameObject WheelMenu; 
-    bool isPaused;
+    public bool isPaused;
 
 
     //----Player Health-----//
@@ -58,7 +58,7 @@ public class GameManager : MonoBehaviour
 
     private void OnEnable()
     {
-        controls.Enable();
+   
     }
 
     public IEnumerator ShowGarlicStats()
