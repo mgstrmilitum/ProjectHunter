@@ -1,15 +1,20 @@
 using UnityEngine;
 using UnityEngine.Rendering;
 
-public class Player : MonoBehaviour, IDamageable, IPickable, TakeDamage, IOpen
+public class Player : MonoBehaviour, IPickable, TakeDamage, IOpen
 {
     [Header("-----Player Stats-----")]
     
     [SerializeField] public int currentHealth,maxHealth = 100;
     [SerializeField] public int currentShield,maxShield = 100;
     [SerializeField] public int currentAp, maxAp = 100;
+    [SerializeField] public float combatTimer;
+    [SerializeField] AudioSource combatMusic;
+    [SerializeField] AudioSource nonCombatMusic;
+    public float localCombatTimer;
     public bool abilityReady;
     bool shieldActive;
+    private bool inCombat;
     public bool key;
     public PlayerStats stats;
 
@@ -25,6 +30,7 @@ public class Player : MonoBehaviour, IDamageable, IPickable, TakeDamage, IOpen
 
     void Start()
     {
+        inCombat = false;
         currentHealth = maxHealth;
         currentShield = maxShield;
         currentAp = 0;
@@ -35,7 +41,36 @@ public class Player : MonoBehaviour, IDamageable, IPickable, TakeDamage, IOpen
    
     void Update()
     {
-       
+        if (localCombatTimer > 0 && inCombat == false)
+        {
+            inCombat = true;
+            if (combatMusic.volume < 1)
+            {
+                combatMusic.volume += 25f * Time.deltaTime;
+            }
+            if (nonCombatMusic.volume > 0)
+            {
+                nonCombatMusic.volume -= 25f * Time.deltaTime;
+            }
+        }
+
+        if (localCombatTimer <= 0 && inCombat == true)
+        {
+            inCombat = false;
+            if (combatMusic.volume > 0)
+            {
+                combatMusic.volume -= 10f * Time.deltaTime;
+            }
+            if (nonCombatMusic.volume < 1)
+            {
+                nonCombatMusic.volume += 10f * Time.deltaTime;
+            }
+        }
+
+        if (localCombatTimer >= 0)
+        {
+            localCombatTimer -= Time.deltaTime;
+        }
     }
     void ShieldBehavior()
     {
@@ -45,24 +80,9 @@ public class Player : MonoBehaviour, IDamageable, IPickable, TakeDamage, IOpen
 
     }
 
-    public void TakeDamage(int amount)
-    {
-        ShieldBehavior();
-        if (shieldActive)
-        {
-            currentShield -= amount;
-            ShieldBehavior();
-            if (currentShield <= 0)
-            {
-                shieldActive = false;
-            }
-            return;
-        }
-        currentHealth -= amount;
-    }
-
     public void takeDamage(int amount)
     {
+        localCombatTimer = combatTimer;
         if (shieldActive)
         {
             currentShield -= amount;
@@ -94,7 +114,6 @@ public class Player : MonoBehaviour, IDamageable, IPickable, TakeDamage, IOpen
     public void AddGarlic()
     {
         numGarlic++;
-        Debug.Log("Garlic count: " + numGarlic);
         GameManager.Instance.garlicCount.text = numGarlic.ToString();
         StartCoroutine(GameManager.Instance.ShowGarlicStats());
     }

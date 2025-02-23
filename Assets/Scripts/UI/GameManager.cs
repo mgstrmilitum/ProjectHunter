@@ -47,6 +47,9 @@ public class GameManager : MonoBehaviour
     [Header("Input System")]
     public PlayerControls controls;
 
+    [Header("Other")]
+    public FallingPlatforms fallingPlatforms;
+    public GameObject lavaOverlay;
     void Awake()
     {
         Instance = this;
@@ -57,7 +60,6 @@ public class GameManager : MonoBehaviour
 
     private void OnEnable()
     {
-        controls.Enable();
     }
 
     public IEnumerator ShowGarlicStats()
