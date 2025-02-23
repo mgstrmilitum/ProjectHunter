@@ -1,4 +1,6 @@
+using System.Security.Cryptography;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerLean : MonoBehaviour
 {
@@ -7,12 +9,20 @@ public class PlayerLean : MonoBehaviour
     public PlayerMovement pm;
     float currentAngle;
 
-    public KeyCode LeanLeftKey = KeyCode.Z;
-    public KeyCode LeanRightKey = KeyCode.X;
+    public KeyCode LeanLeftKey = KeyCode.Q;
+    public KeyCode LeanRightKey = KeyCode.E;
 
     private Quaternion initialRotation;
     private Quaternion leftRotation;
     private Quaternion rightRotation;
+
+    private void Awake()
+    {
+        //GameManager.Instance.controls.Gameplay.LeanLeft.performed += ctx => leanLeft = true;
+        //GameManager.Instance.controls.Gameplay.LeanRight.performed += ctx => leanRight = true;
+        //GameManager.Instance.controls.Gameplay.LeanLeft.canceled += ctx => leanLeft = false;
+        //GameManager.Instance.controls.Gameplay.LeanRight.canceled += ctx => leanRight = false;
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -24,7 +34,7 @@ public class PlayerLean : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {        
+    {
         HandleLean();
     }
 
@@ -34,7 +44,7 @@ public class PlayerLean : MonoBehaviour
         {
             pm.restricted = true;
             Quaternion newRot = Quaternion.Euler(transform.localRotation.x, transform.localRotation.y, transform.localRotation.z + amount);
-           transform.localRotation = Quaternion.Slerp(transform.localRotation, newRot, Time.deltaTime * slerpAmount);
+            transform.localRotation = Quaternion.Slerp(transform.localRotation, newRot, Time.deltaTime * slerpAmount);
         }
         else if (Input.GetKey(LeanRightKey))
         {
@@ -44,7 +54,9 @@ public class PlayerLean : MonoBehaviour
         }
         else
         {
+            pm.restricted = false;
             transform.localRotation = Quaternion.Slerp(transform.localRotation, initialRotation, Time.deltaTime * slerpAmount);
         }
+        
     }
 }

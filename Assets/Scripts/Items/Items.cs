@@ -10,6 +10,7 @@ public class Items : MonoBehaviour, IpickupWeapons
     {
         Health,
         Shield,
+        Garlic
     }
 
 
@@ -17,7 +18,7 @@ public class Items : MonoBehaviour, IpickupWeapons
     {
         //checking if the object that entered is the player
         if (other.isTrigger) { return; }
-        Player player = other.transform.GetComponent<Player>();
+        Player player = other.transform.GetComponentInParent<Player>();
 
         if (player != null)
         {
@@ -34,6 +35,10 @@ public class Items : MonoBehaviour, IpickupWeapons
                     player.GainShield(100);
                     Destroy(gameObject);
                     break;
+                case ItemIDS.Garlic:
+                    player.AddGarlic();
+                    Destroy(gameObject);
+                    break;
 
             }
         }
@@ -42,12 +47,19 @@ public class Items : MonoBehaviour, IpickupWeapons
     private void OnTriggerEnter(Collider other)
     {
         //if the object is a child of IPickable then execute OnPickup()
-        IpickupWeapons player = other.GetComponent<IpickupWeapons>();
-
+        IPickable player = other.GetComponent<IPickable>();
         if (player != null)
         {
             OnPickup(other);
         }
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        IPickable player = collision.gameObject.GetComponent<IPickable>();
+        if (player != null)
+        {
+            OnPickup(collision.collider);
+        }
+    }
 }
