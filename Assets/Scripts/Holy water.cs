@@ -108,33 +108,12 @@ public class Holywater : MonoBehaviour
 
 
     }
-    //public GameObject explsoiveEffect;
-    //public float delay = 3f;
 
-    //public float explosiveforce = 10f;
-    //public float radius = 20f;
+    private void OnCollisionEnter(Collision collision)
+    {
+        audio_.clip=impactSound;
+        audio_.spatialBlend=1;
+        audio_.Play();
+    }
 
-    //void Start()
-    //{
-    //    Invoke("Explosion", delay);
-    //}
-
-    //private void Explode()
-    //{
-    //    //check nearby colliders
-    //    Collider[] colliders = Physics.OverlapSphere(transform.position, radius);
-
-    //    //Apply them a force
-    //    foreach(Collider near in colliders)
-    //    {
-    //        Rigidbody rig = near.GetComponent<Rigidbody>();
-    //        if (rig != null )
-    //        {
-    //            rig.AddExplosionForce(explosiveforce, transform.position, radius, 1, ForceMode.Impulse);
-    //        }
-    //    }
-
-    //    Instantiate(explosiveforce,transform.position, transform.rotation);
-    //    Destroy(gameObject);
-    //}
 }

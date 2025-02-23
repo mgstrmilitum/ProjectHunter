@@ -7761,6 +7761,10 @@ PrefabInstance:
       propertyPath: m_audioClip
       value: 
       objectReference: {fileID: 8300000, guid: f735c534510a0b740ae235f821cf791f, type: 3}
+    - target: {fileID: 8167535139892366734, guid: 9899cb64890a90f4d8d8abaff7f068de, type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 0.78
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -8049,7 +8053,7 @@ MonoBehaviour:
   explosionforce: 700
   explosionradius: 5
   explosionAudioSource: {fileID: 8300000, guid: 3155fe47d91f04f4faff115376f12d63, type: 3}
-  impactSound: {fileID: 0}
+  impactSound: {fileID: 8300000, guid: 408eaf5a6ea7c6840adeeb13ce5057c0, type: 3}
   Damage: 0
 --- !u!4 &8344171514857626081 stripped
 Transform:
