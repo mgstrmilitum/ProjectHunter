@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +9,7 @@ public class Holywater : MonoBehaviour
     [Header("Explosion prefab")]
     [SerializeField] private GameObject explosionEffectPrefab;
     [SerializeField] private Vector3 explosionPratciles = new Vector3(0, 1, 0);
+    [SerializeField] private GameObject audioSourcePrefab;
 
     [Header("Explsoion Settings")]
     [SerializeField] private float explosionDelay = 2f;
@@ -15,9 +17,12 @@ public class Holywater : MonoBehaviour
     [SerializeField] private float explosionradius = 5f;
 
     [Header("Audio Effects")]
+    [SerializeField] private AudioClip explosionAudioSource;
+    [SerializeField] private AudioClip impactSound;
 
     private float countdown;
     private bool hasExploded;
+    private AudioSource audio_;
 
     [Header("Gernade Damage")]
     [SerializeField] private int Damage;
@@ -26,7 +31,7 @@ public class Holywater : MonoBehaviour
 
 
         countdown=explosionDelay;
-
+        audio_ = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -47,11 +52,23 @@ public class Holywater : MonoBehaviour
         GameObject explosioneffect = Instantiate(explosionEffectPrefab, transform.position+explosionPratciles, Quaternion.identity);
         Destroy(explosioneffect, 4f);
 
-        //play sound effect
+        PlaySound(explosionAudioSource);
 
         NearbyForceApply();
 
         Destroy(gameObject);
+    }
+
+    private void PlaySound(AudioClip clip)
+    {
+        GameObject audioSourceObject_= Instantiate(audioSourcePrefab, transform.position, Quaternion.identity);
+        AudioSource inststantedAudio= audioSourceObject_.GetComponent<AudioSource>();
+        inststantedAudio.clip=clip;
+        inststantedAudio.spatialBlend=1;//3d sound
+        inststantedAudio.Play();
+
+        Destroy(audioSourceObject_,inststantedAudio.clip.length);
+
     }
 
     void NearbyForceApply()
