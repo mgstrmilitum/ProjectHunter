@@ -9385,6 +9385,7 @@ MonoBehaviour:
   - {fileID: 317781929}
   buttonInfo: to open door
   isLocked: 0
+  doorCloses: 0
 --- !u!1001 &324006811
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10796,6 +10797,7 @@ MonoBehaviour:
   - {fileID: 380355594}
   buttonInfo: to open door
   isLocked: 0
+  doorCloses: 0
 --- !u!1 &381741214 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: e39a0a433f338674fbbd850bec1ec4a5, type: 3}
@@ -18997,6 +18999,7 @@ MonoBehaviour:
   - {fileID: 468623655}
   buttonInfo: Use key
   isLocked: 1
+  doorCloses: 0
 --- !u!135 &468623663
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -24627,6 +24630,7 @@ MonoBehaviour:
   - {fileID: 1119100864}
   buttonInfo: to open door
   isLocked: 0
+  doorCloses: 0
 --- !u!135 &693051654
 SphereCollider:
   m_ObjectHideFlags: 0

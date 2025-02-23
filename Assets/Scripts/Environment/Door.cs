@@ -5,7 +5,9 @@ public class Door : MonoBehaviour
     [SerializeField] GameObject[] models;
     [SerializeField] string buttonInfo;
     public bool isLocked;
+    public bool doorCloses;
     bool inTrigger;
+    bool hasOpened;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -18,10 +20,14 @@ public class Door : MonoBehaviour
     {
         if(inTrigger)
         {
-            if(Input.GetButtonDown("Interact") && !isLocked)
+            if (Input.GetButtonDown("Interact") && !isLocked)
             {
-                foreach(GameObject model in models) model.SetActive(false);
-                GameManager.Instance.buttonInteract.SetActive(false);
+                if (doorCloses && hasOpened) { }
+                else
+                {
+                    foreach (GameObject model in models) model.SetActive(false);
+                    GameManager.Instance.buttonInteract.SetActive(false);
+                }
             }
         }
     }
@@ -82,7 +88,8 @@ public class Door : MonoBehaviour
             GameManager.Instance.buttonInteract.SetActive(false);
             GameManager.Instance.buttonLocked.SetActive(false);
             GameManager.Instance.buttonInfo.text = null;
-            foreach (GameObject model in models) model.SetActive(true);
+            if(doorCloses)
+                foreach (GameObject model in models) model.SetActive(true);
         }
     }
 }
