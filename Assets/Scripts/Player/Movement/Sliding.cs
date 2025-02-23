@@ -28,6 +28,11 @@ public class Sliding : MonoBehaviour
     float horizontalInput;
     float verticalInput;
 
+    private void Awake()
+    {
+        
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -41,7 +46,7 @@ public class Sliding : MonoBehaviour
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
 
-        if(Input.GetKeyDown(SlideKey) && (horizontalInput != 0 || verticalInput != 0))
+        if(Input.GetKeyDown(SlideKey) && (horizontalInput != 0f || verticalInput != 0f))
         {
             StartSlide();
         }

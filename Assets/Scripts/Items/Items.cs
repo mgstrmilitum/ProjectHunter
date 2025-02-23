@@ -10,6 +10,7 @@ public class Items : MonoBehaviour, IPickable
     {
         Health,
         Shield,
+        Garlic
     }
 
 
@@ -34,6 +35,10 @@ public class Items : MonoBehaviour, IPickable
                     player.GainShield(100);
                     Destroy(gameObject);
                     break;
+                case ItemIDS.Garlic:
+                    player.AddGarlic();
+                    Destroy(gameObject);
+                    break;
 
             }
         }
@@ -42,13 +47,19 @@ public class Items : MonoBehaviour, IPickable
     private void OnTriggerEnter(Collider other)
     {
         //if the object is a child of IPickable then execute OnPickup()
-
-     IPickable player = other.GetComponent<IPickable>();
-
+        IPickable player = other.GetComponent<IPickable>();
         if (player != null)
         {
             OnPickup(other);
         }
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        IPickable player = collision.gameObject.GetComponent<IPickable>();
+        if (player != null)
+        {
+            OnPickup(collision.collider);
+        }
+    }
 }
