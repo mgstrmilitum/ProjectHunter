@@ -161,3 +161,5 @@ MonoBehaviour:
   whatISEnemy:
     serializedVersion: 2
     m_Bits: 1024
+  hitSound: {fileID: 0}
+  particleCollision: {fileID: 5024009746357069192, guid: ec3f674830402cc45bce805cf6493db7, type: 3}

@@ -131,6 +131,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   hitSound: {fileID: -806037888741815691}
+  particleCollision: {fileID: 8443315704496310908, guid: 6ef35fa36e3a65043b2d800600204bdd, type: 3}
 --- !u!54 &438185506885752418
 Rigidbody:
   m_ObjectHideFlags: 0
