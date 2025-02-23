@@ -2,7 +2,7 @@ using NUnit.Framework.Constraints;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-public class Items : MonoBehaviour, IPickable
+public class Items : MonoBehaviour, IpickupWeapons
 {
     [SerializeField] ItemIDS ID;
     public Material material;
@@ -42,7 +42,7 @@ public class Items : MonoBehaviour, IPickable
     private void OnTriggerEnter(Collider other)
     {
         //if the object is a child of IPickable then execute OnPickup()
-        IPickable player = other.GetComponent<IPickable>();
+        IpickupWeapons player = other.GetComponent<IpickupWeapons>();
 
         if (player != null)
         {

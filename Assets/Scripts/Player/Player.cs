@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Rendering;
 
-public class Player : MonoBehaviour, IDamageable, IPickable, TakeDamage, IOpen
+public class Player : MonoBehaviour, IDamageable, IpickupWeapons, TakeDamage, IOpen
 {
     [Header("-----Player Stats-----")]
     
