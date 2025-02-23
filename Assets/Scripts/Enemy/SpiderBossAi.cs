@@ -1,4 +1,3 @@
-
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
@@ -26,33 +25,27 @@ public class SpiderBossAi : MonoBehaviour, TakeDamage
     [SerializeField] int faceTargetSpeed;
     [SerializeField] int fov;
     [SerializeField] int shootFOV;
-    [SerializeField] int roamPauseTime;
     [SerializeField] Transform headPos;
     [SerializeField] Animator animatorController;
     [SerializeField] int WalkSpeedTrans;
-    [SerializeField] int roamDistance;
     [SerializeField] float grenadeSpeed;
     [SerializeField] Transform playerTransform;
     [SerializeField] float damageMultiplier;
     [SerializeField] GameObject enemySpawnerPrefab;
-    [SerializeField] Transform[] spawnerPositions;
+    [SerializeField] GameObject dropItem;  // Item to drop when the boss dies
     [SerializeField] EnemyType enemyType;
     [SerializeField] Rigidbody rb;
 
-    float angleToPlayer;
-    float stoppingDistanceOrig;
     bool isShooting;
     bool isMelee;
     bool playerInRange;
-    bool isRoaming;
     Color originalColor;
     Vector3 playerDirection;
-    Vector3 startingPos;
+    float angleToPlayer;
 
-
-    Coroutine co;
     int spawnThreshold1;
     int spawnThreshold2;
+    bool spawnedSpawner = false;  // Ensure the spawner is spawned only once
 
     private void Awake()
     {
@@ -62,57 +55,22 @@ public class SpiderBossAi : MonoBehaviour, TakeDamage
     void Start()
     {
         originalColor = model.material.color;
-        stoppingDistanceOrig = agent.stoppingDistance;
-        startingPos = transform.position;
-
         maxHp = hp;
-        spawnThreshold1 = Mathf.RoundToInt(maxHp * 2 / 3f); // When HP drops below 2/3
+        spawnThreshold1 = Mathf.RoundToInt(maxHp * 2 / 3f); // When HP drops below 2/3 (not used in current logic)
         spawnThreshold2 = Mathf.RoundToInt(maxHp * 1 / 3f); // When HP drops below 1/3
     }
 
     void Update()
     {
-        // Calculate a lowered head position and update player direction and angle.
-        //Vector3 loweredHeadPos = headPos.position - new Vector3(0, 0.2f, 0);
         playerDirection = GameManager.Instance.player.transform.position - headPos.position;
-        //angleToPlayer = Vector3.Angle(playerDirection, transform.forward);
-
-        if ((playerInRange && !CanSeePlayer()))
+        if (playerInRange || CanSeePlayer())
         {
-            if (!isRoaming && agent.remainingDistance < 0.01f)
-            {
-                //co = StartCoroutine(Roam());
-            }
-
-        }
-        else if (!playerInRange)
-        {
-            if (!isRoaming && agent.remainingDistance < 0.01f)
-            {
-                //co = StartCoroutine(Roam());
-            }
+            // Behavior when the player is visible is handled in CanSeePlayer()
         }
     }
 
-    //IEnumerator Roam()
-    //{
-    //    isRoaming = true;
-    //    yield return new WaitForSeconds(roamPauseTime);
-    //    agent.stoppingDistance = 0;
-    //    Vector3 randomPos = Random.insideUnitSphere * roamDistance;
-    //    randomPos += startingPos;
-    //    NavMeshHit hit;
-    //    NavMesh.SamplePosition(randomPos, out hit, roamDistance, 1);
-    //    agent.SetDestination(hit.position);
-    //    isRoaming = false;
-    //}
-
-    // Only checks if the enemy can see the player.
     bool CanSeePlayer()
     {
-        //Vector3 localLoweredHeadPos = headPos.position - new Vector3(0, 0.05f, 0);
-        //Debug.DrawRay(localLoweredHeadPos, playerDirection.normalized * 20f, Color.green);
-
         playerDirection = GameManager.Instance.player.transform.position - headPos.position;
         angleToPlayer = Vector3.Angle(playerDirection, transform.forward);
 
@@ -129,14 +87,10 @@ public class SpiderBossAi : MonoBehaviour, TakeDamage
                 if (!isShooting && angleToPlayer <= shootFOV)
                 {
                     StartCoroutine(Shoot());
-
                 }
-
-                agent.stoppingDistance = stoppingDistanceOrig;
                 return true;
             }
         }
-
         return false;
     }
 
@@ -167,7 +121,6 @@ public class SpiderBossAi : MonoBehaviour, TakeDamage
         foreach (Renderer rend in models)
         {
             rend.material.color = originalColor;
-
         }
     }
 
@@ -175,37 +128,10 @@ public class SpiderBossAi : MonoBehaviour, TakeDamage
     {
         isShooting = true;
         GameObject obj = Instantiate(bullet, shootPos.position, transform.rotation);
-
         obj.GetComponent<Rigidbody>().AddForce(transform.forward * 20f, ForceMode.Impulse);
         yield return new WaitForSeconds(shootRate);
         isShooting = false;
     }
-
-    //IEnumerator MeleeAttack()
-    //{
-    //    isMelee = true;
-
-    //    // Trigger the swing animation
-    //    animatorController.SetTrigger("Swing");
-    //    Debug.Log("Swing animation triggered");
-
-    //    // Wait for the duration of the melee animation before applying damage
-    //    yield return new WaitForSeconds(meleeRate * 0.5f); // Adjust timing if necessary
-
-    //    // Apply damage after the animation has started
-    //    TakeDamage damageable = playerTransform.GetComponent<TakeDamage>();
-    //    if (damageable != null)
-    //    {
-    //        Collider playerCollider = playerTransform.GetComponent<Collider>();
-    //        damageable.takeDamage(meleeDamage, playerCollider);
-    //    }
-
-    //    // Wait for the full melee cooldown before allowing another attack
-    //    yield return new WaitForSeconds(meleeRate * 0.5f);
-
-    //    isMelee = false;
-    //}
-
 
     void FaceTarget()
     {
@@ -214,32 +140,52 @@ public class SpiderBossAi : MonoBehaviour, TakeDamage
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, faceTargetSpeed * Time.deltaTime);
     }
 
+    // Spawns the enemy spawner just under the boss on the ground.
     void SpawnEnemySpawner()
     {
-        if (enemySpawnerPrefab != null && spawnerPositions.Length > 0)
+        if (enemySpawnerPrefab != null)
         {
-            int randomIndex = Random.Range(0, spawnerPositions.Length);
-            Instantiate(enemySpawnerPrefab, spawnerPositions[randomIndex].position, Quaternion.identity);
+            Vector3 spawnPos;
+            RaycastHit hit;
+            // Cast a ray downward from the boss's position to find the ground
+            if (Physics.Raycast(transform.position, Vector3.down, out hit, 100f))
+            {
+                spawnPos = hit.point;
+            }
+            else
+            {
+                spawnPos = transform.position;
+            }
+            Instantiate(enemySpawnerPrefab, spawnPos, Quaternion.identity);
+        }
+    }
+
+    // Drops an item when the boss dies.
+    void DropItem()
+    {
+        if (dropItem != null)
+        {
+            Instantiate(dropItem, transform.position, Quaternion.identity);
         }
     }
 
     public void takeDamage(int amount)
     {
         hp -= amount;
-
         agent.SetDestination(GameManager.Instance.player.transform.position);
-        if (co != null)
+        StartCoroutine(FlashRed());
+
+        // Spawn the enemy spawner once when HP drops below 1/3.
+        if (!spawnedSpawner && hp <= spawnThreshold2)
         {
-            StopCoroutine(co);
-            isRoaming = false;
+            SpawnEnemySpawner();
+            spawnedSpawner = true;
         }
 
-        StartCoroutine(FlashRed());
         if (hp <= 0)
         {
+            DropItem();
             Destroy(gameObject);
         }
     }
 }
-
-

@@ -2,11 +2,11 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class MeleeEnemyAI : MonoBehaviour, TakeDamage
+public class MeleeEnemyAi : MonoBehaviour, TakeDamage
 {
     [Header("Enemy Stats")]
     [SerializeField] int meleeDamage;
-    [SerializeField] int hp;
+     public int hp;
     [SerializeField] int maxHp;
     [SerializeField] float meleeRate; // Total time for one melee attack cycle
 

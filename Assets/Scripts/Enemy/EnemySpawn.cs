@@ -1,58 +1,66 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
-public class EnemySpawn : MonoBehaviour
+public class EnemySpawn : MonoBehaviour, TakeDamage
 {
-    [SerializeField] GameObject[] spawnObjects;
-    [SerializeField] public int numToSpawn;
-    [SerializeField] float spawnTime;
-    [SerializeField] Transform[] spawnPos;
-    [SerializeField] public List<GameObject> spawnList;
+    [SerializeField] GameObject[] enemyPrefabs; // Array of enemy prefabs to spawn.
+    [SerializeField] int numToSpawn = 3;          // Number of enemies to spawn at once.
+    [SerializeField] float spawnRadius = 3f;        // Radius around the spawner for enemy spawn positions.
+    [SerializeField] int hp = 50;                   // Health of the spawner.
+    [SerializeField] float spawnDelay = 5f;         // Delay before automatically spawning enemies.
 
-    public int spawnCount;
+    bool hasSpawnedEnemies = false; // Ensures enemies are spawned only once.
 
-    bool isSpawning;
-    bool startSpawning;
-    public bool isObjectiveSpawner;
-
-
-
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-
+        // Begin the delayed spawn process.
+        StartCoroutine(DelayedSpawnEnemies());
     }
 
-    // Update is called once per frame
-    void Update()
+    IEnumerator DelayedSpawnEnemies()
     {
-        if (startSpawning && spawnCount < numToSpawn && !isSpawning)
+        yield return new WaitForSeconds(spawnDelay);
+        // Only spawn if the spawner hasn't been destroyed.
+        if (!hasSpawnedEnemies)
         {
-            StartCoroutine(Spawn());
+            SpawnEnemies();
+            hasSpawnedEnemies = true;
+            Destroy(gameObject);
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void takeDamage(int amount)
     {
-        if (other.CompareTag("Player"))
+        hp -= amount;
+        if (hp <= 0)
         {
-            startSpawning = true;
+            // If the spawner is destroyed by damage, do not spawn any enemies.
+            Destroy(gameObject);
         }
     }
 
-    IEnumerator Spawn()
+    // Spawns the enemies near the spawner's position on the NavMesh.
+    void SpawnEnemies()
     {
-        isSpawning = true;
-        int transformArrayPosition = Random.Range(0, spawnPos.Length);
-        int objectArrayPosition = Random.Range(0, spawnObjects.Length);
-        GameObject instantiated = Instantiate(spawnObjects[objectArrayPosition], spawnPos[transformArrayPosition].position, spawnPos[transformArrayPosition].rotation);
-        spawnList.Add(instantiated);
-        instantiated.transform.SetParent(transform);
-        spawnCount++;
-        isSpawning = false;
-        yield return new WaitForSeconds(spawnTime);
+        Vector3 spawnerPosition = transform.position;
+        for (int i = 0; i < numToSpawn; i++)
+        {
+            // Generate a random offset within a circle around the spawner.
+            Vector2 randomCircle = Random.insideUnitCircle * spawnRadius;
+            Vector3 desiredPosition = spawnerPosition + new Vector3(randomCircle.x, 0, randomCircle.y);
 
+            // Ensure the spawn position is on the NavMesh.
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(desiredPosition, out hit, spawnRadius, NavMesh.AllAreas))
+            {
+                desiredPosition = hit.position;
+            }
 
+            // Select a random enemy prefab and instantiate it at the validated position.
+            int randomIndex = Random.Range(0, enemyPrefabs.Length);
+            Instantiate(enemyPrefabs[randomIndex], desiredPosition, Quaternion.identity);
+        }
     }
 }
