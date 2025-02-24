@@ -2044,7 +2044,7 @@ MonoBehaviour:
   hp: 500
   maxHp: 500
   shootPos: {fileID: 4624185982216089894}
-  bullet: {fileID: 0}
+  bullet: {fileID: 6854347750843841877, guid: 2901a370430183a4a838f838ffbac60c, type: 3}
   shootRate: 1.5
   shootFOV: 120
   meleeDamage: 30
