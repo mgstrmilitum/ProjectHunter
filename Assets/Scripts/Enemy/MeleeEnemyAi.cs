@@ -137,7 +137,7 @@ public class MeleeEnemyAI : MonoBehaviour, TakeDamage
     public void takeDamage(int amount)
     {
         hp -= amount;
-
+        GameManager.Instance.gameStats.shotsHit++;
         // On taking damage, immediately re-chase the player.
         NavMeshHit hit;
         if (NavMesh.SamplePosition(GameManager.Instance.player.transform.position, out hit, 1.0f, NavMesh.AllAreas))
@@ -156,8 +156,8 @@ public class MeleeEnemyAI : MonoBehaviour, TakeDamage
 
         if (hp <= 0)
         {
-            Destroy(gameObject);
-            GameManager.Instance.gameStats.enemiesRemaining--;
+            GameManager.Instance.gameStats.numKills++;
+            Destroy(gameObject); 
         }
     }
 

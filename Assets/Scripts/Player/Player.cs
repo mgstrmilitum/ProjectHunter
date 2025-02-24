@@ -23,9 +23,9 @@ public class Player : MonoBehaviour, IpickupWeapons, TakeDamage, IOpen
 
     public struct PlayerStats
     {
-        int shotsFired;
-        int shotsHit;
-        int enemiesKilled;
+        public int shotsFired;
+        public int shotsHit;
+        public int enemiesKilled;
     }
 
     void Start()

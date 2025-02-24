@@ -20,7 +20,8 @@ public class GameManager : MonoBehaviour
     public GameObject pauseMenu;
     public GameObject winMenu;
     public GameObject loseMenu;
-    public GameObject WheelMenu; 
+    public GameObject WheelMenu;
+    public GameObject statsMenu;
     public bool isPaused;
 
 
@@ -57,15 +58,17 @@ public class GameManager : MonoBehaviour
     public GameStats gameStats;
     public TMP_Text tshotsFired;
     public TMP_Text tshotsHit;
-    public TMP_Text tenemiesTotal;
-    public TMP_Text tenemiesRemaining;
+    public TMP_Text tAccuracy;
+    public TMP_Text tKills;
+
+    public bool displayStats;
 
    public struct GameStats
     {
         public int shotsFired;
         public int shotsHit;
+        public int numKills;
         public int enemiesTotal;
-        public int enemiesRemaining;
     }
     void Awake()
     {
@@ -77,7 +80,7 @@ public class GameManager : MonoBehaviour
 
     public void Start()
     {
-        gameStats.enemiesRemaining = gameStats.enemiesTotal;
+        //gameStats.enemiesRemaining = gameStats.enemiesTotal;
     }
 
     public IEnumerator ShowGarlicStats()
@@ -106,6 +109,9 @@ public class GameManager : MonoBehaviour
                 StateUnpause();
             }
         }
+
+        if(displayStats)
+            DisplayLevelStats();
     }
 
     public void OnLose()
@@ -214,8 +220,12 @@ public class GameManager : MonoBehaviour
     {
         tshotsFired.text = gameStats.shotsFired.ToString();
         tshotsHit.text = gameStats.shotsHit.ToString();
-        tenemiesRemaining.text = gameStats.enemiesRemaining.ToString();
-        tenemiesTotal.text = gameStats.enemiesTotal.ToString();
+        //tAccuracy.text = ((float)(gameStats.shotsHit / gameStats.shotsFired)).ToString();
+        tKills.text = gameStats.numKills.ToString() + "/" + gameStats.enemiesTotal.ToString();
+        activeMenu = statsMenu;
+        activeMenu.SetActive(true);
+        //tenemiesRemaining.text = gameStats.enemiesRemaining.ToString();
+        //tenemiesTotal.text = gameStats.enemiesTotal.ToString();
     }
 }
     #endregion
