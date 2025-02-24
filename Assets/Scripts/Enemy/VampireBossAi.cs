@@ -21,7 +21,7 @@ public class VampireBossAi : MonoBehaviour, TakeDamage
     [SerializeField] Transform[] spawnerPositions;     // Designated positions for spawners
 
     [Header("Animation")]
-    [SerializeField] Animator animatorController; // Expects triggers "Shoot", "Swing", "Roar"
+    //[SerializeField] Animator animatorController; // Expects triggers "Shoot", "Swing", "Roar"
 
     [Header("References")]
     [SerializeField] Renderer model;
@@ -106,7 +106,7 @@ public class VampireBossAi : MonoBehaviour, TakeDamage
     IEnumerator ShootRanged(Vector3 direction)
     {
         isShooting = true;
-        animatorController.SetTrigger("Shoot");
+        //animatorController.SetTrigger("Shoot");
         Quaternion bulletRotation = Quaternion.LookRotation(direction);
         GameObject obj = Instantiate(bullet, shootPos.position, bulletRotation);
 
@@ -146,7 +146,7 @@ public class VampireBossAi : MonoBehaviour, TakeDamage
     {
         while (true)
         {
-            animatorController.SetTrigger("Swing");
+           // animatorController.SetTrigger("Swing");
             // This line freezes the player's movement for 1.5 seconds.
             GameManager.Instance.player.SendMessage("FreezeMovement", 1.5f, SendMessageOptions.DontRequireReceiver);
             yield return new WaitForSeconds(5f);
@@ -204,7 +204,7 @@ public class VampireBossAi : MonoBehaviour, TakeDamage
         {
             rend.material.color = Color.black;
         }
-        animatorController.SetTrigger("Roar");
+       // animatorController.SetTrigger("Roar");
         yield return new WaitForSeconds(3f);
         foreach (Renderer rend in models)
         {
