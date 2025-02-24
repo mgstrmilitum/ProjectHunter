@@ -364,6 +364,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1c2d5e1ddbc6a94da94232c9917adf3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SwordKey: 120
   ability: {fileID: 1516517747846910240}
 --- !u!1 &782628684129836056
 GameObject:
@@ -1607,6 +1608,10 @@ MonoBehaviour:
   maxShield: 100
   currentAp: 0
   maxAp: 100
+  combatTimer: 0
+  combatMusic: {fileID: 0}
+  nonCombatMusic: {fileID: 0}
+  localCombatTimer: 0
   abilityReady: 0
   key: 0
   numGarlic: 0
@@ -1648,8 +1653,8 @@ MonoBehaviour:
   leanDownAngle: 0
   leanSmoothing: 0.05
   leanVelocity: 0
-  LeanLeftKey: 122
-  LeanRightKey: 120
+  LeanLeftKey: 113
+  LeanRightKey: 101
   leaning: 0
   maxSlopeAngle: 46
   slopeGroundCheckDistance: 0.3
@@ -3547,8 +3552,8 @@ MonoBehaviour:
   amount: 30
   slerpAmount: 20
   pm: {fileID: 5534111020833140695}
-  LeanLeftKey: 122
-  LeanRightKey: 120
+  LeanLeftKey: 113
+  LeanRightKey: 101
 --- !u!1 &3880411798307839770
 GameObject:
   m_ObjectHideFlags: 0
@@ -4608,7 +4613,7 @@ MonoBehaviour:
   cooldownTime: 0
   activeTime: 0
   abilityCost: 100
-  player: {fileID: 0}
+  player: {fileID: 7479772877442477810}
   sword: {fileID: 4814624939257258505}
   playerRotation: {fileID: 0}
   attackPoint: {fileID: 4777848364227417859}

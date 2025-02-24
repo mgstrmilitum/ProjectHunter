@@ -228,7 +228,7 @@ public class EnemyAI : MonoBehaviour, TakeDamage
     public void takeDamage(int amount)
     {
         hp -= amount;
-
+        GameManager.Instance.gameStats.shotsHit++;
         agent.SetDestination(GameManager.Instance.player.transform.position);
         if (co != null)
         {
@@ -239,8 +239,9 @@ public class EnemyAI : MonoBehaviour, TakeDamage
         StartCoroutine(FlashRed());
         if (hp <= 0)
         {
+            //GameManager.Instance.gameStats.enemiesRemaining--;
+            GameManager.Instance.gameStats.numKills++;
             Destroy(gameObject);
-            GameManager.Instance.gameStats.enemiesRemaining--;
         }
     }
 }
