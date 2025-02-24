@@ -2029,8 +2029,8 @@ MonoBehaviour:
   damageMultiplier: 2
   enemySpawnerPrefab: {fileID: 8950812383414627711, guid: 54289c280c6de12458af9b5cd4855789, type: 3}
   spawnerPositions: []
-  spawnRadius: 4
-  navMeshCheckDistance: 2
+  spawnRadius: 3
+  navMeshCheckDistance: 1
   enemyType: 0
   rb: {fileID: 0}
 --- !u!114 &2588551937034967470

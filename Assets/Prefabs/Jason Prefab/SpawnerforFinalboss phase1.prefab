@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2265633752649802386}
   - component: {fileID: 4323658362975443020}
   m_Layer: 13
-  m_Name: SpawnerforFinalboss phase5
+  m_Name: SpawnerforFinalboss phase1
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -101,8 +101,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyPrefabs:
-  - {fileID: 1774204904724297128, guid: 6d34f90cf602b064c90d396982e99662, type: 3}
-  numToSpawn: 4
+  - {fileID: 4870195056874217732, guid: 2de5a8ae40ec7e04cab8ce4c4b1f3240, type: 3}
+  numToSpawn: 3
   spawnRadius: 3
   hp: 50
   spawnDelay: 0.5
