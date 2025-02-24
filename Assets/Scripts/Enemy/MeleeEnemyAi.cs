@@ -6,7 +6,7 @@ public class MeleeEnemyAI : MonoBehaviour, TakeDamage
 {
     [Header("Enemy Stats")]
     [SerializeField] int meleeDamage;
-    [SerializeField] int hp;
+    public int hp;
     [SerializeField] int maxHp;
     [SerializeField] float meleeRate; // Total time for one melee attack cycle
 
