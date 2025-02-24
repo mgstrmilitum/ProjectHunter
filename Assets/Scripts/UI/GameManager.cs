@@ -110,7 +110,6 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        if(displayStats)
             DisplayLevelStats();
     }
 
@@ -118,13 +117,13 @@ public class GameManager : MonoBehaviour
     {
         StatePause();
         activeMenu = loseMenu;
-        activeMenu.SetActive(isPaused);
+        activeMenu.SetActive(true);
     }
     public void OnWin() {
         StatePause();
         DisplayLevelStats();
         activeMenu = winMenu;
-        activeMenu.SetActive(isPaused);
+        activeMenu.SetActive(true);
 
        
     }
@@ -222,8 +221,8 @@ public class GameManager : MonoBehaviour
         tshotsHit.text = gameStats.shotsHit.ToString();
         //tAccuracy.text = ((float)(gameStats.shotsHit / gameStats.shotsFired)).ToString();
         tKills.text = gameStats.numKills.ToString() + "/" + gameStats.enemiesTotal.ToString();
-        activeMenu = statsMenu;
-        activeMenu.SetActive(true);
+     
+        statsMenu.SetActive(displayStats);
         //tenemiesRemaining.text = gameStats.enemiesRemaining.ToString();
         //tenemiesTotal.text = gameStats.enemiesTotal.ToString();
     }
