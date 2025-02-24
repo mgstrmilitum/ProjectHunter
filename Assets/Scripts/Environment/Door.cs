@@ -27,6 +27,7 @@ public class Door : MonoBehaviour
                 {
                     foreach (GameObject model in models) model.SetActive(false);
                     GameManager.Instance.buttonInteract.SetActive(false);
+                    hasOpened = true;
                 }
             }
         }
@@ -49,6 +50,7 @@ public class Door : MonoBehaviour
 
             if (!isLocked)
             {
+                if(doorCloses && hasOpened) return;
                 GameManager.Instance.buttonInteract.SetActive(true);
                 GameManager.Instance.buttonInfo.text = buttonInfo;
                 //model.SetActive(false);
