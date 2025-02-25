@@ -3805,7 +3805,7 @@ GameObject:
   - component: {fileID: 73572700}
   - component: {fileID: 73572699}
   - component: {fileID: 73572698}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Barn wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -50553,7 +50553,7 @@ GameObject:
   - component: {fileID: 813873105}
   - component: {fileID: 813873104}
   - component: {fileID: 813873103}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PolyShape (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -59152,7 +59152,7 @@ GameObject:
   - component: {fileID: 988192571}
   - component: {fileID: 988192570}
   - component: {fileID: 988192569}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Barn wall (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -65247,7 +65247,7 @@ GameObject:
   - component: {fileID: 1089862672}
   - component: {fileID: 1089862671}
   - component: {fileID: 1089862670}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Barn wall (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -119790,7 +119790,7 @@ GameObject:
   - component: {fileID: 1868920543}
   - component: {fileID: 1868920542}
   - component: {fileID: 1868920541}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Barn wall (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -127013,7 +127013,7 @@ GameObject:
   - component: {fileID: 2011743142}
   - component: {fileID: 2011743141}
   - component: {fileID: 2011743140}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Barn wall (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
