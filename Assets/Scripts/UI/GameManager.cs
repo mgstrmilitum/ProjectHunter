@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
     public Player playerScript;
     public PlayerMovement movementScript;
 
+
     //----Menus-----//
     public GameObject activeMenu;
     public GameObject pauseMenu;
@@ -23,7 +24,7 @@ public class GameManager : MonoBehaviour
     public GameObject WheelMenu;
     public GameObject statsMenu;
     public bool isPaused;
-
+    public bool isMainmenu;
 
     //----Player Health-----//
     [Header("-----Player Info-----")]
@@ -93,24 +94,27 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        UpdatePlayerUI();
-
-        
-        if (Input.GetButtonDown("Cancel") && WeaponWheelController.weaponWheelOpened == false)
+        if (!isMainmenu)
         {
-            if (activeMenu == null)
+            UpdatePlayerUI();
+
+
+            if (Input.GetButtonDown("Cancel") && WeaponWheelController.weaponWheelOpened == false)
             {
-                StatePause();
-                activeMenu = pauseMenu;
-                activeMenu.SetActive(isPaused);
+                if (activeMenu == null)
+                {
+                    StatePause();
+                    activeMenu = pauseMenu;
+                    activeMenu.SetActive(isPaused);
+                }
+                else if (activeMenu == pauseMenu)
+                {
+                    StateUnpause();
+                }
             }
-            else if (activeMenu == pauseMenu)
-            {
-                StateUnpause();
-            }
-        }
 
             DisplayLevelStats();
+        }
     }
 
     public void OnLose()

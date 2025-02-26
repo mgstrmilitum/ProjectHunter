@@ -34,17 +34,20 @@ public class Throwholywater : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetMouseButtonDown(0))
+        if (Time.timeScale != 0)
         {
-            StartCharging();
-        }
-        if (isCharging)
-        {
-            ChargeThrow();
-        }
-        if(Input.GetMouseButtonUp(0))
-        {
-            Release();
+            if (Input.GetMouseButtonDown(0))
+            {
+                StartCharging();
+            }
+            if (isCharging)
+            {
+                ChargeThrow();
+            }
+            if (Input.GetMouseButtonUp(0))
+            {
+                Release();
+            }
         }
     }
 
