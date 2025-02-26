@@ -26,6 +26,13 @@ public class Holywater : MonoBehaviour
 
     [Header("Gernade Damage")]
     [SerializeField] private int Damage;
+    [SerializeField] private int BonkDamage;
+
+    [Header("Gernade Explosion Layers")]
+    public LayerMask explosionLayers;
+
+    private Collider[] colliders;
+    bool cankill=false;
     private void Start()
     {
 
@@ -73,37 +80,44 @@ public class Holywater : MonoBehaviour
 
     void NearbyForceApply()
     {
-        Collider[] colliders = Physics.OverlapSphere(transform.position, explosionradius);
+         colliders = Physics.OverlapSphere(transform.position, explosionradius, explosionLayers);
         foreach (Collider nearbyObject in colliders)
         {
-            Rigidbody rb = nearbyObject.GetComponent<Rigidbody>();
-            if (rb != null)
-            {
-                rb.AddExplosionForce(explosionforce, transform.position, explosionradius);
-                TakeDamage dmg= colliders[0].GetComponent<TakeDamage>();
-                if(dmg != null)
-                {
-                    dmg.takeDamage(Damage);
-                }
-            }
+            //Rigidbody rb = nearbyObject.GetComponent<Rigidbody>();
+            //if (rb != null)
+            //{
+            //    cankill=true;
+            //    rb.AddExplosionForce(explosionforce, transform.position, explosionradius);
+            //    TakeDamage dmg= gameObject.GetComponent<TakeDamage>();
+            //    if(dmg != null)
+            //    {
 
+            //        dmg.takeDamage(Damage);
+            //    }
+            //    OnTriggerEnter(nearbyObject);
+            //}
+            TakeDamage dmg = nearbyObject.gameObject.GetComponent<TakeDamage>();
+            if (dmg != null)
+            {
+
+                dmg.takeDamage(Damage);
+            }
+            OnTriggerEnter(nearbyObject);
         }
     }
 
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.isTrigger)
+        //if (other.isTrigger)
+        //{
+        //    return;
+        //}
+        //StartCoroutine(TimerDelay());
+        TakeDamage dmg= other.gameObject.GetComponent<TakeDamage>();
+        if(dmg != null && cankill)
         {
-            return;
-        }
-        TakeDamage dmg = other.GetComponent<TakeDamage>();
-        if (dmg != null)
-        {
-
-            
             dmg.takeDamage(Damage);
-            //Destroy(other.gameObject);
         }
 
 
@@ -114,6 +128,25 @@ public class Holywater : MonoBehaviour
         audio_.clip=impactSound;
         audio_.spatialBlend=1;
         audio_.Play();
+
+        TakeDamage dmg=collision.gameObject.GetComponent<TakeDamage>();
+        if(dmg != null)
+        {
+            dmg.takeDamage(BonkDamage);
+        }
+        
+    }
+
+    IEnumerator TimerDelay()
+    {
+        yield return new WaitForSeconds(4f);
+        TakeDamage dmg = gameObject.GetComponent<TakeDamage>();
+        if (dmg != null)
+        {
+            dmg.takeDamage(Damage);
+        }
+           
+
     }
 
 }

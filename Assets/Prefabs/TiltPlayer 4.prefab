@@ -8790,6 +8790,9 @@ MonoBehaviour:
   explosionAudioSource: {fileID: 8300000, guid: 3155fe47d91f04f4faff115376f12d63, type: 3}
   impactSound: {fileID: 8300000, guid: 408eaf5a6ea7c6840adeeb13ce5057c0, type: 3}
   Damage: 100
+  explosionLayers:
+    serializedVersion: 2
+    m_Bits: 1919
 --- !u!4 &8344171514857626081 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4000011650569256, guid: 2cf6690298568294cb6b655c0a3aeb87, type: 3}
