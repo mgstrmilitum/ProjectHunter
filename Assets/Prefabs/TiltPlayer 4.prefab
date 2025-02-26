@@ -1647,7 +1647,7 @@ MonoBehaviour:
   climbing: 0
   playerHeight: 2
   groundCheckDistance: 0.2
-  groundDrag: 1
+  groundDrag: 3
   whatIsGround:
     serializedVersion: 2
     m_Bits: 328
@@ -2002,7 +2002,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 0.9111111
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -4126,7 +4126,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 6527
+    m_Bits: 22911
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -5148,7 +5148,7 @@ GameObject:
   - component: {fileID: 4579091846932085335}
   - component: {fileID: 223405537940161943}
   - component: {fileID: 8037608576471812430}
-  m_Layer: 5
+  m_Layer: 13
   m_Name: MapMarker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5164,8 +5164,8 @@ Transform:
   m_GameObject: {fileID: 5273386845360333193}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 1.012, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -0, y: 40.66, z: 0}
+  m_LocalScale: {x: 5, y: 5, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8748438842092736223}
