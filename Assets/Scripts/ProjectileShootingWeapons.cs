@@ -30,17 +30,20 @@ public class ProjectileShootingWeapons : Weapon
     // Update is called once per frame
     public override void Update()
     {
-        base.Update();
-        if (Input.GetButtonDown("Fire1") && projctileLoad>0 && !isReloading && canShoot)
+        if (Time.timeScale != 0)
         {
-            Shoot();
-            AudioSource.Play();
+            base.Update();
+            if (Input.GetButtonDown("Fire1") && projctileLoad > 0 && !isReloading && canShoot)
+            {
+                Shoot();
+                AudioSource.Play();
 
-        }
-        if (Input.GetButtonDown("Reload"))
-        {//reloadSound = GetComponent<AudioSource>();
-            StartCoroutine(Reloading());
-            
+            }
+            if (Input.GetButtonDown("Reload"))
+            {//reloadSound = GetComponent<AudioSource>();
+                StartCoroutine(Reloading());
+
+            }
         }
     }
 

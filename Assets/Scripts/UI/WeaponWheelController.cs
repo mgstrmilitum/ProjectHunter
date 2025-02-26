@@ -22,7 +22,7 @@ public class WeaponWheelController : MonoBehaviour
             {
 
                 GameManager.Instance.StatePause();
-                Time.timeScale = .15f;
+                Time.timeScale = 0f;
                 wheelUI.SetActive(true);
                 Debug.Log("Playing open anim");
                 anim.SetBool("OpenWeaponWheel", true);
