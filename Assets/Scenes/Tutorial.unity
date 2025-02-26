@@ -2152,7 +2152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89c322c8b1a329044a7d1179d308b435, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLava: 0
+  isLava: 1
   damageAmount: 5
   damageDelay: 1
 --- !u!1 &37172409
@@ -85708,7 +85708,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89c322c8b1a329044a7d1179d308b435, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLava: 0
+  isLava: 1
   damageAmount: 5
   damageDelay: 1
 --- !u!1 &1375828752
@@ -109754,7 +109754,7 @@ Transform:
   m_GameObject: {fileID: 1755479311}
   serializedVersion: 2
   m_LocalRotation: {x: 1.0566903e-17, y: 0.3067755, z: 3.4058924e-18, w: 0.9517819}
-  m_LocalPosition: {x: 24.42, y: -4.92, z: 194.15}
+  m_LocalPosition: {x: 24.9, y: -4.92, z: 194.84}
   m_LocalScale: {x: 5, y: 1, z: 15}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -124587,8 +124587,8 @@ Transform:
   m_GameObject: {fileID: 1974097344}
   serializedVersion: 2
   m_LocalRotation: {x: 1.1033635e-17, y: 0.11099184, z: 1.232257e-18, w: 0.9938213}
-  m_LocalPosition: {x: -21.22, y: -4.92, z: 169.43}
-  m_LocalScale: {x: 43.3, y: 1, z: 2.4}
+  m_LocalPosition: {x: -26.63, y: -4.92, z: 170.65}
+  m_LocalScale: {x: 31.9, y: 1, z: 2.4}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 96438713}
@@ -125286,7 +125286,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89c322c8b1a329044a7d1179d308b435, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLava: 0
+  isLava: 1
   damageAmount: 5
   damageDelay: 1
 --- !u!65 &1978021300
