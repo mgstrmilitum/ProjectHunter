@@ -16,6 +16,8 @@ public class PlayerLean : MonoBehaviour
     private Quaternion leftRotation;
     private Quaternion rightRotation;
 
+    private bool hasTitledInAir;
+
     private void Awake()
     {
         //GameManager.Instance.controls.Gameplay.LeanLeft.performed += ctx => leanLeft = true;
@@ -40,23 +42,25 @@ public class PlayerLean : MonoBehaviour
 
     private void HandleLean()
     {
-        if (Input.GetKey(LeanLeftKey))
+        if (pm.grounded || !hasTitledInAir)
         {
-            pm.restricted = true;
-            Quaternion newRot = Quaternion.Euler(transform.localRotation.x, transform.localRotation.y, transform.localRotation.z + amount);
-            transform.localRotation = Quaternion.Slerp(transform.localRotation, newRot, Time.deltaTime * slerpAmount);
+            if (Input.GetKey(LeanLeftKey))
+            {
+                pm.restricted = true;
+                Quaternion newRot = Quaternion.Euler(transform.localRotation.x, transform.localRotation.y, transform.localRotation.z + amount);
+                transform.localRotation = Quaternion.Slerp(transform.localRotation, newRot, Time.deltaTime * slerpAmount);
+            }
+            else if (Input.GetKey(LeanRightKey))
+            {
+                pm.restricted = true;
+                Quaternion newRot = Quaternion.Euler(transform.localRotation.x, transform.localRotation.y, transform.localRotation.z - amount);
+                transform.localRotation = Quaternion.Slerp(transform.localRotation, newRot, Time.deltaTime * slerpAmount);
+            }
+            else
+            {
+                pm.restricted = false;
+                transform.localRotation = Quaternion.Slerp(transform.localRotation, initialRotation, Time.deltaTime * slerpAmount);
+            }
         }
-        else if (Input.GetKey(LeanRightKey))
-        {
-            pm.restricted = true;
-            Quaternion newRot = Quaternion.Euler(transform.localRotation.x, transform.localRotation.y, transform.localRotation.z - amount);
-            transform.localRotation = Quaternion.Slerp(transform.localRotation, newRot, Time.deltaTime * slerpAmount);
-        }
-        else
-        {
-            pm.restricted = false;
-            transform.localRotation = Quaternion.Slerp(transform.localRotation, initialRotation, Time.deltaTime * slerpAmount);
-        }
-        
     }
 }
