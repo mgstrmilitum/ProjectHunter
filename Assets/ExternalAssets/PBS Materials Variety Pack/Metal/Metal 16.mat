@@ -12,7 +12,6 @@ Material:
   m_Parent: {fileID: 2100000, guid: 216892814c5f0f84e9d1991a2a9842cb, type: 2}
   m_ModifiedSerializedProperties: 16
   m_ValidKeywords:
-  - _ALPHATEST_ON
   - _EMISSION
   - _NORMALMAP
   - _PARALLAXMAP
@@ -20,9 +19,8 @@ Material:
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 2450
-  stringTagMap:
-    RenderType: TransparentCutout
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
   disabledShaderPasses: []
   m_LockedProperties: 
   m_SavedProperties:
@@ -34,11 +32,11 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
         m_Texture: {fileID: 0}
-        m_Scale: {x: 15, y: 15}
+        m_Scale: {x: -4.3, y: 15}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: 9b6f43ae81be5384c876908af651b62d, type: 3}
-        m_Scale: {x: 15, y: 15}
+        m_Scale: {x: -4.3, y: 15}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
         m_Texture: {fileID: 2800000, guid: 5421c4910b13bb64c98d4e6d9d064407, type: 3}
@@ -50,9 +48,13 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Glossiness: 0.5
+    - _DstBlend: 0
+    - _Glossiness: 0.22
     - _Metallic: 0
-    - _Mode: 1
+    - _Mode: 0
+    - _OcclusionStrength: 0
+    - _SrcBlend: 1
+    - _ZWrite: 1
     m_Colors: []
   m_BuildTextureStacks: []
   m_AllowLocking: 1
