@@ -336,7 +336,7 @@ public class PlayerMovement : MonoBehaviour
         // Apply horizontal force based on movement direction
         if (jumpDirection != Vector3.zero)
         {
-            rb.AddForce(jumpDirection * jumpForce * 2, ForceMode.Force);
+            rb.AddForce(jumpDirection * jumpForce * 2, ForceMode.Impulse);
         }
 
         aud.PlayOneShot(audJump[Random.Range(0, audJump.Length)], audJumpVol);
