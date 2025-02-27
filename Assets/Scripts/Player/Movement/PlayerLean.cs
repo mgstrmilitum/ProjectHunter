@@ -16,8 +16,6 @@ public class PlayerLean : MonoBehaviour
     private Quaternion leftRotation;
     private Quaternion rightRotation;
 
-    private bool hasTitledInAir;
-
     private void Awake()
     {
         //GameManager.Instance.controls.Gameplay.LeanLeft.performed += ctx => leanLeft = true;
@@ -42,7 +40,7 @@ public class PlayerLean : MonoBehaviour
 
     private void HandleLean()
     {
-        if (pm.grounded || !hasTitledInAir)
+        if (pm.grounded)
         {
             if (Input.GetKey(LeanLeftKey))
             {
@@ -57,6 +55,14 @@ public class PlayerLean : MonoBehaviour
                 transform.localRotation = Quaternion.Slerp(transform.localRotation, newRot, Time.deltaTime * slerpAmount);
             }
             else
+            {
+                pm.restricted = false;
+                transform.localRotation = Quaternion.Slerp(transform.localRotation, initialRotation, Time.deltaTime * slerpAmount);
+            }
+        }
+        else
+        {
+            if(Input.GetKeyUp(LeanLeftKey) || !Input.GetKeyUp(LeanRightKey))
             {
                 pm.restricted = false;
                 transform.localRotation = Quaternion.Slerp(transform.localRotation, initialRotation, Time.deltaTime * slerpAmount);
