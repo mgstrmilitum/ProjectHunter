@@ -2244,6 +2244,10 @@ MonoBehaviour:
   headPos: {fileID: 7364971311268876484}
   animatorController: {fileID: 2563626397155377175}
   roamDistance: 5
+  canBeHit:
+    serializedVersion: 2
+    m_Bits: 128
+  weaponSlot: {fileID: 6243629517417992787}
 --- !u!1 &4917814146789145884
 GameObject:
   m_ObjectHideFlags: 0
