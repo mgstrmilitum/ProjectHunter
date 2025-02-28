@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     public GameObject player;
     public Player playerScript;
     public PlayerMovement movementScript;
+    public PlayerStatsSO statsSO;
 
 
     //----Menus-----//

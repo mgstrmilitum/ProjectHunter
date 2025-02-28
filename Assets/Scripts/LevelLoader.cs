@@ -7,10 +7,22 @@ public class LevelLoader : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!isFinalLevel) GameManager.Instance.LoadLevel(levelToLoad);
+        if (!isFinalLevel)
+        {
+            OnLevelEnd();
+            GameManager.Instance.LoadLevel(levelToLoad);
+        }
         else
         {
             GameManager.Instance.OnWin();
         }
+    }
+
+    private void OnLevelEnd()
+    {
+        GameManager.Instance.statsSO.currentHealth = GameManager.Instance.playerScript.currentHealth;
+        GameManager.Instance.statsSO.currentShield = GameManager.Instance.playerScript.currentShield;
+        GameManager.Instance.statsSO.currentSpecial = GameManager.Instance.playerScript.currentAp;
+        GameManager.Instance.statsSO.currentGarlic = GameManager.Instance.playerScript.numGarlic;
     }
 }
