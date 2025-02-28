@@ -2190,7 +2190,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 6
+  m_Radius: 5
   m_Center: {x: 0, y: 1, z: 0}
 --- !u!136 &7882201211383358697
 CapsuleCollider:
@@ -2247,7 +2247,7 @@ MonoBehaviour:
   canBeHit:
     serializedVersion: 2
     m_Bits: 128
-  weaponSlot: {fileID: 6243629517417992787}
+  weaponSlot: {fileID: 6403449299022033289}
 --- !u!1 &4917814146789145884
 GameObject:
   m_ObjectHideFlags: 0
