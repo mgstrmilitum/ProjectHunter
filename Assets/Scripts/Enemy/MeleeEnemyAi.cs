@@ -55,6 +55,7 @@ public class MeleeEnemyAI : MonoBehaviour, TakeDamage
         if (playerInRange)
         {
             // Chase the player.
+            animatorController.SetFloat("WalkSpeed", 1f);
             agent.SetDestination(GameManager.Instance.player.transform.position);
 
             // When within stopping distance, face the player and perform melee attack.
@@ -80,11 +81,13 @@ public class MeleeEnemyAI : MonoBehaviour, TakeDamage
     IEnumerator Roam()
     {
         isRoaming = true;
+        animatorController.SetFloat("WalkSpeed", 0f);
         yield return new WaitForSeconds(roamPauseTime);
-        //agent.stoppingDistance = 0;
+
         Vector3 randomPos = Random.insideUnitSphere * roamDistance + startingPos;
         if (NavMesh.SamplePosition(randomPos, out NavMeshHit hit, roamDistance, NavMesh.AllAreas))
         {
+            animatorController.SetFloat("WalkSpeed", 0.5f);
             agent.SetDestination(hit.position);
         }
         isRoaming = false;
