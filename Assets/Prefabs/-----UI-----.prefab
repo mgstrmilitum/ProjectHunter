@@ -9564,6 +9564,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1644244956546997625}
     - target: {fileID: 1969229371445301916, guid: cab6629bd848e2f4a90df20094f9a8d5, type: 3}
+      propertyPath: statsSO
+      value: 
+      objectReference: {fileID: 11400000, guid: f99e73a33792b374891b1678476d01ad, type: 2}
+    - target: {fileID: 1969229371445301916, guid: cab6629bd848e2f4a90df20094f9a8d5, type: 3}
       propertyPath: winMenu
       value: 
       objectReference: {fileID: 7466556174438435222}

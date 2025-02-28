@@ -1613,8 +1613,8 @@ MonoBehaviour:
   currentAp: 0
   maxAp: 100
   combatTimer: 0
-  combatMusic: {fileID: 0}
-  nonCombatMusic: {fileID: 0}
+  combatMusic: {fileID: 5732359967346722346}
+  nonCombatMusic: {fileID: 1711013146053561797}
   localCombatTimer: 0
   abilityReady: 0
   key: 0
@@ -1641,12 +1641,12 @@ MonoBehaviour:
   SlideKey: 306
   jumpForce: 20
   jumpCooldown: 0.25
-  airMultiplier: 0.6
+  airMultiplier: 1
   freeze: 0
   climbing: 0
   playerHeight: 2
   groundCheckDistance: 0.2
-  groundDrag: 3
+  groundDrag: 1.86
   whatIsGround:
     serializedVersion: 2
     m_Bits: 328
@@ -3702,7 +3702,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   amount: 30
-  slerpAmount: 20
+  slerpAmount: 10
   pm: {fileID: 5534111020833140695}
   LeanLeftKey: 113
   LeanRightKey: 101
@@ -8854,7 +8854,7 @@ MonoBehaviour:
   explosionAudioSource: {fileID: 8300000, guid: 3155fe47d91f04f4faff115376f12d63, type: 3}
   impactSound: {fileID: 8300000, guid: 408eaf5a6ea7c6840adeeb13ce5057c0, type: 3}
   Damage: 100
-  BonkDamage: 0
+  BonkDamage: 20
   explosionLayers:
     serializedVersion: 2
     m_Bits: 1919

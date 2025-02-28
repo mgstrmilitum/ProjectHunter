@@ -31,11 +31,11 @@ public class Player : MonoBehaviour, IpickupWeapons, TakeDamage, IOpen
     void Start()
     {
         inCombat = false;
-        currentHealth = maxHealth;
-        currentShield = maxShield;
-        currentAp = 0;
+        currentHealth = GameManager.Instance.statsSO.currentHealth;
+        currentShield = GameManager.Instance.statsSO.currentShield;
+        currentAp = GameManager.Instance.statsSO.currentSpecial;
         shieldActive = true;
-        numGarlic = 0;
+        numGarlic = GameManager.Instance.statsSO.currentGarlic;
     }
 
    
