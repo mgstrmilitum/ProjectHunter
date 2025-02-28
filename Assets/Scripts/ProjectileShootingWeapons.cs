@@ -60,11 +60,11 @@ public class ProjectileShootingWeapons : Weapon
             if (projectile.GetComponent<Rigidbody>() != null)
             {   
              
-                Destroy(projectile, 0.3f);
+                Destroy(projectile, 5f);
                 
             }
             
-            Destroy(projectile, 100);
+            Destroy(projectile, 100f);
 
         }
         
