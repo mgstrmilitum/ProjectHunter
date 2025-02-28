@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -11,7 +12,7 @@ public class ProjectileShootingWeapons : Weapon
     public int projctileLoad;
     public int MaxMagazine;
     int ammoCount;//to track the bullets
-    bool isReloading;
+    bool isReloading_;
     bool canShoot=true;
     public AudioSource AudioSource;
     //public AudioSource reloadSound;
@@ -33,7 +34,7 @@ public class ProjectileShootingWeapons : Weapon
         if (Time.timeScale != 0)
         {
             base.Update();
-            if (Input.GetButtonDown("Fire1") && projctileLoad > 0 && !isReloading && canShoot)
+            if (Input.GetButtonDown("Fire1") && projctileLoad > 0 && !isReloading_ && canShoot)
             {
                 Shoot();
                 AudioSource.Play();
@@ -59,17 +60,21 @@ public class ProjectileShootingWeapons : Weapon
             projctileLoad--;//a bullet was shot
             if (projectile.GetComponent<Rigidbody>() != null)
             {   
-             
-                Destroy(projectile, 5f);
+           
+                
+                Destroy(projectile, 2f);
                 
             }
             
-            Destroy(projectile, 100f);
+
 
         }
         
 
     }
+
+  
+
     void Setinitalreference()
     {
         projectileTransform= transform;
@@ -84,10 +89,10 @@ public class ProjectileShootingWeapons : Weapon
 
         
             canShoot = false;
-            isReloading = true;
+            isReloading_ = true;
             yield return new WaitForSeconds(3);
             projctileLoad=  MaxMagazine;
-            isReloading=false;
+            isReloading_=false;
             canShoot= true;
         //reloadSound.Play();
 
