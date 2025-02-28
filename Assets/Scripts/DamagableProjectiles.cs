@@ -27,11 +27,7 @@ public class DamagableProjectiles : MonoBehaviour
         //Boom= Instantiate(Boom, collision.contacts[0].point, Quaternion.identity);//Boom at this exact spot!
         //Destroy(Boom, 2f);
 
-        particleCollision = Instantiate(particleCollision, collision.contacts[0].point, Quaternion.identity);
-        if(particleCollision.GetComponent<Collider>() != null)
-        {Destroy(particleCollision);
-
-        }
+       
         
 
         TakeDamage dmg= collision.gameObject.GetComponent<TakeDamage>();
@@ -44,15 +40,23 @@ public class DamagableProjectiles : MonoBehaviour
             else
             {//collision.gameObject.GetComponent<EnemyAI>().takeDamage(blastDamage);
             //Destroy(collision.gameObject);
-            dmg.takeDamage(blastDamage);
-            player.GainAp(10);
-            GameManager.Instance.gameStats.shotsHit++;
-            KboomCollider.enabled=true;
-            MeshRenderer meshrenderr = this.GetComponent<MeshRenderer>();
-            meshrenderr.enabled=false;
-            MeshFilter meshfilterrr = this.GetComponent<MeshFilter>();
-            Destroy(meshfilterrr);
+                dmg.takeDamage(blastDamage);
+                player.GainAp(10);
 
+                GameManager.Instance.gameStats.shotsHit++;
+                KboomCollider.enabled=true;
+
+                MeshRenderer meshrenderr = this.GetComponent<MeshRenderer>();
+                meshrenderr.enabled=false;
+                MeshFilter meshfilterrr = this.GetComponent<MeshFilter>();
+                Destroy(meshfilterrr);
+
+                particleCollision = Instantiate(particleCollision, collision.contacts[0].point, Quaternion.identity);
+                if (particleCollision.GetComponent<Collider>() != null)
+                {
+                    Destroy(particleCollision);
+
+                }
             }
             
             
