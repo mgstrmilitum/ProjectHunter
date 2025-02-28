@@ -269,7 +269,7 @@ public class PlayerMovement : MonoBehaviour
         Vector3 jumpDirection = moveDirection.normalized;
         if (jumpDirection != Vector3.zero)
         {
-            float horizontalJumpBoost = moveSpeed * 2f;
+            float horizontalJumpBoost = moveSpeed * 0.5f;
             rb.AddForce(jumpDirection * horizontalJumpBoost, ForceMode.Impulse);
         }
 
