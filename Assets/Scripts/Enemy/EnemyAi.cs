@@ -52,11 +52,13 @@ public class EnemyAI : MonoBehaviour, TakeDamage
     Coroutine co;
     int spawnThreshold1;
     int spawnThreshold2;
+    float origStoppingDistance;
+    public Transform weaponSlot;
 
     private void Awake()
     {
         rb=GetComponent<Rigidbody>();
- 
+        origStoppingDistance = agent.stoppingDistance;
     }
 
     void Start()
@@ -98,14 +100,29 @@ public class EnemyAI : MonoBehaviour, TakeDamage
 
     IEnumerator Roam()
     {
+        //isRoaming = true;
+        //animatorController.SetFloat("WalkSpeed", 0f);
+        //yield return new WaitForSeconds(roamPauseTime);
+        //agent.stoppingDistance = 0;
+        //Vector3 randomPos = Random.insideUnitSphere * roamDistance;
+        //randomPos += startingPos;
+        //NavMeshHit hit;
+        //NavMesh.SamplePosition(randomPos, out hit, roamDistance, 1);
+        //animatorController.SetFloat("WalkSpeed", 0.5f);
+        //agent.SetDestination(hit.position);
+        //isRoaming = false;
+
         isRoaming = true;
+        animatorController.SetFloat("WalkSpeed", 0f);
         yield return new WaitForSeconds(roamPauseTime);
-        agent.stoppingDistance = 0;
-        Vector3 randomPos = Random.insideUnitSphere * roamDistance;
-        randomPos += startingPos;
-        NavMeshHit hit;
-        NavMesh.SamplePosition(randomPos, out hit, roamDistance, 1);
-        agent.SetDestination(hit.position);
+
+        Vector3 randomPos = Random.insideUnitSphere * roamDistance + startingPos;
+        if (NavMesh.SamplePosition(randomPos, out NavMeshHit hit, roamDistance, NavMesh.AllAreas))
+        {
+            agent.stoppingDistance = 0f;
+            animatorController.SetFloat("WalkSpeed", 0.5f);
+            agent.SetDestination(hit.position);
+        }
         isRoaming = false;
     }
 
@@ -114,7 +131,7 @@ public class EnemyAI : MonoBehaviour, TakeDamage
     {
         //Vector3 localLoweredHeadPos = headPos.position - new Vector3(0, 0.05f, 0);
         //Debug.DrawRay(localLoweredHeadPos, playerDirection.normalized * 20f, Color.green);
-
+        
         playerDirection = GameManager.Instance.player.transform.position - headPos.position;
         angleToPlayer = Vector3.Angle(playerDirection, transform.forward);
 
@@ -123,7 +140,9 @@ public class EnemyAI : MonoBehaviour, TakeDamage
         {
             if (hit.collider.CompareTag("Player") && angleToPlayer <= fov)
             {
+                agent.stoppingDistance = origStoppingDistance;
                 agent.SetDestination(GameManager.Instance.player.transform.position);
+
                 if (agent.remainingDistance <= agent.stoppingDistance)
                 {
                     FaceTarget();
@@ -134,7 +153,6 @@ public class EnemyAI : MonoBehaviour, TakeDamage
 
                 }
 
-                agent.stoppingDistance = stoppingDistanceOrig;
                 return true;
             }
         }
@@ -176,10 +194,12 @@ public class EnemyAI : MonoBehaviour, TakeDamage
     IEnumerator Shoot()
     {
         isShooting = true;
-        GameObject obj = Instantiate(bullet, shootPos.position, transform.rotation);
-
-        obj.GetComponent<Rigidbody>().AddForce(transform.forward * 20f, ForceMode.Impulse);
+        agent.isStopped = true;
+        //animatorController.SetFloat("WalkSpeed", 0f);
+        animatorController.SetTrigger("Shoot");
+        
         yield return new WaitForSeconds(shootRate);
+        agent.isStopped = false;
         isShooting = false;
     }
 
@@ -243,5 +263,12 @@ public class EnemyAI : MonoBehaviour, TakeDamage
             GameManager.Instance.gameStats.numKills++;
             Destroy(gameObject);
         }
+    }
+
+    void ShootProjectile()
+    {
+        GameObject obj = Instantiate(bullet, weaponSlot.position, weaponSlot.rotation);
+
+        obj.GetComponent<Rigidbody>().AddForce(-weaponSlot.forward * 20f, ForceMode.Impulse);
     }
 }
