@@ -1,6 +1,6 @@
-using System.Linq.Expressions;  
 using UnityEngine;
 using System.Collections;
+
 public class Grappling : MonoBehaviour
 {
     [Header("References")]
@@ -17,21 +17,17 @@ public class Grappling : MonoBehaviour
     public float grappleDelayTime = 5f;
     public float overshootYAxis;
     public float grapplePullSpeed = 100f;
-    [SerializeField] private float maxGrappleSpeed = 10f; // Add this line
+    [SerializeField] private float maxGrappleSpeed = 10f;
     [SerializeField] private float grappleSpeed = 10f;
 
     [Header("Audio")]
-    public AudioSource audioSource; // Reference to the AudioSource component
-    public AudioClip grappleSound;  // Sound to play when grapple is initiated
-
-    //private bool isGrappledAtTarget = false;
-    //private float grappleTimer = 0f;
-   /* private float maxGrappleTime = 3f;*/  // 3 seconds to stay at the grapple point
+    public AudioSource audioSource;
+    public AudioClip grappleSound;
 
     private Vector3 grapplePoint;
 
     [Header("Cooldown")]
-    public float grappleCooldown; //time between grappling intervals
+    public float grappleCooldown;
     private float grapplingCooldownTimer;
 
     [Header("Input")]
@@ -42,8 +38,6 @@ public class Grappling : MonoBehaviour
     void Start()
     {
         lr.enabled = false;
-
-        // Ensure audioSource is assigned
         if (audioSource == null)
         {
             audioSource = GetComponent<AudioSource>();
@@ -52,9 +46,6 @@ public class Grappling : MonoBehaviour
 
     void Update()
     {
-        Debug.Log("Gun tip active? " + gunTip.gameObject.activeSelf);
-
-
         if (Input.GetKeyDown(GrappleKey))
             StartGrapple();
 
@@ -80,21 +71,18 @@ public class Grappling : MonoBehaviour
             Debug.Log("Grapple on cooldown!");
             return;
         }
+
         grappling = true;
+        pm.activeGrapple = true;
         pm.freeze = true;
 
-        if (grapplingCooldownTimer > 0f)
-            return;
-
-        grappling = true;
-
         RaycastHit hit;
-        if(Physics.Raycast(cam.position, cam.forward, out hit, maxGrappleDistance, whatIsGrappleable) || Physics.Raycast(cam.position, cam.forward, out hit, maxGrappleDistance, grappableGround))
+        if (Physics.Raycast(cam.position, cam.forward, out hit, maxGrappleDistance, whatIsGrappleable) ||
+            Physics.Raycast(cam.position, cam.forward, out hit, maxGrappleDistance, grappableGround))
         {
             grapplePoint = hit.point;
             Debug.Log("Grapple hit detected at: " + grapplePoint);
 
-            // Play grapple sound
             if (audioSource && grappleSound)
             {
                 audioSource.PlayOneShot(grappleSound);
@@ -102,11 +90,9 @@ public class Grappling : MonoBehaviour
 
             Invoke(nameof(ExecuteGrapple), grappleDelayTime);
         }
-
         else
         {
             grapplePoint = cam.position + cam.forward * maxGrappleDistance;
-            
             Invoke(nameof(StopGrapple), grappleDelayTime);
         }
 
@@ -117,9 +103,6 @@ public class Grappling : MonoBehaviour
     private void ExecuteGrapple()
     {
         pm.freeze = false;
-
-        Vector3 lowestPoint = new Vector3(transform.position.x, transform.position.y - 1f, transform.position.z);
-
         Debug.Log("Grapple executed, pulling towards: " + grapplePoint);
         StartCoroutine(GrappleMovement());
     }
@@ -130,9 +113,8 @@ public class Grappling : MonoBehaviour
         grappling = false;
         pm.activeGrapple = false;
         grapplingCooldownTimer = grappleCooldown;
-
         lr.enabled = false;
-        //rb.isKinematic = false;
+        rb.isKinematic = false;
     }
 
     private IEnumerator GrappleMovement()
@@ -146,16 +128,16 @@ public class Grappling : MonoBehaviour
 
         while (Vector3.Distance(transform.position, grapplePoint) > stopDistance)
         {
+            Vector3 direction = (grapplePoint - transform.position).normalized; // Moved outside conflicting scopes
+
             if (!Input.GetKey(GrappleKey))
             {
-                break; // Exit if the player releases the grapple key early
+                rb.linearVelocity = direction * grappleSpeed; // Reuse direction here
+                break;
             }
-
-            Vector3 direction = (grapplePoint - transform.position).normalized;
 
             float horizontalInput = Input.GetAxis("Horizontal");
             float verticalInput = Input.GetAxis("Vertical");
-
             Vector3 strafeDirection = (transform.right * horizontalInput + transform.forward * verticalInput).normalized;
 
             float currentGrappleSpeed = grappleSpeed;
@@ -164,18 +146,14 @@ public class Grappling : MonoBehaviour
                 currentGrappleSpeed *= 0.5f;
             }
 
-            Vector3 finalForce = (direction * currentGrappleSpeed) + (strafeDirection * grappleSpeed * 0.5f);
-
+            Vector3 finalForce = (direction * currentGrappleSpeed) + (strafeDirection * grappleSpeed * 0.5f); // Reuse direction here
             rb.linearVelocity = Vector3.ClampMagnitude(finalForce, maxGrappleSpeed);
             lastVelocity = rb.linearVelocity;
 
             yield return null;
         }
 
-        // Ensure the player keeps moving after the grapple ends
-        rb.isKinematic = false;
-        rb.linearVelocity = lastVelocity; // Let momentum carry the player
-
+        rb.linearVelocity = lastVelocity;
         Destroy(grappleAnchor);
         StopGrapple();
     }
