@@ -80,8 +80,6 @@ public class EnemyAI : MonoBehaviour, TakeDamage
         // Calculate a lowered head position and update player direction and angle.
         //Vector3 loweredHeadPos = headPos.position - new Vector3(0, 0.2f, 0);
         playerDirection = GameManager.Instance.player.transform.position - headPos.position;
-        Debug.DrawRay(weaponSlot.position, -weaponSlot.right, Color.white);
-        Debug.DrawRay(weaponSlot.position, -transform.right, Color.red);
         //angleToPlayer = Vector3.Angle(playerDirection, transform.forward);
 
         if ((playerInRange && !CanSeePlayer()))
