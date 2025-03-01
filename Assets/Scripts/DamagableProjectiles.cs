@@ -15,6 +15,7 @@ public class DamagableProjectiles : MonoBehaviour
     public AudioSource hitSound;
     public ParticleSystem particleCollision;
     public Player player;
+    public GameObject object_;
 
     private void Start()
     {
@@ -55,8 +56,11 @@ public class DamagableProjectiles : MonoBehaviour
                 if (particleCollision.GetComponent<Collider>() != null)
                 {
                     Destroy(particleCollision);
-
+                   
                 }
+                Destroy(object_);
+
+
             }
             
             

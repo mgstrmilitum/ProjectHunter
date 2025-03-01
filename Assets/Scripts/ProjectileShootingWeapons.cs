@@ -15,6 +15,7 @@ public class ProjectileShootingWeapons : Weapon
     bool isReloading_;
     bool canShoot=true;
     public AudioSource AudioSource;
+    bool projectileHitCollider;
     //public AudioSource reloadSound;
 
     EnemyAI enemy;
@@ -60,8 +61,10 @@ public class ProjectileShootingWeapons : Weapon
             projctileLoad--;//a bullet was shot
             if (projectile.GetComponent<Rigidbody>() != null)
             {   
-           
-                
+                if(projectileHitCollider)
+                {
+                    Destroy(projectile);
+                }
                 Destroy(projectile, 2f);
                 
             }
@@ -79,8 +82,9 @@ public class ProjectileShootingWeapons : Weapon
     {
         projectileTransform= transform;
     }
-    private void OnCollisionEnter(Collision collision)
+    public void OnCollisionEnter()
     {
+        projectileHitCollider=true;
         Destroy(projectile);
     }
 
