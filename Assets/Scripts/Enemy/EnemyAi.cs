@@ -243,7 +243,7 @@ public class EnemyAI : MonoBehaviour, TakeDamage
         if (isShooting)
         {
             Vector3 eulerAngles = targetRotation.eulerAngles;
-            eulerAngles.y += 91f; // guess and check this value
+            eulerAngles.y += 90f; // guess and check this value
             targetRotation.eulerAngles = eulerAngles;
         }
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, faceTargetSpeed * Time.deltaTime);
@@ -288,6 +288,6 @@ public class EnemyAI : MonoBehaviour, TakeDamage
     {
         GameObject obj = Instantiate(bullet, weaponSlot.position, Quaternion.identity);
 
-        obj.GetComponent<Rigidbody>().AddForce(-transform.right * 20f, ForceMode.Impulse);
+        obj.GetComponent<Rigidbody>().AddForce(-transform.right * 50f, ForceMode.Impulse);
     }
 }
