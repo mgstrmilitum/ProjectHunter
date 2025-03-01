@@ -48,7 +48,7 @@ public class EnemyAI : MonoBehaviour, TakeDamage
     Color originalColor;
     Vector3 playerDirection;
     Vector3 startingPos;
-
+    Vector3 fireDirection;
 
     Coroutine co;
     int spawnThreshold1;
@@ -79,9 +79,10 @@ public class EnemyAI : MonoBehaviour, TakeDamage
     {
         // Calculate a lowered head position and update player direction and angle.
         //Vector3 loweredHeadPos = headPos.position - new Vector3(0, 0.2f, 0);
-        playerDirection = GameManager.Instance.player.transform.position - headPos.position;
+        playerDirection = GameManager.Instance.player.transform.position - transform.position;
         Debug.DrawRay(weaponSlot.position, -weaponSlot.right, Color.white);
         Debug.DrawRay(weaponSlot.position, -transform.right, Color.red);
+        Debug.DrawRay(weaponSlot.position, fireDirection.normalized, Color.blue);
         //angleToPlayer = Vector3.Angle(playerDirection, transform.forward);
 
         if ((playerInRange && !CanSeePlayer()))
@@ -202,8 +203,8 @@ public class EnemyAI : MonoBehaviour, TakeDamage
         agent.isStopped = true;
 
         //turn to shoot
-        FaceTarget();
         //TurnToShoot();
+        
 
         animatorController.SetTrigger("Shoot");
         
@@ -245,15 +246,10 @@ public class EnemyAI : MonoBehaviour, TakeDamage
         if (isShooting)
         {
             Vector3 eulerAngles = targetRotation.eulerAngles;
-            eulerAngles.y += 91f; // guess and check this value
+            eulerAngles.y += 90f; // guess and check this value
             targetRotation.eulerAngles = eulerAngles;
         }
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, faceTargetSpeed * Time.deltaTime);
-    }
-
-    void TurnToShoot()
-    {
-        transform.Rotate(transform.up, 90f);
     }
 
     void SpawnEnemySpawner()
@@ -288,8 +284,9 @@ public class EnemyAI : MonoBehaviour, TakeDamage
 
     void ShootProjectile()
     {
+        
         GameObject obj = Instantiate(bullet, weaponSlot.position, Quaternion.identity);
-
-        obj.GetComponent<Rigidbody>().AddForce(-transform.right * 20f, ForceMode.Impulse);
+        fireDirection = GameManager.Instance.player.transform.position - transform.position;
+        obj.GetComponent<Rigidbody>().AddForce(fireDirection * 5f, ForceMode.Impulse);
     }
 }

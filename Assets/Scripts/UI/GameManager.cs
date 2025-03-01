@@ -24,6 +24,8 @@ public class GameManager : MonoBehaviour
     public GameObject loseMenu;
     public GameObject WheelMenu;
     public GameObject statsMenu;
+    public GameObject loadingScreen;
+    public Image loadingBarFill;
     public bool isPaused;
     public bool isMainmenu;
 
@@ -230,6 +232,24 @@ public class GameManager : MonoBehaviour
         statsMenu.SetActive(displayStats);
         //tenemiesRemaining.text = gameStats.enemiesRemaining.ToString();
         //tenemiesTotal.text = gameStats.enemiesTotal.ToString();
+    }
+
+    public void LoadScene(int sceneID)
+    {
+        StartCoroutine(LoadSceneAsync(sceneID));
+    }
+
+    IEnumerator LoadSceneAsync(int sceneID)
+    {
+        AsyncOperation operation = SceneManager.LoadSceneAsync(sceneID);
+        loadingScreen.SetActive(true);
+
+        while(!operation.isDone)
+        {
+            float progressValue = Mathf.Clamp01(operation.progress / 0.9f);
+            yield return new WaitForSeconds(5f);
+        }
+        
     }
 }
     #endregion

@@ -1,4 +1,7 @@
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class LevelLoader : MonoBehaviour
 {
@@ -10,7 +13,7 @@ public class LevelLoader : MonoBehaviour
         if (!isFinalLevel)
         {
             OnLevelEnd();
-            GameManager.Instance.LoadLevel(levelToLoad);
+            GameManager.Instance.LoadScene(levelToLoad);
         }
         else
         {

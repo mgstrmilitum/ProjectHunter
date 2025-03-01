@@ -262,15 +262,15 @@ public class PlayerMovement : MonoBehaviour
         exitingSlope = true;
 
         Vector3 currentHorizontalVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
-        rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
+        //rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
 
         rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
 
         Vector3 jumpDirection = moveDirection.normalized;
-        if (jumpDirection != Vector3.zero)
+        if (jumpDirection != Vector3.zero && grounded)
         {
             float horizontalJumpBoost = moveSpeed * 2f;
-            rb.AddForce(jumpDirection * horizontalJumpBoost, ForceMode.Impulse);
+            if(!sliding) rb.AddForce(jumpDirection * horizontalJumpBoost, ForceMode.Impulse);
         }
 
         aud.PlayOneShot(audJump[Random.Range(0, audJump.Length)], audJumpVol);
