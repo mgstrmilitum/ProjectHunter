@@ -1636,7 +1636,7 @@ MonoBehaviour:
   slideSpeed: 30
   sprintSpeed: 8
   grappleGun: {fileID: 8136654695467268359}
-  coyoteTime: 0.2
+  coyoteTime: 0
   sliding: 0
   SlideKey: 306
   jumpForce: 20

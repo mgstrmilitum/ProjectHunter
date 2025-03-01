@@ -48,6 +48,7 @@ public class GameManager : MonoBehaviour
     public GameObject buttonLocked;
     public GameObject garlicLabel;
     public TMP_Text garlicCount;
+    private bool readyForNextLvl;
 
     [Header("Progress")]
     public bool beatenLvl1Boss;
@@ -84,6 +85,7 @@ public class GameManager : MonoBehaviour
 
     public void Start()
     {
+        readyForNextLvl = false;
         //gameStats.enemiesRemaining = gameStats.enemiesTotal;
     }
 
@@ -116,7 +118,7 @@ public class GameManager : MonoBehaviour
                 }
             }
 
-            DisplayLevelStats();
+            //DisplayLevelStats();
         }
     }
 
@@ -224,12 +226,15 @@ public class GameManager : MonoBehaviour
 
     public void DisplayLevelStats()
     {
+        StatePause();
         tshotsFired.text = gameStats.shotsFired.ToString();
         tshotsHit.text = gameStats.shotsHit.ToString();
         //tAccuracy.text = ((float)(gameStats.shotsHit / gameStats.shotsFired)).ToString();
         tKills.text = gameStats.numKills.ToString() + "/" + gameStats.enemiesTotal.ToString();
-     
-        statsMenu.SetActive(displayStats);
+
+        loadingScreen.SetActive(true);
+        activeMenu = statsMenu;
+        activeMenu.SetActive(true);
         //tenemiesRemaining.text = gameStats.enemiesRemaining.ToString();
         //tenemiesTotal.text = gameStats.enemiesTotal.ToString();
     }
@@ -242,14 +247,16 @@ public class GameManager : MonoBehaviour
     IEnumerator LoadSceneAsync(int sceneID)
     {
         AsyncOperation operation = SceneManager.LoadSceneAsync(sceneID);
-        loadingScreen.SetActive(true);
 
         while(!operation.isDone)
         {
-            float progressValue = Mathf.Clamp01(operation.progress / 0.9f);
-            yield return new WaitForSeconds(5f);
+            float progressValue = Mathf.Clamp01(operation.progress);
+
+            loadingBarFill.fillAmount = progressValue;
+            yield return null;
         }
-        
+
+        yield return new WaitForSeconds(5f);
     }
 }
     #endregion

@@ -286,7 +286,7 @@ public class EnemyAI : MonoBehaviour, TakeDamage
     {
         
         GameObject obj = Instantiate(bullet, weaponSlot.position, Quaternion.identity);
-        fireDirection = GameManager.Instance.player.transform.position - transform.position;
+        fireDirection = GameManager.Instance.player.transform.position - weaponSlot.position;
         obj.GetComponent<Rigidbody>().AddForce(fireDirection * 5f, ForceMode.Impulse);
     }
 }

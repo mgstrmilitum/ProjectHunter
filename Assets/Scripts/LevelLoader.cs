@@ -13,7 +13,7 @@ public class LevelLoader : MonoBehaviour
         if (!isFinalLevel)
         {
             OnLevelEnd();
-            GameManager.Instance.LoadScene(levelToLoad);
+            GameManager.Instance.DisplayLevelStats();
         }
         else
         {
