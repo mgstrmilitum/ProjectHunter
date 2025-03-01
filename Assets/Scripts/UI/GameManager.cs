@@ -24,6 +24,8 @@ public class GameManager : MonoBehaviour
     public GameObject loseMenu;
     public GameObject WheelMenu;
     public GameObject statsMenu;
+    public GameObject loadingScreen;
+    public Image loadingBarFill;
     public bool isPaused;
     public bool isMainmenu;
 
@@ -46,6 +48,7 @@ public class GameManager : MonoBehaviour
     public GameObject buttonLocked;
     public GameObject garlicLabel;
     public TMP_Text garlicCount;
+    private bool readyForNextLvl;
 
     [Header("Progress")]
     public bool beatenLvl1Boss;
@@ -65,7 +68,7 @@ public class GameManager : MonoBehaviour
 
     public bool displayStats;
 
-    public struct GameStats
+   public struct GameStats
     {
         public int shotsFired;
         public int shotsHit;
@@ -82,6 +85,7 @@ public class GameManager : MonoBehaviour
 
     public void Start()
     {
+        readyForNextLvl = false;
         //gameStats.enemiesRemaining = gameStats.enemiesTotal;
     }
 
@@ -114,7 +118,7 @@ public class GameManager : MonoBehaviour
                 }
             }
 
-            DisplayLevelStats();
+            //DisplayLevelStats();
         }
     }
 
@@ -124,17 +128,14 @@ public class GameManager : MonoBehaviour
         activeMenu = loseMenu;
         activeMenu.SetActive(true);
     }
-    public void OnWin()
-    {
+    public void OnWin() {
         StatePause();
         DisplayLevelStats();
         activeMenu = winMenu;
         activeMenu.SetActive(true);
 
-
+       
     }
-
-
     #region Menus
 
     public void HandlePauseMenu()
@@ -218,61 +219,45 @@ public class GameManager : MonoBehaviour
                 abilityMeterBack.color = Color.green;
                 abilityMeterBack.fillAmount = aFraction;
 
-                abilityMeterFront.fillAmount = Mathf.Lerp(abilityMeterFront.fillAmount, aFraction, Time.deltaTime * barLerpSpeed);
+               abilityMeterFront.fillAmount = Mathf.Lerp(abilityMeterFront.fillAmount, aFraction, Time.deltaTime * barLerpSpeed);
             }
         }
     }
 
     public void DisplayLevelStats()
     {
+        StatePause();
         tshotsFired.text = gameStats.shotsFired.ToString();
         tshotsHit.text = gameStats.shotsHit.ToString();
         //tAccuracy.text = ((float)(gameStats.shotsHit / gameStats.shotsFired)).ToString();
         tKills.text = gameStats.numKills.ToString() + "/" + gameStats.enemiesTotal.ToString();
 
-        statsMenu.SetActive(displayStats);
+        loadingScreen.SetActive(true);
+        activeMenu = statsMenu;
+        activeMenu.SetActive(true);
         //tenemiesRemaining.text = gameStats.enemiesRemaining.ToString();
         //tenemiesTotal.text = gameStats.enemiesTotal.ToString();
     }
-    public void SetHealthWithoutLerp()
+
+    public void LoadScene(int sceneID)
     {
-        float hFraction = (float)playerScript.currentHealth / playerScript.maxHealth;
-        float sFraction = (float)playerScript.currentShield / playerScript.maxShield;
-        float aFraction = (float)playerScript.currentAp / playerScript.maxAp;
-
-        if (playerHealthBarBack != null)
-        {
-            playerHealthBar.fillAmount = hFraction;
-            playerHealthBarBack.fillAmount = hFraction;
-        }
-
-        if (playerShieldBarBack != null)
-        {
-            playerShieldBar.fillAmount = sFraction;
-            playerShieldBarBack.fillAmount = sFraction;
-        }
-
-        if (abilityMeterBack != null)
-        {
-            abilityMeterFront.fillAmount = aFraction;
-            abilityMeterBack.fillAmount = aFraction;
-        }
+        StartCoroutine(LoadSceneAsync(sceneID));
     }
 
+    IEnumerator LoadSceneAsync(int sceneID)
+    {
+        AsyncOperation operation = SceneManager.LoadSceneAsync(sceneID);
 
+        while(!operation.isDone)
+        {
+            float progressValue = Mathf.Clamp01(operation.progress);
 
+            loadingBarFill.fillAmount = progressValue;
+            yield return null;
+        }
 
-
-
-
-
-
-
-
-
-
-
-
-
-    #endregion
+        yield return new WaitForSeconds(5f);
+    }
 }
+    #endregion
+
