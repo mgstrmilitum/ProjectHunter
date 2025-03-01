@@ -3466,7 +3466,7 @@ MonoBehaviour:
   - {fileID: 3855455016441319101}
   shootPos: {fileID: 5796017386573995523}
   bullet: {fileID: 6854347750843841877, guid: 2901a370430183a4a838f838ffbac60c, type: 3}
-  shootRate: 7
+  shootRate: 5
   meleeRate: 0
   agent: {fileID: 2861786314681233464}
   faceTargetSpeed: 40
@@ -3484,6 +3484,7 @@ MonoBehaviour:
   spawnerPositions: []
   enemyType: 0
   rb: {fileID: 0}
+  weaponSlot: {fileID: 8285113443145482186}
 --- !u!195 &2861786314681233464
 NavMeshAgent:
   m_ObjectHideFlags: 0

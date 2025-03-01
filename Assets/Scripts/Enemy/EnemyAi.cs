@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Net.Http.Headers;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -144,7 +145,10 @@ public class EnemyAI : MonoBehaviour, TakeDamage
                 agent.SetDestination(GameManager.Instance.player.transform.position);
 
                 FaceTarget();
-               
+                if (agent.remainingDistance <= agent.stoppingDistance)
+                {
+                    
+                }
                 if (!isShooting && angleToPlayer <= shootFOV)
                 {
                     StartCoroutine(Shoot());
@@ -163,6 +167,7 @@ public class EnemyAI : MonoBehaviour, TakeDamage
         if (other.CompareTag("Player"))
         {
             playerInRange = true;
+            agent.stoppingDistance = origStoppingDistance;
         }
     }
 
@@ -193,8 +198,11 @@ public class EnemyAI : MonoBehaviour, TakeDamage
     {
         isShooting = true;
         agent.isStopped = true;
+
+        //turn to shoot
         FaceTarget();
-        //animatorController.SetFloat("WalkSpeed", 0f);
+        //TurnToShoot();
+
         animatorController.SetTrigger("Shoot");
         
         yield return new WaitForSeconds(shootRate);
@@ -230,15 +238,20 @@ public class EnemyAI : MonoBehaviour, TakeDamage
 
     void FaceTarget()
     {
-        Vector3 lookDirection = new Vector3(playerDirection.x, 0, playerDirection.z);
+        Vector3 lookDirection = new Vector3(playerDirection.x, 0f, playerDirection.z);
         Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
         if (isShooting)
         {
             Vector3 eulerAngles = targetRotation.eulerAngles;
-            eulerAngles.y += 91f;
+            eulerAngles.y += 90f; // guess and check this value
             targetRotation.eulerAngles = eulerAngles;
         }
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, faceTargetSpeed * Time.deltaTime);
+    }
+
+    void TurnToShoot()
+    {
+        transform.Rotate(transform.up, 90f);
     }
 
     void SpawnEnemySpawner()
@@ -255,6 +268,7 @@ public class EnemyAI : MonoBehaviour, TakeDamage
         hp -= amount;
         GameManager.Instance.gameStats.shotsHit++;
         agent.SetDestination(GameManager.Instance.player.transform.position);
+        animatorController.SetFloat("WalkSpeed", 0.5f);
         if (co != null)
         {
             StopCoroutine(co);
@@ -274,6 +288,6 @@ public class EnemyAI : MonoBehaviour, TakeDamage
     {
         GameObject obj = Instantiate(bullet, weaponSlot.position, Quaternion.identity);
 
-        obj.GetComponent<Rigidbody>().AddForce(-transform.right * 20f, ForceMode.Impulse);
+        obj.GetComponent<Rigidbody>().AddForce(-transform.right * 50f, ForceMode.Impulse);
     }
 }
