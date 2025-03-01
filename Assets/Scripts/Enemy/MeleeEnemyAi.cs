@@ -149,6 +149,7 @@ public class MeleeEnemyAI : MonoBehaviour, TakeDamage
         if (NavMesh.SamplePosition(GameManager.Instance.player.transform.position, out hit, 1.0f, NavMesh.AllAreas))
         {
             agent.SetDestination(hit.position);
+            animatorController.SetFloat("WalkSpeed", 0.5f);
         }
 
         // Stop any current roaming.
