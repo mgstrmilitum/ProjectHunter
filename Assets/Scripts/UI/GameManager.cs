@@ -65,7 +65,7 @@ public class GameManager : MonoBehaviour
 
     public bool displayStats;
 
-   public struct GameStats
+    public struct GameStats
     {
         public int shotsFired;
         public int shotsHit;
@@ -124,14 +124,17 @@ public class GameManager : MonoBehaviour
         activeMenu = loseMenu;
         activeMenu.SetActive(true);
     }
-    public void OnWin() {
+    public void OnWin()
+    {
         StatePause();
         DisplayLevelStats();
         activeMenu = winMenu;
         activeMenu.SetActive(true);
 
-       
+
     }
+
+
     #region Menus
 
     public void HandlePauseMenu()
@@ -215,7 +218,7 @@ public class GameManager : MonoBehaviour
                 abilityMeterBack.color = Color.green;
                 abilityMeterBack.fillAmount = aFraction;
 
-               abilityMeterFront.fillAmount = Mathf.Lerp(abilityMeterFront.fillAmount, aFraction, Time.deltaTime * barLerpSpeed);
+                abilityMeterFront.fillAmount = Mathf.Lerp(abilityMeterFront.fillAmount, aFraction, Time.deltaTime * barLerpSpeed);
             }
         }
     }
@@ -226,11 +229,50 @@ public class GameManager : MonoBehaviour
         tshotsHit.text = gameStats.shotsHit.ToString();
         //tAccuracy.text = ((float)(gameStats.shotsHit / gameStats.shotsFired)).ToString();
         tKills.text = gameStats.numKills.ToString() + "/" + gameStats.enemiesTotal.ToString();
-     
+
         statsMenu.SetActive(displayStats);
         //tenemiesRemaining.text = gameStats.enemiesRemaining.ToString();
         //tenemiesTotal.text = gameStats.enemiesTotal.ToString();
     }
-}
-    #endregion
+    public void SetHealthWithoutLerp()
+    {
+        float hFraction = (float)playerScript.currentHealth / playerScript.maxHealth;
+        float sFraction = (float)playerScript.currentShield / playerScript.maxShield;
+        float aFraction = (float)playerScript.currentAp / playerScript.maxAp;
 
+        if (playerHealthBarBack != null)
+        {
+            playerHealthBar.fillAmount = hFraction;
+            playerHealthBarBack.fillAmount = hFraction;
+        }
+
+        if (playerShieldBarBack != null)
+        {
+            playerShieldBar.fillAmount = sFraction;
+            playerShieldBarBack.fillAmount = sFraction;
+        }
+
+        if (abilityMeterBack != null)
+        {
+            abilityMeterFront.fillAmount = aFraction;
+            abilityMeterBack.fillAmount = aFraction;
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    #endregion
+}

@@ -143,10 +143,8 @@ public class EnemyAI : MonoBehaviour, TakeDamage
                 agent.stoppingDistance = origStoppingDistance;
                 agent.SetDestination(GameManager.Instance.player.transform.position);
 
-                if (agent.remainingDistance <= agent.stoppingDistance)
-                {
-                    FaceTarget();
-                }
+                FaceTarget();
+               
                 if (!isShooting && angleToPlayer <= shootFOV)
                 {
                     StartCoroutine(Shoot());
@@ -195,6 +193,7 @@ public class EnemyAI : MonoBehaviour, TakeDamage
     {
         isShooting = true;
         agent.isStopped = true;
+        FaceTarget();
         //animatorController.SetFloat("WalkSpeed", 0f);
         animatorController.SetTrigger("Shoot");
         
@@ -233,6 +232,12 @@ public class EnemyAI : MonoBehaviour, TakeDamage
     {
         Vector3 lookDirection = new Vector3(playerDirection.x, 0, playerDirection.z);
         Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
+        if (isShooting)
+        {
+            Vector3 eulerAngles = targetRotation.eulerAngles;
+            eulerAngles.y += 91f;
+            targetRotation.eulerAngles = eulerAngles;
+        }
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, faceTargetSpeed * Time.deltaTime);
     }
 
@@ -267,8 +272,8 @@ public class EnemyAI : MonoBehaviour, TakeDamage
 
     void ShootProjectile()
     {
-        GameObject obj = Instantiate(bullet, weaponSlot.position, weaponSlot.rotation);
+        GameObject obj = Instantiate(bullet, weaponSlot.position, Quaternion.identity);
 
-        obj.GetComponent<Rigidbody>().AddForce(-weaponSlot.forward * 20f, ForceMode.Impulse);
+        obj.GetComponent<Rigidbody>().AddForce(-transform.right * 20f, ForceMode.Impulse);
     }
 }
