@@ -53,12 +53,26 @@ public class WeaponWheelController : MonoBehaviour
         foreach (GameObject weapon in WheelButtons)
         {
             WeaponWheel weaponButton = weapon.GetComponent<WeaponWheel>();
+
             if (weaponButton.Id == id)
             {
                 weaponButton.item.SetActive(true);
+                weaponButton.selected = true;  
+                WeaponWheelController.weaponId = id;
+
+                if (weaponButton.weapon == null)
+                {
+                    weaponButton.weapon = weaponButton.item.GetComponent<ProjectileShootingWeapons>();
+                }
             }
-            else { weaponButton.item.SetActive(false); }
+            else
+            {
+                weaponButton.item.SetActive(false);
+                weaponButton.selected = false; 
+            }
         }
         buttonSelected = false;
     }
+
+
 }
