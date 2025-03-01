@@ -22,4 +22,9 @@ public class ButtonFunctions : MonoBehaviour
         Application.Quit();
 #endif
     }
+
+    public void RollCredits()
+    {
+
+    }
 }
