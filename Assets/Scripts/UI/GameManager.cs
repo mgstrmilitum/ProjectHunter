@@ -6,6 +6,7 @@ using System.Collections;
 using UnityEngine.InputSystem;
 using UnityEngine.Audio;
 using UnityEngine.PlayerLoop;
+using System;
 //using UnityEditor.ProBuilder;
 public class GameManager : MonoBehaviour
 {
@@ -257,6 +258,11 @@ public class GameManager : MonoBehaviour
         }
 
         yield return new WaitForSeconds(5f);
+    }
+
+    internal void SetHealthWithoutLerp()
+    {
+        throw new NotImplementedException();
     }
 }
     #endregion

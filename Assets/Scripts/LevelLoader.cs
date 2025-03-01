@@ -27,5 +27,7 @@ public class LevelLoader : MonoBehaviour
         GameManager.Instance.statsSO.currentShield = GameManager.Instance.playerScript.currentShield;
         GameManager.Instance.statsSO.currentSpecial = GameManager.Instance.playerScript.currentAp;
         GameManager.Instance.statsSO.currentGarlic = GameManager.Instance.playerScript.numGarlic;
+
+        
     }
 }

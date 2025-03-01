@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using TMPro;
 
 public class ProjectileShootingWeapons : Weapon
 {
@@ -13,8 +14,9 @@ public class ProjectileShootingWeapons : Weapon
     public int MaxMagazine;
     int ammoCount;//to track the bullets
     bool isReloading_;
-    bool canShoot=true;
+    bool canShoot = true;
     public AudioSource AudioSource;
+    bool projectileHitCollider;
     //public AudioSource reloadSound;
 
     EnemyAI enemy;
@@ -24,8 +26,8 @@ public class ProjectileShootingWeapons : Weapon
     {
         base.Start();
         Setinitalreference();
-       AudioSource = GetComponent<AudioSource>();
-        
+        AudioSource = GetComponent<AudioSource>();
+
     }
 
     // Update is called once per frame
@@ -50,53 +52,102 @@ public class ProjectileShootingWeapons : Weapon
 
     public override void Shoot()
     {
-        if (projctileLoad >0)
+        if (projctileLoad > 0)
         {
             GameManager.Instance.gameStats.shotsFired++;
-            projectile =  Instantiate(projctilePrehaber, shootPos.position, shootPos.rotation);
+            projectile = Instantiate(projctilePrehaber, shootPos.position, shootPos.rotation);
             Rigidbody body = projectile.GetComponent<Rigidbody>();
-            body.isKinematic=false;
-            projectile.GetComponent<Rigidbody>().AddForce(projectileTransform.right *projectileMovingForce, ForceMode.Impulse);
+            body.isKinematic = false;
+            projectile.GetComponent<Rigidbody>().AddForce(projectileTransform.right * projectileMovingForce, ForceMode.Impulse);
             projctileLoad--;//a bullet was shot
             if (projectile.GetComponent<Rigidbody>() != null)
+
             {   
-           
-                
+                if(projectileHitCollider)
+                {
+                    Destroy(projectile);
+                }
                 Destroy(projectile, 2f);
                 
             }
             
 
 
+            UpdateAmmoUI();
+
         }
-        
+
 
     }
 
-  
+
 
     void Setinitalreference()
     {
-        projectileTransform= transform;
+        projectileTransform = transform;
     }
-    private void OnCollisionEnter(Collision collision)
+    public void OnCollisionEnter()
     {
+        projectileHitCollider=true;
         Destroy(projectile);
     }
 
     public IEnumerator Reloading()
     {
 
-        
-            canShoot = false;
-            isReloading_ = true;
-            yield return new WaitForSeconds(3);
-            projctileLoad=  MaxMagazine;
-            isReloading_=false;
-            canShoot= true;
-        //reloadSound.Play();
 
+        canShoot = false;
+        isReloading_ = true;
+        yield return new WaitForSeconds(3);
+        projctileLoad = MaxMagazine;
+        isReloading_ = false;
+        canShoot = true;
+        //reloadSound.Play();
+        UpdateAmmoUI();
+    }
+    private void UpdateAmmoUI()
+    {
+        WeaponWheelController controller = FindObjectOfType<WeaponWheelController>();
+
+        if (controller != null)
+        {
+            foreach (GameObject weaponObj in controller.WheelButtons)
+            {
+                WeaponWheel weaponWheel = weaponObj.GetComponent<WeaponWheel>();
+
+                if (weaponWheel != null && weaponWheel.Id == WeaponWheelController.weaponId) 
+                {
+                    if (weaponWheel.ammoText != null)
+                    {
+                        if (weaponWheel.Id == 1 || weaponWheel.Id == 4)
+                        {
+                            weaponWheel.ammoText.text = "Ammo: \u221E"; 
+                        }
+                        else
+                        {
+                            weaponWheel.ammoText.text = "Ammo: " + projctileLoad.ToString(); 
+                        }
+                    }
+                }
+            }
+        }
     }
 
-    
+
+
+    private void UpdateActiveWeaponAmmoUI(TextMeshProUGUI ammoTextUI)
+    {
+        if (ammoTextUI != null)
+        {
+            if (projctileLoad == -1) // Special case for infinite ammo
+            {
+                ammoTextUI.text = "Ammo: \u221E";
+            }
+            else
+            {
+                ammoTextUI.text = "Ammo: " + projctileLoad.ToString();
+            }
+        }
+    }
+
 }
