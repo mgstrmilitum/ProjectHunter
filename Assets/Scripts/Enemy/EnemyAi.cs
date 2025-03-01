@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Net.Http.Headers;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -79,6 +80,8 @@ public class EnemyAI : MonoBehaviour, TakeDamage
         // Calculate a lowered head position and update player direction and angle.
         //Vector3 loweredHeadPos = headPos.position - new Vector3(0, 0.2f, 0);
         playerDirection = GameManager.Instance.player.transform.position - headPos.position;
+        Debug.DrawRay(weaponSlot.position, -weaponSlot.right, Color.white);
+        Debug.DrawRay(weaponSlot.position, -transform.right, Color.red);
         //angleToPlayer = Vector3.Angle(playerDirection, transform.forward);
 
         if ((playerInRange && !CanSeePlayer()))
@@ -143,9 +146,10 @@ public class EnemyAI : MonoBehaviour, TakeDamage
                 agent.stoppingDistance = origStoppingDistance;
                 agent.SetDestination(GameManager.Instance.player.transform.position);
 
+                FaceTarget();
                 if (agent.remainingDistance <= agent.stoppingDistance)
                 {
-                    FaceTarget();
+                    
                 }
                 if (!isShooting && angleToPlayer <= shootFOV)
                 {
@@ -165,6 +169,7 @@ public class EnemyAI : MonoBehaviour, TakeDamage
         if (other.CompareTag("Player"))
         {
             playerInRange = true;
+            agent.stoppingDistance = origStoppingDistance;
         }
     }
 
@@ -195,7 +200,11 @@ public class EnemyAI : MonoBehaviour, TakeDamage
     {
         isShooting = true;
         agent.isStopped = true;
-        //animatorController.SetFloat("WalkSpeed", 0f);
+
+        //turn to shoot
+        FaceTarget();
+        //TurnToShoot();
+
         animatorController.SetTrigger("Shoot");
         
         yield return new WaitForSeconds(shootRate);
@@ -231,9 +240,20 @@ public class EnemyAI : MonoBehaviour, TakeDamage
 
     void FaceTarget()
     {
-        Vector3 lookDirection = new Vector3(playerDirection.x, 0, playerDirection.z);
+        Vector3 lookDirection = new Vector3(playerDirection.x, 0f, playerDirection.z);
         Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
+        if (isShooting)
+        {
+            Vector3 eulerAngles = targetRotation.eulerAngles;
+            eulerAngles.y += 91f; // guess and check this value
+            targetRotation.eulerAngles = eulerAngles;
+        }
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, faceTargetSpeed * Time.deltaTime);
+    }
+
+    void TurnToShoot()
+    {
+        transform.Rotate(transform.up, 90f);
     }
 
     void SpawnEnemySpawner()
@@ -250,6 +270,7 @@ public class EnemyAI : MonoBehaviour, TakeDamage
         hp -= amount;
         GameManager.Instance.gameStats.shotsHit++;
         agent.SetDestination(GameManager.Instance.player.transform.position);
+        animatorController.SetFloat("WalkSpeed", 0.5f);
         if (co != null)
         {
             StopCoroutine(co);
@@ -267,8 +288,8 @@ public class EnemyAI : MonoBehaviour, TakeDamage
 
     void ShootProjectile()
     {
-        GameObject obj = Instantiate(bullet, weaponSlot.position, weaponSlot.rotation);
+        GameObject obj = Instantiate(bullet, weaponSlot.position, Quaternion.identity);
 
-        obj.GetComponent<Rigidbody>().AddForce(-weaponSlot.forward * 20f, ForceMode.Impulse);
+        obj.GetComponent<Rigidbody>().AddForce(-transform.right * 20f, ForceMode.Impulse);
     }
 }
