@@ -5554,14 +5554,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: TiltPlayer 4
       objectReference: {fileID: 0}
-    - target: {fileID: 5534111020833140695, guid: 2fc8954d2e9f49d40870f566eee27ae1, type: 3}
-      propertyPath: groundDrag
-      value: 1.86
-      objectReference: {fileID: 0}
-    - target: {fileID: 8037608576471812430, guid: 2fc8954d2e9f49d40870f566eee27ae1, type: 3}
-      propertyPath: m_Convex
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8748438842092736223, guid: 2fc8954d2e9f49d40870f566eee27ae1, type: 3}
       propertyPath: m_LocalPosition.x
       value: -6.48
