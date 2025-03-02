@@ -141,13 +141,13 @@ public class GuardBoss : MonoBehaviour, TakeDamage
         GameObject obj = Instantiate(bullet, shootPos.position, bulletRotation);
         obj.GetComponent<Rigidbody>().AddForce(direction * 20f, ForceMode.Impulse);
         yield return new WaitForSeconds(shootRate);
-        yield return new WaitForSeconds(shootRate);
         isShooting = false;
     }
 
     void FaceTargetRanged(Vector3 targetDirection)
     {
-        Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
+        Vector3 lookDirection = new Vector3(targetDirection.x, 0f, targetDirection.z);
+        Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, faceTargetSpeed * Time.deltaTime);
     }
     #endregion
