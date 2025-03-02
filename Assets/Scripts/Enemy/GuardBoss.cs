@@ -88,8 +88,8 @@ public class GuardBoss : MonoBehaviour, TakeDamage
         }
         else
         {
-            // On first entry to phase 2, increase speed and play the "Roar" animation.
-            animatorController.SetBool("Shoot", false);
+            
+            
             if (!phase2Activated)
             {
                 agent.speed *= phase2SpeedMultiplier;
@@ -102,7 +102,7 @@ public class GuardBoss : MonoBehaviour, TakeDamage
 
             // Always chase the player.
             isWalking = true;
-            animatorController.SetBool("Walk", true);
+            animatorController.SetFloat("WalkSpeed", 1f);
             agent.SetDestination(GameManager.Instance.player.transform.position);
             
             
@@ -112,7 +112,7 @@ public class GuardBoss : MonoBehaviour, TakeDamage
 
                 if (isWalking)
                 {
-                    animatorController.SetBool("Walk", false);
+                    animatorController.SetFloat("WalkSpeed", 0f);
                     isWalking = false;
                 }
                 if (!isAttacking)
@@ -125,7 +125,7 @@ public class GuardBoss : MonoBehaviour, TakeDamage
                 // If the player moves away, ensure the boss is playing its walking animation.
                 if (!isWalking)
                 {
-                    animatorController.SetBool("Walk", true);
+                    animatorController.SetFloat("WalkSpeed", 1f);
                     isWalking = true;
                 }
             }
@@ -136,10 +136,11 @@ public class GuardBoss : MonoBehaviour, TakeDamage
     IEnumerator ShootRanged(Vector3 direction)
     {
         isShooting = true;
-        animatorController.SetBool("Shoot",true);
+        animatorController.SetTrigger("Shoot");
         Quaternion bulletRotation = Quaternion.LookRotation(direction);
         GameObject obj = Instantiate(bullet, shootPos.position, bulletRotation);
         obj.GetComponent<Rigidbody>().AddForce(direction * 20f, ForceMode.Impulse);
+        yield return new WaitForSeconds(shootRate);
         yield return new WaitForSeconds(shootRate);
         isShooting = false;
     }
@@ -181,12 +182,8 @@ public class GuardBoss : MonoBehaviour, TakeDamage
     // Plays the "Roar" animation then switches to "Walk."
     IEnumerator PlayRoarThenWalk()
     {
-        animatorController.SetBool("Roar",true);
+        animatorController.SetTrigger("Roar");
         yield return new WaitForSeconds(roarDuration);
-        animatorController.SetBool("Roar", false);
-
-
-
     }
 
     
