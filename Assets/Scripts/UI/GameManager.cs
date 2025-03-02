@@ -50,7 +50,8 @@ public class GameManager : MonoBehaviour
     public TMP_Text garlicCount;
     public int totalGarlicInLevel;
     private bool readyForNextLvl;
-
+    public GameObject tutorialUI;
+    public TMP_Text tutorialText;
     [Header("-----Loading Screen-----")]
     public GameObject loadingScreen;
     public Image loadingBarFill;
