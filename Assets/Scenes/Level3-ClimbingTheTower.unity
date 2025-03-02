@@ -5513,6 +5513,10 @@ PrefabInstance:
       propertyPath: groundDrag
       value: 1.86
       objectReference: {fileID: 0}
+    - target: {fileID: 7479772877442477810, guid: 2fc8954d2e9f49d40870f566eee27ae1, type: 3}
+      propertyPath: combatTimer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 8748438842092736223, guid: 2fc8954d2e9f49d40870f566eee27ae1, type: 3}
       propertyPath: m_LocalPosition.x
       value: -6.48

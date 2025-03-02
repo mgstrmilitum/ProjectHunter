@@ -22896,6 +22896,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TiltPlayer 4
       objectReference: {fileID: 0}
+    - target: {fileID: 7479772877442477810, guid: 2fc8954d2e9f49d40870f566eee27ae1, type: 3}
+      propertyPath: combatTimer
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 8748438842092736223, guid: 2fc8954d2e9f49d40870f566eee27ae1, type: 3}
       propertyPath: m_LocalPosition.x
       value: 11.330869
@@ -22936,7 +22940,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4972806457489595510, guid: 2fc8954d2e9f49d40870f566eee27ae1, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
