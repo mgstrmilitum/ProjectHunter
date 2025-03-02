@@ -138,7 +138,7 @@ public class VampireBossAi : MonoBehaviour, TakeDamage
                 enemyScript.hp += 25;
             }
         }
-        Debug.Log("Phase 2 triggered: Healed all enemies by 25 hp.");
+       
     }
 
     // Phase 3: Start the swing attack loop.
@@ -215,7 +215,7 @@ public class VampireBossAi : MonoBehaviour, TakeDamage
         // Restore hp to the 50% threshold.
         hp = threshold50;
         agent.isStopped = false;
-        Debug.Log("Phase 5 triggered: Boss revived with improved shoot rate and Phase 5 spawners summoned.");
+        
     }
 
     #endregion
@@ -250,13 +250,13 @@ public class VampireBossAi : MonoBehaviour, TakeDamage
         {
             phase3Triggered = true;
             swingCoroutine = StartCoroutine(SwingAttackLoop());
-            Debug.Log("Phase 3 triggered: Swing attack loop started.");
+          
         }
         if (!phase4Triggered && hp <= threshold25)
         {
             phase4Triggered = true;
             flashingYellowCoroutine = StartCoroutine(FlashYellowLoop());
-            Debug.Log("Phase 4 triggered: Flashing yellow invincibility started.");
+           
         }
 
         // Phase 5: If hp reaches 0 or below.
@@ -289,7 +289,7 @@ public class VampireBossAi : MonoBehaviour, TakeDamage
 
     void OnDeath()
     {
-        Debug.Log("Boss has been defeated.");
+        
         // Add any death effects (explosions, score updates, etc.) here.
     }
     #endregion
@@ -303,11 +303,11 @@ public class VampireBossAi : MonoBehaviour, TakeDamage
             {
                 Instantiate(spawnerPrefabPhase1, spawnPoint.position, spawnPoint.rotation);
             }
-            Debug.Log("Phase 1: Spawners summoned at designated positions.");
+           
         }
         else
         {
-            Debug.LogWarning("Phase 1 Spawner Prefab or Spawner Positions not assigned.");
+            
         }
     }
 
@@ -319,11 +319,11 @@ public class VampireBossAi : MonoBehaviour, TakeDamage
             {
                 Instantiate(spawnerPrefabPhase5, spawnPoint.position, spawnPoint.rotation);
             }
-            Debug.Log("Phase 5: Spawners summoned at designated positions.");
+            
         }
         else
         {
-            Debug.LogWarning("Phase 5 Spawner Prefab or Spawner Positions not assigned.");
+           
         }
     }
     #endregion

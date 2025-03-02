@@ -32,7 +32,7 @@ public class EnemyDamageType : MonoBehaviour// Inherit from MonoBehaviour
         private void OnTriggerEnter(Collider other)
         {
         if (other.isTrigger) return;
-        Debug.Log("Bullet hit: " + other.gameObject.name + " | isTrigger: " + other.isTrigger);
+        
 
 
         TakeDamage dmg = other.transform.gameObject.GetComponent<TakeDamage>();

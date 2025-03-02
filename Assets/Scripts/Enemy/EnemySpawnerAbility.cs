@@ -11,7 +11,7 @@ public class EnemySpawnerAbility : MonoBehaviour
     {
         if (enemySpawnerPrefab == null)
         {
-            Debug.LogWarning("Enemy spawner prefab is not assigned.");
+            
             return;
         }
 
@@ -30,7 +30,7 @@ public class EnemySpawnerAbility : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("No valid NavMesh position found near enemy. Spawner will be instantiated at enemy's position.");
+            
             desiredPos = enemyPos;
         }
 

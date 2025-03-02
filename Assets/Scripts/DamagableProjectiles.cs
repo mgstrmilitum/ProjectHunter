@@ -73,7 +73,7 @@ public class DamagableProjectiles : MonoBehaviour
         hitColliders = Physics.OverlapSphere(explosionPoint, blastRadius, explosionLayers);
         foreach (Collider hotcol in hitColliders)
         {
-            Debug.Log(hotcol.gameObject.name);
+           
             if (hotcol.GetComponent<Rigidbody>() != null)
             {
                 hotcol.GetComponent<Rigidbody>().isKinematic = false;

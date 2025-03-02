@@ -37,7 +37,7 @@ public class SwordAbility : Ability
             player.ResetAp();
             Animator anim = sword.GetComponent<Animator>();
             anim.SetTrigger("Attack");
-            Debug.Log("you have attacked");
+           
 
             Collider[] hitEnemies = Physics.OverlapSphere(attackPoint.position, attackRange);
 
@@ -51,7 +51,7 @@ public class SwordAbility : Ability
 
                     enemy.takeDamage(damageAmount);
                     
-                    Debug.Log("Enemy Hit");
+                  
                 }
             }
         }

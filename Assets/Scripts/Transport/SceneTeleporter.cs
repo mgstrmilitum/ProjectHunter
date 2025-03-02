@@ -11,25 +11,25 @@ public class SceneTeleporter : MonoBehaviour
     void OnTriggerEnter(Collider collider)
     {
         AbletoTeleport abletotelport = collider.GetComponent<AbletoTeleport>();
-        Debug.Log($"Object entered trigger: {collider.gameObject.name}");
+       
 
         if (abletotelport != null)
         {
-            Debug.Log($"AbletoTeleport component found on: {collider.gameObject.name}");
+            
             OnEnter(abletotelport);
         }
         else
         {
-            Debug.LogWarning($"Object {collider.gameObject.name} does not have an AbletoTeleport component!");
+           
         }
     }
 
     public void OnEnter(AbletoTeleport teleportable)
     {
-        Debug.Log($"Attempting to teleport object: {teleportable.gameObject.name}");
+        
         if (!teleportable.TeleportAble)
         {
-            Debug.LogWarning("Teleportation denied. Object is not teleportable.");
+           
             return;
         }
 
@@ -37,7 +37,7 @@ public class SceneTeleporter : MonoBehaviour
 
         if (SceneManager.GetActiveScene().name == destinationSceneName)
         {
-            Debug.Log("Teleporting within the same scene.");
+            
             Teleport(teleportable);
         }
         else
@@ -49,17 +49,17 @@ public class SceneTeleporter : MonoBehaviour
 
     private IEnumerator TeleportToNewScene(string sceneName, AbletoTeleport teleportable)
     {
-        Debug.Log($"Loading scene: {sceneName}");
+       
         Scene currentScene = SceneManager.GetActiveScene();
         AsyncOperation newSceneAsyncLoad = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
 
         while (!newSceneAsyncLoad.isDone)
         {
-            Debug.Log("Scene loading...");
+          
             yield return null;
         }
 
-        Debug.Log($"Scene {sceneName} loaded. Moving object to new scene.");
+       
         Scene newScene = SceneManager.GetSceneByName(sceneName);
         SceneManager.MoveGameObjectToScene(teleportable.gameObject, newScene);
         SceneManager.SetActiveScene(newScene); // Ensure new scene is active
@@ -68,7 +68,7 @@ public class SceneTeleporter : MonoBehaviour
 
         Teleport(teleportable);
 
-        Debug.Log($"Unloading current scene: {currentScene.name}");
+       
         SceneManager.UnloadSceneAsync(currentScene);
     }
 
@@ -77,21 +77,20 @@ public class SceneTeleporter : MonoBehaviour
         SpawningPoint spawnPoint = FindSpawnPoint(destSpawnName);
         if (spawnPoint != null)
         {
-            Debug.Log($"Teleporting {teleportable.gameObject.name} to spawn point: {spawnPoint.spawnName}");
+           
             teleportable.transform.position = spawnPoint.transform.position;
             teleportable.TeleportAble = true; // Reset after successful teleport
         }
         else
         {
-            Debug.LogWarning("No valid spawn point found. Teleportation aborted.");
+            
             teleportable.TeleportAble = true; // Reset even if teleportation fails
         }
     }
 
     private SpawningPoint FindSpawnPoint(string spawnName)
     {
-        Debug.Log($"Searching for spawn point: {spawnName}");
-
+       
         
         SpawningPoint[] spawnPoints = FindObjectsByType<SpawningPoint>(FindObjectsSortMode.None);
 
@@ -99,12 +98,12 @@ public class SceneTeleporter : MonoBehaviour
         {
             if (spawn.spawnName == spawnName)
             {
-                Debug.Log($"Spawn point found: {spawnName}");
+               
                 return spawn;
             }
         }
 
-        Debug.LogWarning($"No spawn point found with name: {spawnName}");
+        
         return null;
     }
 }

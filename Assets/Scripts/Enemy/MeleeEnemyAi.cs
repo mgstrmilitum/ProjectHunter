@@ -47,7 +47,7 @@ public class MeleeEnemyAI : MonoBehaviour, TakeDamage
 
     void Update()
     {
-        Debug.DrawRay(weaponSlot.position, -weaponSlot.up);
+        
         // Calculate direction from enemy's head toward the player's position.
         Vector3 loweredHeadPos = headPos.position - new Vector3(0, 0.2f, 0);
         playerDirection = GameManager.Instance.player.transform.position - loweredHeadPos;
@@ -106,7 +106,7 @@ public class MeleeEnemyAI : MonoBehaviour, TakeDamage
         agent.isStopped = true;
         // Trigger the melee swing animation.
         animatorController.SetTrigger("Swing");
-        Debug.Log("Swing animation triggered");
+        
 
         // Wait half the melee rate to simulate the wind-up time.
         yield return new WaitForSeconds(meleeRate * 0.5f);

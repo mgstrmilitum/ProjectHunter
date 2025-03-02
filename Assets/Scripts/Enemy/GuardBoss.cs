@@ -160,7 +160,7 @@ public class GuardBoss : MonoBehaviour, TakeDamage
         agent.isStopped = true;
         // Trigger the swing animation.
         animatorController.SetBool("Swing",true);
-        Debug.Log("Swing animation triggered");
+       
 
         // Wait for half of the melee cycle (simulate wind-up).
         yield return new WaitForSeconds(meleeRate * 0.5f);

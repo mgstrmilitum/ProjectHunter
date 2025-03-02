@@ -68,7 +68,7 @@ public class Grappling : MonoBehaviour
     {
         if (grapplingCooldownTimer > 0f)
         {
-            Debug.Log("Grapple on cooldown!");
+           
             return;
         }
 
@@ -81,7 +81,7 @@ public class Grappling : MonoBehaviour
             Physics.Raycast(cam.position, cam.forward, out hit, maxGrappleDistance, grappableGround))
         {
             grapplePoint = hit.point;
-            Debug.Log("Grapple hit detected at: " + grapplePoint);
+            
 
             if (audioSource && grappleSound)
             {
@@ -103,7 +103,7 @@ public class Grappling : MonoBehaviour
     private void ExecuteGrapple()
     {
         pm.freeze = false;
-        Debug.Log("Grapple executed, pulling towards: " + grapplePoint);
+        
         StartCoroutine(GrappleMovement());
     }
 
