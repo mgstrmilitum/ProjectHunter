@@ -15,5 +15,5 @@ MonoBehaviour:
   currentHealth: 100
   currentShield: 100
   currentSpecial: 0
-  currentGarlic: 2
-  currentStage: 2
+  currentGarlic: 1
+  currentStage: 3
