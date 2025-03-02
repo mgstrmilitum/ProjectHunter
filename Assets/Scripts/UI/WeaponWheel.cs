@@ -36,14 +36,12 @@ public class WeaponWheel : MonoBehaviour
             {
                 ammoText.text = "Ammo: \u221E";
             }
-            else if (weapon != null)
+            else if (weapon != null && ammoText.text != "Ammo: " + weapon.projctileLoad.ToString()) 
             {
-                Ammo = weapon.projctileLoad;
-                ammoText.text = "Ammo: " + Ammo.ToString();
+                ammoText.text = "Ammo: " + weapon.projctileLoad.ToString();
             }
         }
     }
-
     public void HoverEnter()
     {
         anim.SetBool("Hover", true);
@@ -55,7 +53,7 @@ public class WeaponWheel : MonoBehaviour
         }
         else if (weapon != null)
         {
-            Ammo = weapon.projctileLoad;
+           
             ammoText.text = "Ammo: " + Ammo.ToString();
         }
     }
@@ -70,7 +68,10 @@ public class WeaponWheel : MonoBehaviour
     public void Deselected()
     {
         selected = false;
-        WeaponWheelController.weaponId = 0;
+        if (WeaponWheelController.weaponId == Id)
+        {
+            WeaponWheelController.weaponId = 0; 
+        }
     }
 
     public void HoverExit()

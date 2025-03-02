@@ -27,7 +27,7 @@ public class ProjectileShootingWeapons : Weapon
         base.Start();
         Setinitalreference();
         AudioSource = GetComponent<AudioSource>();
-
+        UpdateAmmoUI();
     }
 
     // Update is called once per frame
@@ -105,7 +105,7 @@ public class ProjectileShootingWeapons : Weapon
         //reloadSound.Play();
         UpdateAmmoUI();
     }
-    private void UpdateAmmoUI()
+    public void UpdateAmmoUI()
     {
         WeaponWheelController controller = FindObjectOfType<WeaponWheelController>();
 
