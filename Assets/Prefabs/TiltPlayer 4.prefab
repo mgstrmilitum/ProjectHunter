@@ -1617,6 +1617,7 @@ MonoBehaviour:
   abilityReady: 0
   key: 0
   numGarlic: 0
+  garlicsInCurrLevel: 0
 --- !u!114 &5534111020833140695
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4905,7 +4906,6 @@ GameObject:
   - component: {fileID: 9002032082669947736}
   - component: {fileID: 4579091846932085335}
   - component: {fileID: 223405537940161943}
-  - component: {fileID: 8037608576471812430}
   m_Layer: 13
   m_Name: MapMarker
   m_TagString: Untagged
@@ -4981,28 +4981,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &8037608576471812430
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5273386845360333193}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &5322223244886291059
 GameObject:
   m_ObjectHideFlags: 0
