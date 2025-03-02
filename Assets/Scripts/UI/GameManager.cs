@@ -273,7 +273,27 @@ public class GameManager : MonoBehaviour
 
     internal void SetHealthWithoutLerp()
     {
-        throw new NotImplementedException();
+        float hFraction = (float)playerScript.currentHealth / playerScript.maxHealth;
+        float sFraction = (float)playerScript.currentShield / playerScript.maxShield;
+        float aFraction = (float)playerScript.currentAp / playerScript.maxAp;
+
+        if (playerHealthBarBack != null)
+        {
+            playerHealthBar.fillAmount = hFraction;
+            playerHealthBarBack.fillAmount = hFraction;
+        }
+
+        if (playerShieldBarBack != null)
+        {
+            playerShieldBar.fillAmount = sFraction;
+            playerShieldBarBack.fillAmount = sFraction;
+        }
+
+        if (abilityMeterBack != null)
+        {
+            abilityMeterFront.fillAmount = aFraction;
+            abilityMeterBack.fillAmount = aFraction;
+        }
     }
 }
     #endregion

@@ -37,7 +37,7 @@ public class Player : MonoBehaviour, IpickupWeapons, TakeDamage, IOpen
         currentAp = GameManager.Instance.statsSO.currentSpecial;
         shieldActive = true;
         numGarlic = GameManager.Instance.statsSO.currentGarlic;
-        //GameManager.Instance.SetHealthWithoutLerp();
+        GameManager.Instance.SetHealthWithoutLerp();
         garlicsInCurrLevel = 0;
     }
 
