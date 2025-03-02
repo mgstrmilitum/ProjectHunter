@@ -25,8 +25,7 @@ public class GameManager : MonoBehaviour
     public GameObject loseMenu;
     public GameObject WheelMenu;
     public GameObject statsMenu;
-    public GameObject loadingScreen;
-    public Image loadingBarFill;
+    
     public bool isPaused;
     public bool isMainmenu;
 
@@ -50,6 +49,12 @@ public class GameManager : MonoBehaviour
     public GameObject garlicLabel;
     public TMP_Text garlicCount;
     private bool readyForNextLvl;
+
+    [Header("-----Loading Screen-----")]
+    public GameObject loadingScreen;
+    public Image loadingBarFill;
+    public Image loadingScreenImage;
+    public Sprite[] loadingScreenTextures;
 
     [Header("Progress")]
     public bool beatenLvl1Boss;
@@ -232,7 +237,8 @@ public class GameManager : MonoBehaviour
         tshotsHit.text = gameStats.shotsHit.ToString();
         //tAccuracy.text = ((float)(gameStats.shotsHit / gameStats.shotsFired)).ToString();
         tKills.text = gameStats.numKills.ToString() + "/" + gameStats.enemiesTotal.ToString();
-
+        loadingScreenImage.sprite = loadingScreenTextures[statsSO.currentStage-2]; //-2 because this is called after LevelLoader.OnLevelEnd(), so first time this gets called will
+                                                                                    //be at end of level 1, after statsSO.currentStage has been incremented to 2
         loadingScreen.SetActive(true);
         activeMenu = statsMenu;
         activeMenu.SetActive(true);

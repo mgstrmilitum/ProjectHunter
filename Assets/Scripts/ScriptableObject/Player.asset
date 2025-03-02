@@ -16,3 +16,4 @@ MonoBehaviour:
   currentShield: 100
   currentSpecial: 0
   currentGarlic: 0
+  currentStage: 1
