@@ -20,6 +20,7 @@ public class Player : MonoBehaviour, IpickupWeapons, TakeDamage, IOpen
 
     [Header("Collectibles")]
     public int numGarlic;
+    public int garlicsInCurrLevel;
 
     public struct PlayerStats
     {
@@ -36,7 +37,8 @@ public class Player : MonoBehaviour, IpickupWeapons, TakeDamage, IOpen
         currentAp = GameManager.Instance.statsSO.currentSpecial;
         shieldActive = true;
         numGarlic = GameManager.Instance.statsSO.currentGarlic;
-        GameManager.Instance.SetHealthWithoutLerp();
+        //GameManager.Instance.SetHealthWithoutLerp();
+        garlicsInCurrLevel = 0;
     }
 
    
@@ -116,6 +118,7 @@ public class Player : MonoBehaviour, IpickupWeapons, TakeDamage, IOpen
 
     public void AddGarlic()
     {
+        garlicsInCurrLevel++;
         numGarlic++;
         GameManager.Instance.garlicCount.text = numGarlic.ToString();
         StartCoroutine(GameManager.Instance.ShowGarlicStats());

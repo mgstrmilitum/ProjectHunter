@@ -15,18 +15,18 @@ public class EnemyDamageType : MonoBehaviour// Inherit from MonoBehaviour
 
     void Start()
     {
-        if (rb == null)
-        {
-            rb = GetComponent<Rigidbody>();
-        }
+        //if (rb == null)
+        //{
+        //    rb = GetComponent<Rigidbody>();
+        //}
 
 
 
-        if (type == DamageType.Bullet)
-        {
-            rb.linearVelocity = transform.forward * speed;
-            Destroy(gameObject, destroyTime);
-        }
+        //if (type == DamageType.Bullet)
+        //{
+        //    rb.linearVelocity = transform.forward * speed;
+        //    Destroy(gameObject, destroyTime);
+        //}
     }
 
         private void OnTriggerEnter(Collider other)

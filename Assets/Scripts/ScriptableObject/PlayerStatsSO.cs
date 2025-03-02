@@ -7,4 +7,5 @@ public class PlayerStatsSO : ScriptableObject
     public int currentShield;
     public int currentSpecial;
     public int currentGarlic;
+    public int currentStage;
 }

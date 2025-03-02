@@ -1,4 +1,7 @@
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class LevelLoader : MonoBehaviour
 {
@@ -10,7 +13,7 @@ public class LevelLoader : MonoBehaviour
         if (!isFinalLevel)
         {
             OnLevelEnd();
-            GameManager.Instance.LoadLevel(levelToLoad);
+            GameManager.Instance.DisplayLevelStats();
         }
         else
         {
@@ -24,7 +27,7 @@ public class LevelLoader : MonoBehaviour
         GameManager.Instance.statsSO.currentShield = GameManager.Instance.playerScript.currentShield;
         GameManager.Instance.statsSO.currentSpecial = GameManager.Instance.playerScript.currentAp;
         GameManager.Instance.statsSO.currentGarlic = GameManager.Instance.playerScript.numGarlic;
-
+        GameManager.Instance.statsSO.currentStage++;
         
     }
 }

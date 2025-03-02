@@ -6,6 +6,7 @@ using System.Collections;
 using UnityEngine.InputSystem;
 using UnityEngine.Audio;
 using UnityEngine.PlayerLoop;
+using System;
 //using UnityEditor.ProBuilder;
 public class GameManager : MonoBehaviour
 {
@@ -24,6 +25,7 @@ public class GameManager : MonoBehaviour
     public GameObject loseMenu;
     public GameObject WheelMenu;
     public GameObject statsMenu;
+    
     public bool isPaused;
     public bool isMainmenu;
 
@@ -46,6 +48,14 @@ public class GameManager : MonoBehaviour
     public GameObject buttonLocked;
     public GameObject garlicLabel;
     public TMP_Text garlicCount;
+    public int totalGarlicInLevel;
+    private bool readyForNextLvl;
+
+    [Header("-----Loading Screen-----")]
+    public GameObject loadingScreen;
+    public Image loadingBarFill;
+    public Image loadingScreenImage;
+    public Sprite[] loadingScreenTextures;
 
     [Header("Progress")]
     public bool beatenLvl1Boss;
@@ -62,10 +72,11 @@ public class GameManager : MonoBehaviour
     public TMP_Text tshotsHit;
     public TMP_Text tAccuracy;
     public TMP_Text tKills;
+    public TMP_Text tGarlic;
 
     public bool displayStats;
 
-    public struct GameStats
+   public struct GameStats
     {
         public int shotsFired;
         public int shotsHit;
@@ -77,11 +88,13 @@ public class GameManager : MonoBehaviour
         Instance = this;
         movementScript = player.GetComponent<PlayerMovement>();
         Time.timeScale = 1f;
+        totalGarlicInLevel = 0;
         //controls = new PlayerControls();
     }
 
     public void Start()
     {
+        readyForNextLvl = false;
         //gameStats.enemiesRemaining = gameStats.enemiesTotal;
     }
 
@@ -114,7 +127,7 @@ public class GameManager : MonoBehaviour
                 }
             }
 
-            DisplayLevelStats();
+            //DisplayLevelStats();
         }
     }
 
@@ -124,17 +137,14 @@ public class GameManager : MonoBehaviour
         activeMenu = loseMenu;
         activeMenu.SetActive(true);
     }
-    public void OnWin()
-    {
+    public void OnWin() {
         StatePause();
         DisplayLevelStats();
         activeMenu = winMenu;
         activeMenu.SetActive(true);
 
-
+       
     }
-
-
     #region Menus
 
     public void HandlePauseMenu()
@@ -218,61 +228,52 @@ public class GameManager : MonoBehaviour
                 abilityMeterBack.color = Color.green;
                 abilityMeterBack.fillAmount = aFraction;
 
-                abilityMeterFront.fillAmount = Mathf.Lerp(abilityMeterFront.fillAmount, aFraction, Time.deltaTime * barLerpSpeed);
+               abilityMeterFront.fillAmount = Mathf.Lerp(abilityMeterFront.fillAmount, aFraction, Time.deltaTime * barLerpSpeed);
             }
         }
     }
 
     public void DisplayLevelStats()
     {
+        StatePause();
         tshotsFired.text = gameStats.shotsFired.ToString();
         tshotsHit.text = gameStats.shotsHit.ToString();
         //tAccuracy.text = ((float)(gameStats.shotsHit / gameStats.shotsFired)).ToString();
         tKills.text = gameStats.numKills.ToString() + "/" + gameStats.enemiesTotal.ToString();
-
-        statsMenu.SetActive(displayStats);
+        tGarlic.text = playerScript.garlicsInCurrLevel.ToString() + " / " + totalGarlicInLevel.ToString();
+        loadingScreenImage.sprite = loadingScreenTextures[statsSO.currentStage-2]; //-2 because this is called after LevelLoader.OnLevelEnd(), so first time this gets called will
+                                                                                    //be at end of level 1, after statsSO.currentStage has been incremented to 2
+        loadingScreen.SetActive(true);
+        activeMenu = statsMenu;
+        activeMenu.SetActive(true);
         //tenemiesRemaining.text = gameStats.enemiesRemaining.ToString();
         //tenemiesTotal.text = gameStats.enemiesTotal.ToString();
     }
-    public void SetHealthWithoutLerp()
+
+    public void LoadScene(int sceneID)
     {
-        float hFraction = (float)playerScript.currentHealth / playerScript.maxHealth;
-        float sFraction = (float)playerScript.currentShield / playerScript.maxShield;
-        float aFraction = (float)playerScript.currentAp / playerScript.maxAp;
-
-        if (playerHealthBarBack != null)
-        {
-            playerHealthBar.fillAmount = hFraction;
-            playerHealthBarBack.fillAmount = hFraction;
-        }
-
-        if (playerShieldBarBack != null)
-        {
-            playerShieldBar.fillAmount = sFraction;
-            playerShieldBarBack.fillAmount = sFraction;
-        }
-
-        if (abilityMeterBack != null)
-        {
-            abilityMeterFront.fillAmount = aFraction;
-            abilityMeterBack.fillAmount = aFraction;
-        }
+        StartCoroutine(LoadSceneAsync(sceneID));
     }
 
+    IEnumerator LoadSceneAsync(int sceneID)
+    {
+        AsyncOperation operation = SceneManager.LoadSceneAsync(sceneID);
 
+        while(!operation.isDone)
+        {
+            float progressValue = Mathf.Clamp01(operation.progress);
 
+            loadingBarFill.fillAmount = progressValue;
+            yield return null;
+        }
 
+        yield return new WaitForSeconds(5f);
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-    #endregion
+    internal void SetHealthWithoutLerp()
+    {
+        throw new NotImplementedException();
+    }
 }
+    #endregion
+

@@ -46,7 +46,7 @@ public class Sliding : MonoBehaviour
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
 
-        if(Input.GetKeyDown(SlideKey) && (horizontalInput != 0f || verticalInput != 0f))
+        if(Input.GetKeyDown(SlideKey) && (horizontalInput != 0f || verticalInput != 0f) && pm.grounded)
         {
             StartSlide();
         }
@@ -68,7 +68,7 @@ public class Sliding : MonoBehaviour
         pm.sliding = true;
 
         playerObj.localScale = new Vector3(playerObj.localScale.x, slideYScale, playerObj.localScale.z);
-        rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
+        if(!pm.grounded) rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
 
         slideTimer = maxSlideTime;
         aud.PlayOneShot(slideClips[Random.Range(0, slideClips.Length)], slideClipsVol);
@@ -80,13 +80,13 @@ public class Sliding : MonoBehaviour
 
         if (!pm.OnSlope() || rb.linearVelocity.y > -.01f)
         {
-            rb.AddForce(inputDirection.normalized * slideForce, ForceMode.Force);
+            if(pm.grounded) rb.AddForce(inputDirection.normalized * slideForce, ForceMode.Force);
 
             
             slideTimer -= Time.deltaTime;
         }
         else
-            rb.AddForce(pm.GetSlopeMoveDirection(inputDirection) * slideForce, ForceMode.Force);
+            //rb.AddForce(pm.GetSlopeMoveDirection(inputDirection) * slideForce, ForceMode.Force);
         if (slideTimer < 0)
             StopSlide();
     }
