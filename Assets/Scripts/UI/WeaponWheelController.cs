@@ -24,17 +24,18 @@ public class WeaponWheelController : MonoBehaviour
                 GameManager.Instance.StatePause();
                 Time.timeScale = 0f;
                 wheelUI.SetActive(true);
-                Debug.Log("Playing open anim");
+                
                 anim.SetBool("OpenWeaponWheel", true);
                 
             }
             else
             {
+                UpdateSelectedWeaponUI();
                 GameManager.Instance.isPaused = !GameManager.Instance.isPaused;
                 Time.timeScale = 1f;
                 Cursor.visible = false;
                 Cursor.lockState = CursorLockMode.Locked;
-                Debug.Log("Playing close anim");
+                
                 anim.SetBool("OpenWeaponWheel", false);
                
             }
@@ -74,5 +75,19 @@ public class WeaponWheelController : MonoBehaviour
         buttonSelected = false;
     }
 
+    private void UpdateSelectedWeaponUI()
+    {
+        foreach (GameObject weapon in WheelButtons)
+        {
+            WeaponWheel weaponButton = weapon.GetComponent<WeaponWheel>();
 
+            if (weaponButton.Id == WeaponWheelController.weaponId)
+            {
+                if (weaponButton.weapon != null)
+                {
+                    weaponButton.weapon.UpdateAmmoUI();
+                }
+            }
+        }
+    }
 }
