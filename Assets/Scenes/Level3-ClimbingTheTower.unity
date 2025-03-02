@@ -4219,6 +4219,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: -----UI-----
       objectReference: {fileID: 0}
+    - target: {fileID: 5113819930098652156, guid: b1782b573d69b014996470e1739e2bee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 6369955260083166659, guid: b1782b573d69b014996470e1739e2bee, type: 3}
       propertyPath: m_IsActive
       value: 0
