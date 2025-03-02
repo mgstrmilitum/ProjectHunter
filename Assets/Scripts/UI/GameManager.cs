@@ -48,6 +48,7 @@ public class GameManager : MonoBehaviour
     public GameObject buttonLocked;
     public GameObject garlicLabel;
     public TMP_Text garlicCount;
+    public int totalGarlicInLevel;
     private bool readyForNextLvl;
 
     [Header("-----Loading Screen-----")]
@@ -71,6 +72,7 @@ public class GameManager : MonoBehaviour
     public TMP_Text tshotsHit;
     public TMP_Text tAccuracy;
     public TMP_Text tKills;
+    public TMP_Text tGarlic;
 
     public bool displayStats;
 
@@ -86,6 +88,7 @@ public class GameManager : MonoBehaviour
         Instance = this;
         movementScript = player.GetComponent<PlayerMovement>();
         Time.timeScale = 1f;
+        totalGarlicInLevel = 0;
         //controls = new PlayerControls();
     }
 
@@ -237,6 +240,7 @@ public class GameManager : MonoBehaviour
         tshotsHit.text = gameStats.shotsHit.ToString();
         //tAccuracy.text = ((float)(gameStats.shotsHit / gameStats.shotsFired)).ToString();
         tKills.text = gameStats.numKills.ToString() + "/" + gameStats.enemiesTotal.ToString();
+        tGarlic.text = playerScript.garlicsInCurrLevel.ToString() + " / " + totalGarlicInLevel.ToString();
         loadingScreenImage.sprite = loadingScreenTextures[statsSO.currentStage-2]; //-2 because this is called after LevelLoader.OnLevelEnd(), so first time this gets called will
                                                                                     //be at end of level 1, after statsSO.currentStage has been incremented to 2
         loadingScreen.SetActive(true);

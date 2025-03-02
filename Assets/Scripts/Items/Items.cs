@@ -13,6 +13,14 @@ public class Items : MonoBehaviour, IpickupWeapons
         Garlic
     }
 
+    private void Start()
+    {
+        if(ID == ItemIDS.Garlic)
+        {
+            GameManager.Instance.totalGarlicInLevel++;
+        }
+    }
+
 
     public void OnPickup(Collider other)
     {
