@@ -14,7 +14,6 @@ public class Player : MonoBehaviour, IpickupWeapons, TakeDamage, IOpen
     public float localCombatTimer;
     public bool abilityReady;
     bool shieldActive;
-    private bool inCombat;
     public bool key;
     public PlayerStats stats;
 
@@ -31,7 +30,6 @@ public class Player : MonoBehaviour, IpickupWeapons, TakeDamage, IOpen
 
     void Start()
     {
-        inCombat = false;
         currentHealth = GameManager.Instance.statsSO.currentHealth;
         currentShield = GameManager.Instance.statsSO.currentShield;
         currentAp = GameManager.Instance.statsSO.currentSpecial;
@@ -44,29 +42,27 @@ public class Player : MonoBehaviour, IpickupWeapons, TakeDamage, IOpen
    
     void Update()
     {
-        if (localCombatTimer > 0 && inCombat == false)
+        if (localCombatTimer > 0)
         {
-            inCombat = true;
             if (combatMusic.volume < 1)
             {
-                combatMusic.volume += 25f * Time.deltaTime;
+                combatMusic.volume += 0.1f * Time.deltaTime;
             }
-            if (nonCombatMusic.volume > 0)
+            if (nonCombatMusic.volume >= 0)
             {
-                nonCombatMusic.volume -= 25f * Time.deltaTime;
+                nonCombatMusic.volume -= 0.1f * Time.deltaTime;
             }
         }
 
-        if (localCombatTimer <= 0 && inCombat == true)
+        if (localCombatTimer <= 0)
         {
-            inCombat = false;
-            if (combatMusic.volume > 0)
+            if (combatMusic.volume >= 0)
             {
-                combatMusic.volume -= 10f * Time.deltaTime;
+                combatMusic.volume -= 0.1f * Time.deltaTime;
             }
             if (nonCombatMusic.volume < 1)
             {
-                nonCombatMusic.volume += 10f * Time.deltaTime;
+                nonCombatMusic.volume += 0.1f * Time.deltaTime;
             }
         }
 
