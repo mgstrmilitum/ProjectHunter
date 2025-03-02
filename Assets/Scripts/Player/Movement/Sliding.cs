@@ -14,7 +14,7 @@ public class Sliding : MonoBehaviour
     [Header("Sliding")]
     public float maxSlideTime;
     public float slideForce;
-    float slideTimer;
+    public float slideTimer;
 
     [Header("Audio")]
     public AudioClip[] slideClips;
@@ -85,9 +85,8 @@ public class Sliding : MonoBehaviour
             
             slideTimer -= Time.deltaTime;
         }
-        else
             //rb.AddForce(pm.GetSlopeMoveDirection(inputDirection) * slideForce, ForceMode.Force);
-        if (slideTimer < 0)
+        if (slideTimer < 0f)
             StopSlide();
     }
 
