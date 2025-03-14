@@ -79,13 +79,13 @@ public class EnemyAI : MonoBehaviour, TakeDamage
     {
         // Calculate a lowered head position and update player direction and angle.
         //Vector3 loweredHeadPos = headPos.position - new Vector3(0, 0.2f, 0);
-        playerDirection = GameManager.Instance.player.transform.position - transform.position;
+        playerDirection = GameManager.Instance.player.transform.position - headPos.position;
 
         //angleToPlayer = Vector3.Angle(playerDirection, transform.forward);
 
         if ((playerInRange && !CanSeePlayer()))
         {
-            if (!isRoaming && agent.remainingDistance < 0.01f)
+            if (!isRoaming && agent.remainingDistance < agent.stoppingDistance)
             {
                 co = StartCoroutine(Roam());
             }
@@ -177,7 +177,7 @@ public class EnemyAI : MonoBehaviour, TakeDamage
         if (other.CompareTag("Player"))
         {
             playerInRange = false;
-            agent.stoppingDistance = 0;
+            agent.stoppingDistance = 0f;
         }
     }
 

@@ -1,4 +1,5 @@
 using System.Collections;
+using System.IO.Pipes;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -75,7 +76,7 @@ public class SpawnMage : MonoBehaviour, TakeDamage
 
         if ((playerInRange && !CanSeePlayer()))
         {
-            if (!isRoaming && agent.remainingDistance < 0.01f)
+            if (!isRoaming && agent.remainingDistance < agent.stoppingDistance)
             {
                 co = StartCoroutine(Roam());
             }
@@ -91,14 +92,27 @@ public class SpawnMage : MonoBehaviour, TakeDamage
 
     IEnumerator Roam()
     {
+        //isRoaming = true;
+        //yield return new WaitForSeconds(roamPauseTime);
+        //agent.stoppingDistance = 0;
+        //Vector3 randomPos = Random.insideUnitSphere * roamDistance;
+        //randomPos += startingPos;
+        //NavMeshHit hit;
+        //NavMesh.SamplePosition(randomPos, out hit, roamDistance, 1);
+        //animatorController.SetFloat("WalkSpeed", 0.5f);
+        //agent.SetDestination(hit.position);
+        //isRoaming = false;
         isRoaming = true;
+        animatorController.SetFloat("WalkSpeed", 0f);
         yield return new WaitForSeconds(roamPauseTime);
-        agent.stoppingDistance = 0;
-        Vector3 randomPos = Random.insideUnitSphere * roamDistance;
-        randomPos += startingPos;
-        NavMeshHit hit;
-        NavMesh.SamplePosition(randomPos, out hit, roamDistance, 1);
-        agent.SetDestination(hit.position);
+
+        Vector3 randomPos = Random.insideUnitSphere * roamDistance + startingPos;
+        if (NavMesh.SamplePosition(randomPos, out NavMeshHit hit, roamDistance, NavMesh.AllAreas))
+        {
+            agent.stoppingDistance = 0f;
+            animatorController.SetFloat("WalkSpeed", 0.5f);
+            agent.SetDestination(hit.position);
+        }
         isRoaming = false;
     }
 
@@ -113,17 +127,18 @@ public class SpawnMage : MonoBehaviour, TakeDamage
         {
             if (hit.collider.CompareTag("Player") && angleToPlayer <= fov)
             {
+                agent.stoppingDistance = stoppingDistanceOrig;
                 agent.SetDestination(GameManager.Instance.player.transform.position);
+
+                FaceTarget();
                 if (agent.remainingDistance <= agent.stoppingDistance)
                 {
-                    FaceTarget();
+                    //FaceTarget();
                 }
                 if (!isShooting && angleToPlayer <= shootFOV)
                 {
                     StartCoroutine(Shoot());
                 }
-
-                agent.stoppingDistance = stoppingDistanceOrig;
                 return true;
             }
         }
@@ -136,6 +151,7 @@ public class SpawnMage : MonoBehaviour, TakeDamage
         if (other.CompareTag("Player"))
         {
             playerInRange = true;
+            agent.stoppingDistance = stoppingDistanceOrig;
         }
     }
 
@@ -144,7 +160,7 @@ public class SpawnMage : MonoBehaviour, TakeDamage
         if (other.CompareTag("Player"))
         {
             playerInRange = false;
-            agent.stoppingDistance = 0;
+            agent.stoppingDistance = 0f;
         }
     }
 
@@ -164,9 +180,13 @@ public class SpawnMage : MonoBehaviour, TakeDamage
     IEnumerator Shoot()
     {
         isShooting = true;
-        GameObject obj = Instantiate(bullet, shootPos.position, transform.rotation);
-        obj.GetComponent<Rigidbody>().AddForce(transform.forward * 20f, ForceMode.Impulse);
+        agent.isStopped = true;
+
+        animatorController.SetTrigger("Shoot");
+
         yield return new WaitForSeconds(shootRate);
+
+        agent.isStopped = false;
         isShooting = false;
     }
 
@@ -203,18 +223,22 @@ public class SpawnMage : MonoBehaviour, TakeDamage
     public void takeDamage(int amount)
     {
         hp -= amount;
+        GameManager.Instance.gameStats.shotsHit++;
 
         agent.SetDestination(GameManager.Instance.player.transform.position);
+        animatorController.SetFloat("WalkSpeed", 1f);
         if (co != null)
         {
             StopCoroutine(co);
             isRoaming = false;
         }
+        agent.stoppingDistance = stoppingDistanceOrig;
+
 
         StartCoroutine(FlashRed());
 
         // Added condition to spawn the enemy spawner when hp falls below half (spawnThreshold1)
-        if (!spawnedSpawner && hp <= spawnThreshold1)
+        if (!spawnedSpawner && hp <= spawnThreshold1 && hp > 0)
         {
             SpawnEnemySpawner();
             spawnedSpawner = true;
@@ -222,7 +246,15 @@ public class SpawnMage : MonoBehaviour, TakeDamage
 
         if (hp <= 0)
         {
+            GameManager.Instance.gameStats.numKills++;
             Destroy(gameObject);
         }
+    }
+
+    public void ShootSpell()
+    {
+        GameObject obj = Instantiate(bullet, shootPos.position, Quaternion.identity);
+        Vector3 fireDirection = GameManager.Instance.player.transform.position - shootPos.position;
+        obj.GetComponent<Rigidbody>().AddForce(fireDirection * 3f, ForceMode.Impulse);
     }
 }
